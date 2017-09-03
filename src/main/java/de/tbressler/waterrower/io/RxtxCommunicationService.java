@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.io;
 
-import de.tbressler.waterrower.logs.Log;
+import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.msg.SerialMessage;
 import gnu.io.CommPortIdentifier;
 import io.netty.bootstrap.Bootstrap;
@@ -16,7 +16,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static de.tbressler.waterrower.logs.Log.SERIAL;
+import static de.tbressler.waterrower.log.Log.SERIAL;
 import static gnu.io.CommPortIdentifier.getPortIdentifiers;
 import static java.util.Objects.requireNonNull;
 

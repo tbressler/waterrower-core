@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.io;
 
-import de.tbressler.waterrower.logs.Log;
+import de.tbressler.waterrower.log.Log;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.rxtx.RxtxChannel;
@@ -8,7 +8,7 @@ import io.netty.channel.rxtx.RxtxChannelConfig;
 
 import java.io.IOException;
 
-import static de.tbressler.waterrower.logs.Log.SERIAL;
+import static de.tbressler.waterrower.log.Log.SERIAL;
 import static io.netty.channel.rxtx.RxtxChannelConfig.Databits.DATABITS_8;
 import static io.netty.channel.rxtx.RxtxChannelConfig.Paritybit.NONE;
 import static io.netty.channel.rxtx.RxtxChannelConfig.Stopbits.STOPBITS_1;

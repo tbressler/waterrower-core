@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.io;
 
-import de.tbressler.waterrower.logs.Log;
+import de.tbressler.waterrower.log.Log;
 import io.netty.channel.*;
 
 import java.net.SocketAddress;

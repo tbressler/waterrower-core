@@ -1,13 +1,13 @@
 package de.tbressler.waterrower.io;
 
-import de.tbressler.waterrower.logs.Log;
+import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.msg.SerialMessage;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
-import static de.tbressler.waterrower.logs.Log.SERIAL;
+import static de.tbressler.waterrower.log.Log.SERIAL;
 
 /**
  * Handler for serial messages.
