@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.logs.Log;
-import de.tbressler.waterrower.msg.AbstractSerialMessage;
+import de.tbressler.waterrower.msg.SerialMessage;
 import gnu.io.CommPortIdentifier;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -22,12 +22,12 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * A communication service that manages the serial connection.
- * It can receive and send serial messages via RxTx.
+ * It can receive and send serial messages via RXTX.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class RxTxCommunicationService {
+public class RxtxCommunicationService {
 
     /* The bootstrap. */
     private final Bootstrap bootstrap;
@@ -38,12 +38,12 @@ public class RxTxCommunicationService {
     /* A lock for synchronized access to open/close/read/write on channel. */
     private ReentrantLock lock = new ReentrantLock(true);
 
-    /* Listeners for RxTx connections. */
-    private final List<IRxTxConnectionListener> connectionListeners = new ArrayList<>();
+    /* Listeners for RXTX connections. */
+    private final List<IRxtxConnectionListener> connectionListeners = new ArrayList<>();
 
 
     /* Handler for the communication channel. */
-    private RxTxSerialHandler serialHandler = new RxTxSerialHandler() {
+    private RxtxSerialHandler serialHandler = new RxtxSerialHandler() {
 
         @Override
         protected void onConnected() {
@@ -51,7 +51,7 @@ public class RxTxCommunicationService {
         }
 
         @Override
-        protected void onMessageReceived(AbstractSerialMessage message) {
+        protected void onMessageReceived(SerialMessage message) {
             // fireMessageReceived(message);
         }
 
@@ -65,12 +65,12 @@ public class RxTxCommunicationService {
 
     /**
      * A communication service that manages the serial connection.
-     * It can receive and send serial messages via RxTx.
+     * It can receive and send serial messages via RXTX.
      *
      * @param bootstrap The bootstrap, not null.
      * @param channelInitializer The channel initializer, not null.
      */
-    public RxTxCommunicationService(Bootstrap bootstrap, RxTxChannelInitializer channelInitializer) {
+    public RxtxCommunicationService(Bootstrap bootstrap, RxtxChannelInitializer channelInitializer) {
         requireNonNull(bootstrap);
         requireNonNull(channelInitializer);
 
@@ -208,26 +208,26 @@ public class RxTxCommunicationService {
      *
      * @param listener The listener.
      */
-    public void addRxTxConnectionListener(IRxTxConnectionListener listener) {
+    public void addRxTxConnectionListener(IRxtxConnectionListener listener) {
         requireNonNull(listener);
         connectionListeners.add(listener);
     }
 
     /* Notify all listeners about a successful connection. */
     private void fireOnConnected() {
-        for (IRxTxConnectionListener listener : connectionListeners)
+        for (IRxtxConnectionListener listener : connectionListeners)
             listener.onConnected();
     }
 
     /* Notify all listeners about an error. */
     private void fireOnError() {
-        for (IRxTxConnectionListener listener : connectionListeners)
+        for (IRxtxConnectionListener listener : connectionListeners)
             listener.onError();
     }
 
     /* Notify all listeners about a disconnect. */
     private void fireOnDisconnected() {
-        for (IRxTxConnectionListener listener : connectionListeners)
+        for (IRxtxConnectionListener listener : connectionListeners)
             listener.onDisconnected();
     }
 
@@ -236,7 +236,7 @@ public class RxTxCommunicationService {
      *
      * @param listener The listener.
      */
-    public void removeRxTxConnectionListener(IRxTxConnectionListener listener) {
+    public void removeRxTxConnectionListener(IRxtxConnectionListener listener) {
         requireNonNull(listener);
         connectionListeners.remove(listener);
     }

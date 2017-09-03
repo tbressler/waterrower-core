@@ -11,7 +11,7 @@ import java.net.SocketAddress;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class RxTxExceptionHandler extends ChannelDuplexHandler {
+public class RxtxExceptionHandler extends ChannelDuplexHandler {
 
     @Override
     public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise) {
@@ -19,7 +19,7 @@ public class RxTxExceptionHandler extends ChannelDuplexHandler {
             @Override
             public void operationComplete(ChannelFuture future) {
                 if (!future.isSuccess())
-                    Log.error("Error while connecting to channel!", future.cause());
+                    Log.error("Error while connecting to the channel!", future.cause());
             }
         }));
     }
@@ -30,7 +30,7 @@ public class RxTxExceptionHandler extends ChannelDuplexHandler {
             @Override
             public void operationComplete(ChannelFuture future) {
                 if (!future.isSuccess())
-                    Log.error("Error while disconnecting from channel!", future.cause());
+                    Log.error("Error while disconnecting from the channel!", future.cause());
             }
         }));
     }
@@ -41,7 +41,7 @@ public class RxTxExceptionHandler extends ChannelDuplexHandler {
             @Override
             public void operationComplete(ChannelFuture future) {
                 if (!future.isSuccess())
-                    Log.error("Error while writing to channel!", future.cause());
+                    Log.error("Error while writing to the channel!", future.cause());
             }
         }));
     }

@@ -20,10 +20,10 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class RxTxChannelInitializer extends ChannelInitializer<RxtxChannel> {
+public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
 
     /* The handler of the serial channel. */
-    private RxTxSerialHandler serialHandler;
+    private RxtxSerialHandler serialHandler;
 
     /* The message parser. */
     // private XBeeMessageParser parser = new XBeeMessageParser();
@@ -32,7 +32,7 @@ public class RxTxChannelInitializer extends ChannelInitializer<RxtxChannel> {
     /**
      *
      */
-    public RxTxChannelInitializer() {}
+    public RxtxChannelInitializer() {}
 
 
     /**
@@ -40,7 +40,7 @@ public class RxTxChannelInitializer extends ChannelInitializer<RxtxChannel> {
      *
      * @param serialHandler The serial handler, must not be null.
      */
-    public void setRxTxSerialHandler(RxTxSerialHandler serialHandler) {
+    public void setRxTxSerialHandler(RxtxSerialHandler serialHandler) {
         this.serialHandler = requireNonNull(serialHandler);
     }
 
@@ -55,7 +55,7 @@ public class RxTxChannelInitializer extends ChannelInitializer<RxtxChannel> {
         configurePipeline(channel);
     }
 
-    /* Checks if the RxTx serial handler is not null. */
+    /* Checks if the RXTX serial handler is not null. */
     private void checkIfRxTxSerialHandlerIsSet() throws IOException {
         if (serialHandler == null) {
             IOException exception = new IOException("You forgot to set the serial handler, before initializing the channel.");
@@ -91,7 +91,7 @@ public class RxTxChannelInitializer extends ChannelInitializer<RxtxChannel> {
         // pipeline.addLast("decoder", new RxtxMessageFrameDecoder(parser));
         // pipeline.addLast("encoder", new RxtxMessageFrameEncoder(parser));
         pipeline.addLast("handler", serialHandler);
-        pipeline.addLast("exceptions", new RxTxExceptionHandler());
+        pipeline.addLast("exceptions", new RxtxExceptionHandler());
 
         Log.debug(SERIAL, "Pipeline configured and handler added.");
     }

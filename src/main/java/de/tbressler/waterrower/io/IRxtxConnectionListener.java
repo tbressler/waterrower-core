@@ -1,12 +1,12 @@
 package de.tbressler.waterrower.io;
 
 /**
- * Listener for RxTx connections.
+ * Listener for RXTX connections.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public interface IRxTxConnectionListener {
+public interface IRxtxConnectionListener {
 
     /**
      * Called if connection was established.

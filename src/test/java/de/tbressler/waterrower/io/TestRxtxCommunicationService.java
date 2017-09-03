@@ -20,27 +20,27 @@ import static org.mockito.Mockito.*;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestRxTxCommunicationService {
+public class TestRxtxCommunicationService {
 
     /* Class under test. */
-    private RxTxCommunicationService rxTxCommunicationService;
+    private RxtxCommunicationService rxTxCommunicationService;
 
     // Mocks:
     private Bootstrap bootstrap = mock(Bootstrap.class, "bootstrap");
-    private RxTxChannelInitializer channelInitializer = mock(RxTxChannelInitializer.class, "channelInitializer");
+    private RxtxChannelInitializer channelInitializer = mock(RxtxChannelInitializer.class, "channelInitializer");
     private RxtxDeviceAddress address = new RxtxDeviceAddress("some-port");
     private ChannelFuture channelFuture = mock(ChannelFuture.class, "channelFuture");
     private Channel channel = mock(Channel.class, "channel");
 
-    private IRxTxConnectionListener connectionListener = mock(IRxTxConnectionListener.class, "connectionListener");
+    private IRxtxConnectionListener connectionListener = mock(IRxtxConnectionListener.class, "connectionListener");
 
     // Capture:
-    private ArgumentCaptor<RxTxSerialHandler> callback = forClass(RxTxSerialHandler.class);
+    private ArgumentCaptor<RxtxSerialHandler> callback = forClass(RxtxSerialHandler.class);
 
 
     @Before
     public void setUp() {
-        rxTxCommunicationService = new RxTxCommunicationService(bootstrap, channelInitializer);
+        rxTxCommunicationService = new RxtxCommunicationService(bootstrap, channelInitializer);
         rxTxCommunicationService.addRxTxConnectionListener(connectionListener);
 
         verify(channelInitializer, times(1)).setRxTxSerialHandler(callback.capture());
@@ -52,7 +52,7 @@ public class TestRxTxCommunicationService {
      */
     @Test(expected = NullPointerException.class)
     public void new_withNullBootstrap_throwsException() {
-        new RxTxCommunicationService(null, channelInitializer);
+        new RxtxCommunicationService(null, channelInitializer);
     }
 
     /**
@@ -60,7 +60,7 @@ public class TestRxTxCommunicationService {
      */
     @Test(expected = NullPointerException.class)
     public void new_withNullChannelInitializer_throwsException() {
-        new RxTxCommunicationService(bootstrap, null);
+        new RxtxCommunicationService(bootstrap, null);
     }
 
     /**
@@ -68,7 +68,7 @@ public class TestRxTxCommunicationService {
      */
     @Test
     public void new_withValidBootstrapAndChannelInitializer() {
-        rxTxCommunicationService = new RxTxCommunicationService(bootstrap, channelInitializer);
+        rxTxCommunicationService = new RxtxCommunicationService(bootstrap, channelInitializer);
         assertNotNull(rxTxCommunicationService);
     }
 
