@@ -8,11 +8,30 @@ repositories {
 }
 
 configurations {
+
+    // Workaround: Don't use RXTX library from Netty:
+    all*.exclude group: 'org.rxtx'
+
+    // Workaround: Don't use SLF4J:
+    all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    all*.exclude group: 'org.slf4j', module: 'slf4j-api'
+
 }
 
 dependencies {
 
+    // Serial communication:
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.5.Final'
+    compile group: 'io.netty', name: 'netty-transport-rxtx', version: '4.1.5.Final'
+    compile group: 'org.bidib.jbidib', name: 'jbidibc-rxtx-2.2', version: '1.6.0'
+    compile group: 'org.bidib.jbidib', name: 'bidib-rxtx-binaries', version: '2.2'
+
+    // Utils:
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
+
+    // Logging:
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.7'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
 
     // JUnit and tests:
     testCompile group: 'junit', name: 'junit', version: '4.11'
