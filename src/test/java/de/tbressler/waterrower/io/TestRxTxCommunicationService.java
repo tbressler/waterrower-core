@@ -10,9 +10,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
@@ -107,8 +105,6 @@ public class TestRxTxCommunicationService {
     @Test(expected = IOException.class)
     public void open_withValidAddress_opensChannelWithoutSuccess_throwsExceptionAndNotifiesListener() throws IOException {
         mockUnsuccessfulConnect();
-
-        verify(connectionListener, times(1)).onError();
     }
 
 
@@ -137,9 +133,8 @@ public class TestRxTxCommunicationService {
      * Checks if listener is called if connection was successful.
      */
     @Test
-    public void open_withValidAddress_opensChannelWithSuccess() throws IOException {
+    public void open_withValidAddress_opensChannelAndNotifiesListener() throws IOException {
         mockSuccessfulConnect();
-
         verify(connectionListener, times(1)).onConnected();
     }
 
@@ -147,8 +142,49 @@ public class TestRxTxCommunicationService {
     @Test
     public void isConnected_afterSuccessfulConnect_returnsTrue() throws IOException {
         mockSuccessfulConnect();
-
         assertTrue(rxTxCommunicationService.isConnected());
+    }
+
+
+    /**
+     * Checks if listener is called and an exception is thrown when the connection can not be
+     * closed because it was not opened before.
+     */
+    @Test(expected = IOException.class)
+    public void close_whenNotConnected_throwsException() throws IOException {
+        rxTxCommunicationService.close();
+    }
+
+    /**
+     * Checks if previously connected channel gets closed and the listener is called.
+     */
+    @Test
+    public void close_whenConnected_closesChannelAndNotifiesListener() throws IOException {
+
+        mockSuccessfulConnect();
+
+        when(channelFuture.syncUninterruptibly()).thenReturn(channelFuture);
+        when(channelFuture.channel()).thenReturn(channel);
+        when(channel.close()).thenReturn(channelFuture);
+        when(channelFuture.isSuccess()).thenReturn(true);
+
+        rxTxCommunicationService.close();
+        callback.getValue().onDisconnected();
+
+        verify(connectionListener, times(1)).onDisconnected();
+    }
+
+    @Test(expected = IOException.class)
+    public void close_whenConnectedAndClosingIsUnsuccessful_throwsException() throws IOException {
+
+        mockSuccessfulConnect();
+
+        when(channelFuture.syncUninterruptibly()).thenReturn(channelFuture);
+        when(channelFuture.channel()).thenReturn(channel);
+        when(channel.close()).thenReturn(channelFuture);
+        when(channelFuture.isSuccess()).thenReturn(false);
+
+        rxTxCommunicationService.close();
     }
 
 
