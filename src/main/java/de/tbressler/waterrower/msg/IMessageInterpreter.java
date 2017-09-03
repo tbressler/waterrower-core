@@ -1,7 +1,5 @@
-package de.tbressler.waterrower.msg.interpreter;
+package de.tbressler.waterrower.msg;
 
-
-import de.tbressler.waterrower.msg.AbstractMessage;
 
 /**
  *

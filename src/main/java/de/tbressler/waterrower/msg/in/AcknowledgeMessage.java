@@ -13,5 +13,4 @@ import de.tbressler.waterrower.msg.AbstractMessage;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class AcknowledgeMessage extends AbstractMessage {
-}
+public class AcknowledgeMessage extends AbstractMessage {}

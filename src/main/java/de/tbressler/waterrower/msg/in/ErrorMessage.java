@@ -3,7 +3,7 @@ package de.tbressler.waterrower.msg.in;
 import de.tbressler.waterrower.msg.AbstractMessage;
 
 /**
- * Unknown packet (S4/S5 -> PC).
+ * Unknown packet / error (S4/S5 -> PC).
  *
  * The last received packet from the PC was of an unknown time and caused a general ERROR reply
  * to be issued.
@@ -13,5 +13,4 @@ import de.tbressler.waterrower.msg.AbstractMessage;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ErrorMessage extends AbstractMessage {
-}
+public class ErrorMessage extends AbstractMessage {}

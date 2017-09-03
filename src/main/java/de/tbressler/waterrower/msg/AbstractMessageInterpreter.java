@@ -1,6 +1,4 @@
-package de.tbressler.waterrower.msg.interpreter;
-
-import de.tbressler.waterrower.msg.AbstractMessage;
+package de.tbressler.waterrower.msg;
 
 /**
  * Abstract message interpreter.
