@@ -1,22 +1,22 @@
-package de.tbressler.waterrower.io.interpreter;
+package de.tbressler.waterrower.msg.interpreter;
 
 
-import de.tbressler.waterrower.msg.SerialMessage;
+import de.tbressler.waterrower.msg.AbstractMessage;
 
 /**
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public interface IMessageInterpreter<T extends SerialMessage> {
+public interface IMessageInterpreter<T extends AbstractMessage> {
 
     /**
      * Returns the identifier byte of the message type which this
      * interpreter can decode.
      *
-     * @return The identifier byte.
+     * @return The identifier char.
      */
-    byte getMessageTypeByte();
+    char getMessageTypeByte();
 
     /**
      * Returns the type of message which this interpreter can encode.

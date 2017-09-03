@@ -1,12 +1,14 @@
 package de.tbressler.waterrower.io.codec;
 
-import de.tbressler.waterrower.io.interpreter.IMessageInterpreter;
 import de.tbressler.waterrower.log.Log;
-import de.tbressler.waterrower.msg.SerialMessage;
+import de.tbressler.waterrower.msg.AbstractMessage;
+import de.tbressler.waterrower.msg.interpreter.ErrorMessageInterpreter;
+import de.tbressler.waterrower.msg.interpreter.IMessageInterpreter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.primitives.Chars.fromBytes;
 import static de.tbressler.waterrower.log.Log.SERIAL;
 
 /**
@@ -30,8 +32,7 @@ public class RxtxMessageParser {
 
     /* Adds message interpreters to this parser. */
     private void createAndAddMessageInterpreters() {
-        // interpreters.add(new BonjourMessageInterpreter());
-        // interpreters.add(new TalkMessageInterpreter());
+        interpreters.add(new ErrorMessageInterpreter());
     }
 
 
@@ -42,11 +43,11 @@ public class RxtxMessageParser {
      * @param bytes The byte array.
      * @return The message object or null.
      */
-    public SerialMessage decode(byte[] bytes) {
+    public AbstractMessage decode(byte[] bytes) {
 
         Log.debug(SERIAL, "Parsing message to object.");
 
-        byte msgType = bytes[0];
+        char msgType = fromBytes(bytes[0], bytes[1]);
 
         for (IMessageInterpreter interpreter : interpreters) {
             if (msgType != interpreter.getMessageTypeByte())
@@ -68,7 +69,7 @@ public class RxtxMessageParser {
      * @param msg The message.
      * @return The byte array or null.
      */
-    public byte[] encode(SerialMessage msg) {
+    public byte[] encode(AbstractMessage msg) {
 
         Log.debug(SERIAL, "Parsing message to byte.");
 

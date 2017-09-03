@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.log.Log;
-import de.tbressler.waterrower.msg.SerialMessage;
+import de.tbressler.waterrower.msg.AbstractMessage;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -22,7 +22,7 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
 
-            if (!(msg instanceof SerialMessage)) {
+            if (!(msg instanceof AbstractMessage)) {
                 Log.warn(SERIAL, "Invalid message received! Message skipped.");
                 return;
             }
@@ -30,7 +30,7 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
             Log.debug(SERIAL, "Message received: " + msg);
 
             // Notify that a message was received.
-            onMessageReceived((SerialMessage) msg);
+            onMessageReceived((AbstractMessage) msg);
 
         } finally {
            ReferenceCountUtil.release(msg);
@@ -42,7 +42,7 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
      *
      * @param message The serial message.
      */
-    abstract protected void onMessageReceived(SerialMessage message);
+    abstract protected void onMessageReceived(AbstractMessage message);
 
 
     @Override

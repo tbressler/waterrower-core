@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io.codec;
 
 import de.tbressler.waterrower.log.Log;
-import de.tbressler.waterrower.msg.SerialMessage;
+import de.tbressler.waterrower.msg.AbstractMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -77,7 +77,7 @@ public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
             }
 
             // Decode the message.
-            SerialMessage decodedMessage = parser.decode(byteArray);
+            AbstractMessage decodedMessage = parser.decode(byteArray);
             if (decodedMessage == null) {
                 Log.debug(SERIAL, "Couldn't decode bytes to message! Skipping it.");
                 return;
