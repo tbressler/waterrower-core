@@ -41,7 +41,7 @@ public class TestRxtxCommunicationService {
     @Before
     public void setUp() {
         rxTxCommunicationService = new RxtxCommunicationService(bootstrap, channelInitializer);
-        rxTxCommunicationService.addRxTxConnectionListener(connectionListener);
+        rxTxCommunicationService.addRxtxConnectionListener(connectionListener);
 
         verify(channelInitializer, times(1)).setRxTxSerialHandler(callback.capture());
     }
@@ -189,14 +189,22 @@ public class TestRxtxCommunicationService {
 
 
     @Test(expected = NullPointerException.class)
-    public void addRxTxConnectionListener_withNull_throwsException() {
-        rxTxCommunicationService.addRxTxConnectionListener(null);
+    public void addRxtxConnectionListener_withNull_throwsException() {
+        rxTxCommunicationService.addRxtxConnectionListener(null);
     }
 
 
     @Test(expected = NullPointerException.class)
-    public void removeRxTxConnectionListener_withNull_throwsException() {
-        rxTxCommunicationService.removeRxTxConnectionListener(null);
+    public void removeRxtxConnectionListener_withNull_throwsException() {
+        rxTxCommunicationService.removeRxtxConnectionListener(null);
+    }
+
+    @Test
+    public void removeRxtxConnectionListener_withValidListener_notCalledAfterRemove() throws
+            IOException {
+        rxTxCommunicationService.removeRxtxConnectionListener(connectionListener);
+        mockSuccessfulConnect();
+        verify(connectionListener, never()).onConnected();
     }
 
 }

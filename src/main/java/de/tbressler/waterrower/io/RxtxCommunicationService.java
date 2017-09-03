@@ -208,7 +208,7 @@ public class RxtxCommunicationService {
      *
      * @param listener The listener.
      */
-    public void addRxTxConnectionListener(IRxtxConnectionListener listener) {
+    public void addRxtxConnectionListener(IRxtxConnectionListener listener) {
         requireNonNull(listener);
         connectionListeners.add(listener);
     }
@@ -236,7 +236,7 @@ public class RxtxCommunicationService {
      *
      * @param listener The listener.
      */
-    public void removeRxTxConnectionListener(IRxtxConnectionListener listener) {
+    public void removeRxtxConnectionListener(IRxtxConnectionListener listener) {
         requireNonNull(listener);
         connectionListeners.remove(listener);
     }
