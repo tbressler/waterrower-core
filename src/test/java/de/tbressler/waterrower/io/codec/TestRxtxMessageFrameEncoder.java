@@ -1,16 +1,11 @@
 package de.tbressler.waterrower.io.codec;
 
-import de.tbressler.waterrower.model.MonitorType;
-import de.tbressler.waterrower.msg.in.ModelInformationMessage;
 import de.tbressler.waterrower.msg.out.StartCommunicationMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
