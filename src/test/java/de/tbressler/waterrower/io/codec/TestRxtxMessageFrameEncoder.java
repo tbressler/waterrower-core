@@ -1,12 +1,19 @@
 package de.tbressler.waterrower.io.codec;
 
+import de.tbressler.waterrower.model.MonitorType;
+import de.tbressler.waterrower.msg.in.ModelInformationMessage;
+import de.tbressler.waterrower.msg.out.StartCommunicationMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for class RxtxMessageFrameEncoder.
@@ -44,8 +51,21 @@ public class TestRxtxMessageFrameEncoder {
      */
     @Test(expected = IllegalArgumentException.class)
     public void encode_withInvalidMessage_throwsException() throws Exception {
-        ByteBuf out = Unpooled.buffer();
+        ByteBuf out = Unpooled.directBuffer();
         messageFrameEncoder.encode(ctx, new String("invalid-message-type"), out);
+    }
+
+    /**
+     * Checks if a message will be decoded to correct bytes.
+     */
+    @Test
+    public void encode_withValidStartCommunicationMessage_returnsCorrectBytes() throws Exception {
+        when(parser.encode(any(StartCommunicationMessage.class))).thenReturn(new String("USB").getBytes());
+
+        ByteBuf out = Unpooled.buffer();
+        messageFrameEncoder.encode(ctx, new StartCommunicationMessage(), out);
+
+        assertTrue(new String(out.array()).startsWith("USB\r\n"));
     }
 
 }
