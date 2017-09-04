@@ -10,6 +10,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -66,6 +69,22 @@ public class TestRxtxMessageFrameEncoder {
         messageFrameEncoder.encode(ctx, new StartCommunicationMessage(), out);
 
         assertTrue(new String(out.array()).startsWith("USB\r\n"));
+    }
+
+    /**
+     * Checks if no message is written, if the message couldn't be parsed.
+     */
+    @Test
+    public void encode_whenMessageCantBeParsed_dontWriteToBuffer() throws Exception {
+
+        // TODO Improve test with buffer!
+
+        when(parser.encode(any(StartCommunicationMessage.class))).thenReturn(null);
+
+        ByteBuf out = Unpooled.buffer();
+        messageFrameEncoder.encode(ctx, new StartCommunicationMessage(), out);
+
+        assertFalse(new String(out.array()).contains("\r\n"));
     }
 
 }
