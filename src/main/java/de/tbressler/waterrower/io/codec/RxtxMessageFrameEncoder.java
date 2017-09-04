@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 import static de.tbressler.waterrower.io.utils.ByteUtils.bytesToHex;
+import static de.tbressler.waterrower.log.Log.MESSAGES;
 import static de.tbressler.waterrower.log.Log.SERIAL;
 import static java.util.Objects.requireNonNull;
 
@@ -54,7 +55,7 @@ public class RxtxMessageFrameEncoder extends MessageToByteEncoder {
         out.writeBytes(byteArray);
         out.writeChar(DELIMITER);
 
-        Log.debug(SERIAL, "Message buffer encoded and written:\n" +
+        Log.debug(MESSAGES, "Message buffer encoded and written:\n" +
                 " As String: >" + new String(byteArray) + "<\n" +
                 " As HEX: "+ bytesToHex(byteArray));
 

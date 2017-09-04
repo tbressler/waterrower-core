@@ -1,5 +1,8 @@
 package de.tbressler.waterrower.io;
 
+import de.tbressler.waterrower.io.codec.RxtxMessageFrameDecoder;
+import de.tbressler.waterrower.io.codec.RxtxMessageFrameEncoder;
+import de.tbressler.waterrower.io.codec.RxtxMessageParser;
 import de.tbressler.waterrower.log.Log;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -15,7 +18,7 @@ import static io.netty.channel.rxtx.RxtxChannelConfig.Stopbits.STOPBITS_1;
 import static java.util.Objects.requireNonNull;
 
 /**
- *
+ * Initializes the RXTX channel and sets up the pipeline for encoding and decoding the messages.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -26,11 +29,11 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
     private RxtxSerialHandler serialHandler;
 
     /* The message parser. */
-    // private XBeeMessageParser parser = new XBeeMessageParser();
+    private RxtxMessageParser parser = new RxtxMessageParser();
 
 
     /**
-     *
+     * Initializes the RXTX channel and sets up the pipeline for encoding and decoding the messages.
      */
     public RxtxChannelInitializer() {}
 
@@ -47,7 +50,7 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
 
     @Override
     protected void initChannel(RxtxChannel channel) throws Exception {
-        Log.debug(SERIAL, "RxTx channel initialized. Configuring pipeline and channel...");
+        Log.debug(SERIAL, "RXTX channel initialized. Configuring pipeline and channel...");
 
         checkIfRxTxSerialHandlerIsSet();
 
@@ -59,7 +62,7 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
     private void checkIfRxTxSerialHandlerIsSet() throws IOException {
         if (serialHandler == null) {
             IOException exception = new IOException("You forgot to set the serial handler, before initializing the channel.");
-            Log.error("RxTx channel couldn't be initialized!", exception);
+            Log.error("RXTX channel couldn't be initialized!", exception);
             throw exception;
         }
     }
@@ -68,7 +71,7 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
     /* Configures the channel. */
     private void configureChannel(RxtxChannel channel) {
         RxtxChannelConfig config = channel.config();
-        config.setBaudrate(9600);
+        config.setBaudrate(19200);
         config.setDatabits(DATABITS_8);
         config.setStopbits(STOPBITS_1);
         config.setParitybit(NONE);
@@ -88,8 +91,8 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
     /* Configures the pipeline. */
     private void configurePipeline(RxtxChannel channel) {
         ChannelPipeline pipeline = channel.pipeline();
-        // pipeline.addLast("decoder", new RxtxMessageFrameDecoder(parser));
-        // pipeline.addLast("encoder", new RxtxMessageFrameEncoder(parser));
+        pipeline.addLast("decoder", new RxtxMessageFrameDecoder(parser));
+        pipeline.addLast("encoder", new RxtxMessageFrameEncoder(parser));
         pipeline.addLast("handler", serialHandler);
         pipeline.addLast("exceptions", new RxtxExceptionHandler());
 

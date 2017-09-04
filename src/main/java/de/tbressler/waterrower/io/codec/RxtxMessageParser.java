@@ -3,12 +3,12 @@ package de.tbressler.waterrower.io.codec;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.msg.AbstractMessage;
 import de.tbressler.waterrower.msg.IMessageInterpreter;
-import de.tbressler.waterrower.msg.interpreter.ErrorMessageInterpreter;
+import de.tbressler.waterrower.msg.interpreter.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.primitives.Chars.fromBytes;
+import static com.google.common.base.Charsets.UTF_8;
 import static de.tbressler.waterrower.log.Log.SERIAL;
 
 /**
@@ -32,7 +32,18 @@ public class RxtxMessageParser {
 
     /* Adds message interpreters to this parser. */
     private void createAndAddMessageInterpreters() {
+
+        // Incoming communication:
         interpreters.add(new ErrorMessageInterpreter());
+        interpreters.add(new AcknowledgeMessageInterpreter());
+        interpreters.add(new HardwareTypeMessageInterpreter());
+        interpreters.add(new ModelInformationMessageInterpreter());
+        interpreters.add(new PingMessageInterpreter());
+
+        // Outgoing communication:
+        interpreters.add(new StartCommunicationMessageInterpreter());
+        interpreters.add(new ExitCommunicationMessageInterpreter());
+        interpreters.add(new ResetMessageInterpreter());
     }
 
 
@@ -47,10 +58,12 @@ public class RxtxMessageParser {
 
         Log.debug(SERIAL, "Parsing message to object.");
 
-        char msgType = fromBytes(bytes[0], bytes[1]);
+        String msgType = new String(bytes, 0, 1, UTF_8);
 
         for (IMessageInterpreter interpreter : interpreters) {
-            if (msgType != interpreter.getMessageTypeByte())
+            if (interpreter.getMessageTypeChar() == null)
+                continue;
+            if (msgType.equals(interpreter.getMessageTypeChar()))
                 continue;
             return interpreter.decode(bytes);
         }

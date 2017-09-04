@@ -4,7 +4,15 @@ import de.tbressler.waterrower.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.msg.in.HardwareTypeMessage;
 
 /**
- * A parser for message type: HardwareTypeMessage
+ * Interpreter for:
+ *
+ * Hardware Type (S4/S5 -> PC).
+ *
+ * The Water Rower will reply with this packet when it receives a "USB" packet and will then
+ * proceed to send other packets accordingly until it switch’s off or the application issues an
+ * exit packet.
+ *
+ * [_][WR_] + 0x0D0A
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -12,8 +20,8 @@ import de.tbressler.waterrower.msg.in.HardwareTypeMessage;
 public class HardwareTypeMessageInterpreter extends AbstractMessageInterpreter<HardwareTypeMessage> {
 
     @Override
-    public char getMessageTypeByte() {
-        return '_';
+    public String getMessageTypeChar() {
+        return "_";
     }
 
     @Override
@@ -23,7 +31,7 @@ public class HardwareTypeMessageInterpreter extends AbstractMessageInterpreter<H
 
     @Override
     public HardwareTypeMessage decode(byte[] bytes) {
-        if (bytes.length < 4)
+        if (bytes.length < 3)
             return null;
 
         String payload = new String(bytes);

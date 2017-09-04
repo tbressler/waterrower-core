@@ -12,5 +12,4 @@ import de.tbressler.waterrower.msg.AbstractMessage;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class RequestModelInformationMessage extends AbstractMessage {
-}
+public class RequestModelInformationMessage extends AbstractMessage {}

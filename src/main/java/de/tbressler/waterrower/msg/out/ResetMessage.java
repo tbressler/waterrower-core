@@ -14,5 +14,4 @@ import de.tbressler.waterrower.msg.AbstractMessage;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ResetMessage extends AbstractMessage {
-}
+public class ResetMessage extends AbstractMessage {}

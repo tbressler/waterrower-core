@@ -4,7 +4,14 @@ import de.tbressler.waterrower.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.msg.in.AcknowledgeMessage;
 
 /**
- * A parser for message type: AcknowledgeMessage
+ * Interpreter for:
+ *
+ * Packet Accepted (S4/S5 -> PC).
+ *
+ * This packet will only be sent where no other reply to a PC would otherwise be given. If a
+ * packet response is required to the PC then that will take the place of the OK packet.
+ *
+ * [O][K] + 0x0D0A
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -16,8 +23,8 @@ public class AcknowledgeMessageInterpreter extends AbstractMessageInterpreter<Ac
 
 
     @Override
-    public char getMessageTypeByte() {
-        return 'O';
+    public String getMessageTypeChar() {
+        return "O";
     }
 
     @Override
@@ -27,7 +34,7 @@ public class AcknowledgeMessageInterpreter extends AbstractMessageInterpreter<Ac
 
     @Override
     public AcknowledgeMessage decode(byte[] bytes) {
-        if (bytes.length < 2)
+        if (bytes.length != 2)
             return null;
         return ACKNOWLEDGE_MESSAGE;
     }

@@ -9,6 +9,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 import static de.tbressler.waterrower.io.utils.ByteUtils.bufferToString;
+import static de.tbressler.waterrower.log.Log.MESSAGES;
 import static de.tbressler.waterrower.log.Log.SERIAL;
 import static java.util.Objects.requireNonNull;
 
@@ -42,7 +43,7 @@ public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
         int startPosition = in.readerIndex();
         int numberOfBytes = in.readableBytes();
 
-        Log.debug(SERIAL, "Decoder received new message buffer:\n" +
+        Log.debug(MESSAGES, "Decoder received new message buffer:\n" +
                 " Buffer: " + bufferToString(in));
 
         // Check if bytes are available.

@@ -4,7 +4,14 @@ import de.tbressler.waterrower.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.msg.in.ErrorMessage;
 
 /**
- * A parser for message type: ErrorMessage
+ * Interpreter for:
+ *
+ * Unknown packet / error (S4/S5 -> PC).
+ *
+ * The last received packet from the PC was of an unknown time and caused a general ERROR reply
+ * to be issued.
+ *
+ * [E][RROR] + 0x0D0A
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -16,8 +23,8 @@ public class ErrorMessageInterpreter extends AbstractMessageInterpreter<ErrorMes
 
 
     @Override
-    public char getMessageTypeByte() {
-        return 'E';
+    public String getMessageTypeChar() {
+        return "E";
     }
 
     @Override

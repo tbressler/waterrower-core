@@ -7,12 +7,17 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 import static org.apache.logging.log4j.MarkerManager.getMarker;
 
 /**
+ * Simple singleton for logging.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */
 public class Log {
 
+    /** Marker for serial communication logs. */
     public static final Marker SERIAL = getMarker("Serial");
+    /** Marker for messages that are send and received via serial communication. */
+    public static final Marker MESSAGES = getMarker("Messages");
 
     /* The logger. */
     private static final Logger logger = getLogger();

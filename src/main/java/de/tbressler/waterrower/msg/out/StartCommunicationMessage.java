@@ -13,5 +13,4 @@ import de.tbressler.waterrower.msg.AbstractMessage;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class StartCommunicationMessage extends AbstractMessage {
-}
+public class StartCommunicationMessage extends AbstractMessage {}

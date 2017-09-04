@@ -4,7 +4,14 @@ import de.tbressler.waterrower.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.msg.in.PingMessage;
 
 /**
- * A parser for message type: PingMessage
+ * Interpreter for:
+ *
+ * Ping (S4/S5 -> PC).
+ *
+ * Sent once a second while NO rowing is occurring to indicate to the PC the rowing monitor is
+ * still operational but stopped.
+ *
+ * [P][ING] + 0x0D0A
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -16,8 +23,8 @@ public class PingMessageInterpreter extends AbstractMessageInterpreter<PingMessa
 
 
     @Override
-    public char getMessageTypeByte() {
-        return 'P';
+    public String getMessageTypeChar() {
+        return "P";
     }
 
     @Override
