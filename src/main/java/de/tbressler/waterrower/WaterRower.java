@@ -4,6 +4,9 @@ import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ModelInformation;
+import de.tbressler.waterrower.msg.AbstractMessage;
+import de.tbressler.waterrower.msg.out.ExitCommunicationMessage;
+import de.tbressler.waterrower.msg.out.StartCommunicationMessage;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 
 import java.io.IOException;
@@ -40,7 +43,16 @@ public class WaterRower {
 
         @Override
         public void onConnected() {
-            fireOnConnected();
+            try {
+
+                Log.debug(LIBRARY, "RXTX connected. Sending 'start communication' message.");
+
+                sendAsync(new StartCommunicationMessage());
+
+            } catch (IOException e) {
+                Log.error("Couldn't send 'start communication' message!", e);
+                fireOnError();
+            }
         }
 
         @Override
@@ -90,7 +102,11 @@ public class WaterRower {
                 @Override
                 public void run() {
                     try {
+
+                        Log.debug(LIBRARY, "Opening RXTX channel at '" + address.value() + "' connection.");
+
                         communicationService.open(address);
+
                     } catch (IOException e) {
                         Log.warn(LIBRARY, "Couldn't connect to serial port! " + e.getMessage());
                         fireOnError();
@@ -117,13 +133,61 @@ public class WaterRower {
             if (!isConnected())
                 throw new IOException("Service is not connected! Can not disconnect.");
 
+            sendGoodbyeAndDisconnectAsync();
+
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /* Sends "goodbye" message and disconnects asynchronous. */
+    private void sendGoodbyeAndDisconnectAsync() {
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    Log.debug(LIBRARY, "Sending 'exit communication' message.");
+
+                    // Send "goodbye" message.
+                    sendInternally(new ExitCommunicationMessage());
+
+                    Log.debug(LIBRARY, "Closing RXTX channel.");
+
+                    // Close channel.
+                    communicationService.close();
+
+                } catch (IOException e) {
+                    Log.warn(LIBRARY, "Couldn't disconnect from serial port! " + e.getMessage());
+                    fireOnError();
+                }
+            }
+        });
+    }
+
+    /* Returns true if connected. */
+    private boolean isConnected() {
+        return communicationService.isConnected();
+    }
+
+    /* Sends given message asynchronous. */
+    void sendAsync(AbstractMessage msg) throws IOException {
+        requireNonNull(msg);
+
+        lock.lock();
+
+        try {
+
+            if (!isConnected())
+                throw new IOException("Service is not connected! Can not send message.");
+
             executorService.submit(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        communicationService.close();
+                        sendInternally(msg);
                     } catch (IOException e) {
-                        Log.warn(LIBRARY, "Couldn't disconnect to serial port! " + e.getMessage());
+                        Log.error("Message couldn't be send!", e);
                         fireOnError();
                     }
                 }
@@ -134,9 +198,12 @@ public class WaterRower {
         }
     }
 
-    /* Returns true if connected. */
-    private boolean isConnected() {
-        return communicationService.isConnected();
+    /* Sends the message. */
+    private void sendInternally(AbstractMessage msg) throws IOException {
+
+        Log.debug(LIBRARY, "Sending message '" + msg.toString() + "'.");
+
+        communicationService.send(msg);
     }
 
 

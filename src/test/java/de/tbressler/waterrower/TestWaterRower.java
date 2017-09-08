@@ -2,6 +2,9 @@ package de.tbressler.waterrower;
 
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
+import de.tbressler.waterrower.msg.AbstractMessage;
+import de.tbressler.waterrower.msg.out.ExitCommunicationMessage;
+import de.tbressler.waterrower.msg.out.StartCommunicationMessage;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +35,7 @@ public class TestWaterRower {
     private RxtxCommunicationService communicationService = mock(RxtxCommunicationService.class, "communicationService");
     private RxtxDeviceAddress address = mock(RxtxDeviceAddress.class, "address");
     private IWaterRowerListener waterRowerListener = mock(IWaterRowerListener.class, "waterRowerListener");
+    private AbstractMessage message = mock(AbstractMessage.class, "message");
 
     // Capture:
     private ArgumentCaptor<IRxtxConnectionListener> callback = forClass(IRxtxConnectionListener.class);
@@ -114,6 +118,29 @@ public class TestWaterRower {
     }
 
 
+    @Test(expected = NullPointerException.class)
+    public void sendAsync_withNullMessage_throwsException() throws Exception {
+        waterRower.sendAsync(null);
+    }
+
+
+    @Test(expected = IOException.class)
+    public void sendAsync_whenNotConnected_throwsException() throws Exception {
+        when(communicationService.isConnected()).thenReturn(false);
+        waterRower.sendAsync(message);
+    }
+
+
+    @Test
+    public void sendAsync_withValidMessage_sendsMessage() throws Exception {
+        when(communicationService.isConnected()).thenReturn(true);
+
+        waterRower.sendAsync(message);
+
+        verify(communicationService, times(1)).send(message);
+    }
+
+
     /**
      * Checks if disconnect() throws an IOException when not connected yet.
      */
@@ -132,7 +159,23 @@ public class TestWaterRower {
 
         waterRower.disconnect();
 
+        verify(communicationService, times(1)).send(any(ExitCommunicationMessage.class));
         verify(communicationService, times(1)).close();
+    }
+
+
+    /**
+     * Checks if listener is called, if send "goodbye" fails due to an exception.
+     */
+    @Test
+    public void disconnect_whenSendGoodbyeFails_notifiesListeners() throws IOException {
+        when(communicationService.isConnected()).thenReturn(true);
+        doThrow(new IOException("a mocked exception!")).when(communicationService).send(any(ExitCommunicationMessage.class));
+
+        waterRower.disconnect();
+
+        verify(communicationService, times(1)).send(any(ExitCommunicationMessage.class));
+        verify(waterRowerListener, times(1)).onError();
     }
 
     /**
@@ -145,25 +188,43 @@ public class TestWaterRower {
 
         waterRower.disconnect();
 
+        verify(communicationService, times(1)).send(any(ExitCommunicationMessage.class));
         verify(communicationService, times(1)).close();
         verify(waterRowerListener, times(1)).onError();
     }
 
 
-    /**
-     * Checks if IWaterRowerListener is notified, when IRxtxConnectionListener is called.
-     */
     @Test
-    public void notificationOfListeners_whenOnConnectedIsCalled() {
+    public void rxtxListenerOnConnected_sendsStartCommunicationMessage() throws Exception {
+        when(communicationService.isConnected()).thenReturn(true);
         rxtxConnectionListener.onConnected();
-        verify(waterRowerListener, times(1)).onConnected();
+        verify(communicationService, times(1)).send(any(StartCommunicationMessage.class));
+    }
+
+    @Test
+    public void rxtxListenerOnConnected_whenSendStartCommunicationMessageFails_notifiesListenerAboutError() throws Exception {
+        when(communicationService.isConnected()).thenReturn(true);
+        doThrow(new IOException("a mocked exception!")).when(communicationService).send(any(StartCommunicationMessage.class));
+
+        rxtxConnectionListener.onConnected();
+
+        verify(waterRowerListener, times(1)).onError();
+    }
+
+    @Test
+    public void rxtxListenerOnConnected_whenNotConnected_throwsException() throws Exception {
+        when(communicationService.isConnected()).thenReturn(false);
+
+        rxtxConnectionListener.onConnected();
+
+        verify(waterRowerListener, times(1)).onError();
     }
 
     /**
      * Checks if IWaterRowerListener is notified, when IRxtxConnectionListener is called.
      */
     @Test
-    public void notificationOfListeners_whenOnErrorIsCalled() {
+    public void rxtxListenerOnError_notificationOfListeners_whenOnErrorIsCalled() {
         rxtxConnectionListener.onError();
         verify(waterRowerListener, times(1)).onError();
     }
@@ -172,7 +233,7 @@ public class TestWaterRower {
      * Checks if IWaterRowerListener is notified, when IRxtxConnectionListener is called.
      */
     @Test
-    public void notificationOfListeners_whenOnDisconnectedIsCalled() {
+    public void rxtxListenerOnDisconnected_notificationOfListeners_whenOnDisconnectedIsCalled() {
         rxtxConnectionListener.onDisconnected();
         verify(waterRowerListener, times(1)).onDisconnected();
     }

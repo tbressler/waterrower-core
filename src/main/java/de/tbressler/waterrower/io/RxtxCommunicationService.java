@@ -169,6 +169,20 @@ public class RxtxCommunicationService {
 
 
     /**
+     * Sends the given message.
+     *
+     * @param msg The message to be send, must not be null.
+     */
+    public void send(AbstractMessage msg) throws IOException {
+        requireNonNull(msg);
+
+        checkIfChannelIsOpen();
+
+        // TODO Send message!
+    }
+
+
+    /**
      * Closes the current connection.
      *
      * @throws IOException if closing fails.
