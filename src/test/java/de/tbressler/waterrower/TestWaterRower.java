@@ -2,10 +2,10 @@ package de.tbressler.waterrower;
 
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
-import de.tbressler.waterrower.msg.AbstractMessage;
-import de.tbressler.waterrower.msg.out.ExitCommunicationMessage;
-import de.tbressler.waterrower.msg.out.ResetMessage;
-import de.tbressler.waterrower.msg.out.StartCommunicationMessage;
+import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
+import de.tbressler.waterrower.io.msg.out.ResetMessage;
+import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 import org.junit.Before;
 import org.junit.Test;

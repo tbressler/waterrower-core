@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
-import de.tbressler.waterrower.msg.AbstractMessage;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

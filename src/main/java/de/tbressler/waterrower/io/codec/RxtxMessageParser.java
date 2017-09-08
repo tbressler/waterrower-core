@@ -1,9 +1,9 @@
 package de.tbressler.waterrower.io.codec;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.IMessageInterpreter;
+import de.tbressler.waterrower.io.msg.interpreter.*;
 import de.tbressler.waterrower.log.Log;
-import de.tbressler.waterrower.msg.AbstractMessage;
-import de.tbressler.waterrower.msg.IMessageInterpreter;
-import de.tbressler.waterrower.msg.interpreter.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io.codec;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
-import de.tbressler.waterrower.msg.AbstractMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;

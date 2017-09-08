@@ -4,7 +4,7 @@ import com.github.oxo42.stateless4j.StateMachine;
 import com.github.oxo42.stateless4j.StateMachineConfig;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
-import de.tbressler.waterrower.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 
 import static de.tbressler.waterrower.logic.ConnectionState.*;
 import static de.tbressler.waterrower.logic.ConnectionTrigger.*;

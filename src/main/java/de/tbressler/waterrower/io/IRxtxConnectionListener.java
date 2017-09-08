@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.io;
 
-import de.tbressler.waterrower.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 
 /**
  * Listener for RXTX connections.

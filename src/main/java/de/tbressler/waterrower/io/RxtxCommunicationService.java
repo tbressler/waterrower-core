@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
-import de.tbressler.waterrower.msg.AbstractMessage;
 import gnu.io.CommPortIdentifier;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;

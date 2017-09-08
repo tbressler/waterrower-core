@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.io.codec;
 
-import de.tbressler.waterrower.msg.out.StartCommunicationMessage;
+import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
