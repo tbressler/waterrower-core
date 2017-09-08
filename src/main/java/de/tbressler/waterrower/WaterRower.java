@@ -6,6 +6,7 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.msg.AbstractMessage;
 import de.tbressler.waterrower.msg.out.ExitCommunicationMessage;
+import de.tbressler.waterrower.msg.out.ResetMessage;
 import de.tbressler.waterrower.msg.out.StartCommunicationMessage;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 
@@ -38,6 +39,7 @@ public class WaterRower {
     /* The lock to synchronize connect and disconnect. */
     private ReentrantLock lock = new ReentrantLock(true);
 
+
     /* The listener for the RXTX connection. */
     private IRxtxConnectionListener connectionListener = new IRxtxConnectionListener() {
 
@@ -47,12 +49,17 @@ public class WaterRower {
 
                 Log.debug(LIBRARY, "RXTX connected. Sending 'start communication' message.");
 
-                sendAsync(new StartCommunicationMessage());
+                sendMessageAsync(new StartCommunicationMessage());
 
             } catch (IOException e) {
                 Log.error("Couldn't send 'start communication' message!", e);
                 fireOnError();
             }
+        }
+
+        @Override
+        public void onMessageReceived(AbstractMessage msg) {
+            throw new IllegalStateException("Not yet implemented!");
         }
 
         @Override
@@ -85,7 +92,8 @@ public class WaterRower {
     /**
      * Connect to the rowing computer.
      *
-     * @param address
+     * @param address The serial port, must not be null.
+     *
      * @throws IOException
      */
     public void connect(RxtxDeviceAddress address) throws IOException {
@@ -150,7 +158,7 @@ public class WaterRower {
                     Log.debug(LIBRARY, "Sending 'exit communication' message.");
 
                     // Send "goodbye" message.
-                    sendInternally(new ExitCommunicationMessage());
+                    sendMessageInternally(new ExitCommunicationMessage());
 
                     Log.debug(LIBRARY, "Closing RXTX channel.");
 
@@ -171,7 +179,7 @@ public class WaterRower {
     }
 
     /* Sends given message asynchronous. */
-    void sendAsync(AbstractMessage msg) throws IOException {
+    void sendMessageAsync(AbstractMessage msg) throws IOException {
         requireNonNull(msg);
 
         lock.lock();
@@ -185,7 +193,7 @@ public class WaterRower {
                 @Override
                 public void run() {
                     try {
-                        sendInternally(msg);
+                        sendMessageInternally(msg);
                     } catch (IOException e) {
                         Log.error("Message couldn't be send!", e);
                         fireOnError();
@@ -199,7 +207,7 @@ public class WaterRower {
     }
 
     /* Sends the message. */
-    private void sendInternally(AbstractMessage msg) throws IOException {
+    private void sendMessageInternally(AbstractMessage msg) throws IOException {
 
         Log.debug(LIBRARY, "Sending message '" + msg.toString() + "'.");
 
@@ -225,7 +233,7 @@ public class WaterRower {
      * @throws IOException
      */
     public void performReset() throws IOException {
-        throw new IllegalStateException("Not implemented yet!");
+        sendMessageAsync(new ResetMessage());
     }
 
 

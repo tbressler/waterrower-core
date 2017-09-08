@@ -4,6 +4,7 @@ import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.msg.AbstractMessage;
 import de.tbressler.waterrower.msg.out.ExitCommunicationMessage;
+import de.tbressler.waterrower.msg.out.ResetMessage;
 import de.tbressler.waterrower.msg.out.StartCommunicationMessage;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 import org.junit.Before;
@@ -120,14 +121,14 @@ public class TestWaterRower {
 
     @Test(expected = NullPointerException.class)
     public void sendAsync_withNullMessage_throwsException() throws Exception {
-        waterRower.sendAsync(null);
+        waterRower.sendMessageAsync(null);
     }
 
 
     @Test(expected = IOException.class)
     public void sendAsync_whenNotConnected_throwsException() throws Exception {
         when(communicationService.isConnected()).thenReturn(false);
-        waterRower.sendAsync(message);
+        waterRower.sendMessageAsync(message);
     }
 
 
@@ -135,7 +136,7 @@ public class TestWaterRower {
     public void sendAsync_withValidMessage_sendsMessage() throws Exception {
         when(communicationService.isConnected()).thenReturn(true);
 
-        waterRower.sendAsync(message);
+        waterRower.sendMessageAsync(message);
 
         verify(communicationService, times(1)).send(message);
     }
@@ -191,6 +192,22 @@ public class TestWaterRower {
         verify(communicationService, times(1)).send(any(ExitCommunicationMessage.class));
         verify(communicationService, times(1)).close();
         verify(waterRowerListener, times(1)).onError();
+    }
+
+
+    @Test(expected = IOException.class)
+    public void performReset_whenNotConnected_throwsException() throws Exception {
+        when(communicationService.isConnected()).thenReturn(false);
+        waterRower.performReset();
+    }
+
+    @Test
+    public void performReset_whenConnected_sendsResetMessage() throws Exception {
+        when(communicationService.isConnected()).thenReturn(true);
+
+        waterRower.performReset();
+
+        verify(communicationService, times(1)).send(any(ResetMessage.class));
     }
 
 

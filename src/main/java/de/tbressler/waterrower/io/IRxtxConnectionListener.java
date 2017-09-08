@@ -1,5 +1,7 @@
 package de.tbressler.waterrower.io;
 
+import de.tbressler.waterrower.msg.AbstractMessage;
+
 /**
  * Listener for RXTX connections.
  *
@@ -12,6 +14,13 @@ public interface IRxtxConnectionListener {
      * Called if connection was established.
      */
     void onConnected();
+
+    /**
+     * Called if a message was received.
+     *
+     * @param msg The received message.
+     */
+    void onMessageReceived(AbstractMessage msg);
 
     /**
      * Called if connection was closed.
