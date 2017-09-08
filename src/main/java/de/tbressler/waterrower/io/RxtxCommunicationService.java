@@ -52,7 +52,7 @@ public class RxtxCommunicationService {
 
         @Override
         protected void onMessageReceived(AbstractMessage message) {
-            // fireMessageReceived(message);
+            fireOnMessageReceived(message);
         }
 
         @Override
@@ -243,6 +243,12 @@ public class RxtxCommunicationService {
     private void fireOnDisconnected() {
         for (IRxtxConnectionListener listener : connectionListeners)
             listener.onDisconnected();
+    }
+
+    /* Notify all listeners about a received message. */
+    private void fireOnMessageReceived(AbstractMessage msg) {
+        for (IRxtxConnectionListener listener : connectionListeners)
+            listener.onMessageReceived(msg);
     }
 
     /**
