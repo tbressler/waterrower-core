@@ -88,7 +88,6 @@ public class WaterRower {
     }
 
 
-
     /**
      * Connect to the rowing computer.
      *
@@ -126,6 +125,7 @@ public class WaterRower {
             lock.unlock();
         }
     }
+
 
     /**
      * Disconnects from the rowing computer.
