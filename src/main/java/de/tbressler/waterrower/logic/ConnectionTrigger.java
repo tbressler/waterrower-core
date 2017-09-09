@@ -1,6 +1,8 @@
 package de.tbressler.waterrower.logic;
 
 /**
+ * The different connection triggers for the connection state machine.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */
@@ -28,6 +30,9 @@ public enum ConnectionTrigger {
     ON_ERROR,
 
     /* */
-    ON_WATCHDOG
+    ON_WATCHDOG,
+
+    /* */
+    ON_PING
 
 }

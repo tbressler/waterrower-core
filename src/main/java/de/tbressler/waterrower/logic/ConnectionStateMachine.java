@@ -5,6 +5,9 @@ import com.github.oxo42.stateless4j.StateMachineConfig;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
+import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
+import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 
 import static de.tbressler.waterrower.logic.ConnectionState.*;
 import static de.tbressler.waterrower.logic.ConnectionTrigger.*;
@@ -70,48 +73,47 @@ public abstract class ConnectionStateMachine {
         // Configure the states and transitions:
 
         configuration.configure(NOT_CONNECTED)
-                .onEntry(() -> {
-                    // TODO Action when not connected.
-                })
+                .onEntry(this::onDisconnected)
                 .permit(DO_CONNECT, CONNECTING);
 
         configuration.configure(CONNECTING)
-                .onEntry(() -> {
-                    // TODO Action when connecting.
-                })
                 .permit(ON_CONNECTED, CONNECTED_WITH_UNKNOWN_DEVICE)
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
                 .permit(ON_ERROR, NOT_CONNECTED);
 
         configuration.configure(CONNECTED_WITH_UNKNOWN_DEVICE)
                 .onEntry(() -> {
-                    // TODO Action when connected to unknown device.
+                    // Send 'start communication' message.
+                    send(new StartCommunicationMessage());
                 })
                 .permit(WATER_ROWER_CONFIRMED, CONNECTED_WITH_WATER_ROWER)
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
                 .permit(ON_ERROR, DISCONNECTING)
-                .permit(ON_WATCHDOG, DISCONNECTING);
+                .permit(ON_WATCHDOG, DISCONNECTING)
+                .permit(ON_PING, CONNECTED_WITH_UNKNOWN_DEVICE);
 
         configuration.configure(CONNECTED_WITH_WATER_ROWER)
                 .onEntry(() -> {
-                    // TODO Action when connected to Water Rower with unknown firmware.
+                    // Send 'request model information' message.
+                    send(new RequestModelInformationMessage());
                 })
                 .permit(FIRMWARE_CONFIRMED, CONNECTED_WITH_SUPPORTED_WATER_ROWER)
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
                 .permit(ON_ERROR, DISCONNECTING)
-                .permit(ON_WATCHDOG, DISCONNECTING);
+                .permit(ON_WATCHDOG, DISCONNECTING)
+                .permit(ON_PING, CONNECTED_WITH_WATER_ROWER);
 
         configuration.configure(CONNECTED_WITH_SUPPORTED_WATER_ROWER)
-                .onEntry(() -> {
-                    // TODO Action when connected to supported Water Rower.
-                })
+                .onEntry(this::onConnectedWithSupportedWaterRower)
                 .permit(DO_DISCONNECT, DISCONNECTING)
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
-                .permit(ON_ERROR, DISCONNECTING);
+                .permit(ON_ERROR, DISCONNECTING)
+                .permit(ON_PING, CONNECTED_WITH_SUPPORTED_WATER_ROWER);
 
         configuration.configure(DISCONNECTING)
                 .onEntry(() -> {
-                    // TODO Action when disconnecting.
+                    // Send 'exit communication' message.
+                    send(new ExitCommunicationMessage());
                 })
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
                 .permit(ON_ERROR, NOT_CONNECTED);
@@ -131,8 +133,48 @@ public abstract class ConnectionStateMachine {
     }
 
 
+    /**
+     * Returns true if the state machine is in the given state.
+     *
+     * @param state The state, must not be null.
+     * @return True if state machine is in the given state.
+     */
+    public boolean isInState(ConnectionState state) {
+        return stateMachine.isInState(requireNonNull(state));
+    }
+
+
     private void onWatchdog() {
         stateMachine.fire(ON_WATCHDOG);
     }
+
+
+    /**
+     * Is called if successfully connected to a Water Rower device with supported firmware.
+     */
+    abstract void onConnectedWithSupportedWaterRower();
+
+
+    /**
+     * Is called if the connection state machine wants to send messages.
+     *
+     * @param msg The message to be send.
+     */
+    abstract void send(AbstractMessage msg);
+
+
+    /**
+     * Is called if disconnected from device.
+     */
+    abstract void onDisconnected();
+
+
+    /**
+     * Is called if the connection state changed.
+     *
+     * @param newState The new state.
+     */
+    // TODO Not used currently!
+    abstract void onStateChanged(ConnectionState newState);
 
 }

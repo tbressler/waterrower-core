@@ -1,6 +1,8 @@
 package de.tbressler.waterrower.logic;
 
 /**
+ * The different connection states.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */
