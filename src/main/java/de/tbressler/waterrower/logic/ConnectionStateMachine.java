@@ -87,6 +87,7 @@ public abstract class ConnectionStateMachine {
                     send(new StartCommunicationMessage());
                 })
                 .permit(WATER_ROWER_CONFIRMED, CONNECTED_WITH_WATER_ROWER)
+                .permit(DO_DISCONNECT, DISCONNECTING)
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
                 .permit(ON_ERROR, DISCONNECTING)
                 .permit(ON_WATCHDOG, DISCONNECTING)
@@ -98,6 +99,7 @@ public abstract class ConnectionStateMachine {
                     send(new RequestModelInformationMessage());
                 })
                 .permit(FIRMWARE_CONFIRMED, CONNECTED_WITH_SUPPORTED_WATER_ROWER)
+                .permit(DO_DISCONNECT, DISCONNECTING)
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
                 .permit(ON_ERROR, DISCONNECTING)
                 .permit(ON_WATCHDOG, DISCONNECTING)
@@ -168,13 +170,5 @@ public abstract class ConnectionStateMachine {
      */
     abstract void onDisconnected();
 
-
-    /**
-     * Is called if the connection state changed.
-     *
-     * @param newState The new state.
-     */
-    // TODO Not used currently!
-    abstract void onStateChanged(ConnectionState newState);
 
 }
