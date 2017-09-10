@@ -9,8 +9,12 @@ import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
 import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static de.tbressler.waterrower.logic.ConnectionState.*;
 import static de.tbressler.waterrower.logic.ConnectionTrigger.*;
+import static java.time.Duration.ofSeconds;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -27,6 +31,18 @@ public abstract class ConnectionStateMachine {
 
     /* The internal state machine for the connection logic. */
     private StateMachine<ConnectionState, ConnectionTrigger> stateMachine;
+
+    /* A watchdog. */
+    private Timer watchdogTimer = new Timer("connection-state-machine-watchdog");
+
+    /* The watchdog task. */
+    private TimerTask watchDogTimerTask = new TimerTask() {
+        @Override
+        public void run() {
+            stateMachine.fire(ON_WATCHDOG);
+        }
+    };
+
 
     /* Listener for the RXTX communication service. */
     private IRxtxConnectionListener listener = new IRxtxConnectionListener() {
@@ -70,7 +86,7 @@ public abstract class ConnectionStateMachine {
 
         StateMachineConfig<ConnectionState, ConnectionTrigger> configuration = new StateMachineConfig<>();
 
-        // Configure the states and transitions:
+        // Configure the different states and transitions:
 
         configuration.configure(NOT_CONNECTED)
                 .onEntry(this::onDisconnected)
@@ -83,7 +99,7 @@ public abstract class ConnectionStateMachine {
 
         configuration.configure(CONNECTED_WITH_UNKNOWN_DEVICE)
                 .onEntry(() -> {
-                    // Send 'start communication' message.
+                    startWatchdog();
                     send(new StartCommunicationMessage());
                 })
                 .permit(WATER_ROWER_CONFIRMED, CONNECTED_WITH_WATER_ROWER)
@@ -95,7 +111,7 @@ public abstract class ConnectionStateMachine {
 
         configuration.configure(CONNECTED_WITH_WATER_ROWER)
                 .onEntry(() -> {
-                    // Send 'request model information' message.
+                    startWatchdog();
                     send(new RequestModelInformationMessage());
                 })
                 .permit(FIRMWARE_CONFIRMED, CONNECTED_WITH_SUPPORTED_WATER_ROWER)
@@ -106,7 +122,10 @@ public abstract class ConnectionStateMachine {
                 .permit(ON_PING, CONNECTED_WITH_WATER_ROWER);
 
         configuration.configure(CONNECTED_WITH_SUPPORTED_WATER_ROWER)
-                .onEntry(this::onConnectedWithSupportedWaterRower)
+                .onEntry(() -> {
+                    cancelWatchdog();
+                    onConnectedWithSupportedWaterRower();
+                })
                 .permit(DO_DISCONNECT, DISCONNECTING)
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
                 .permit(ON_ERROR, DISCONNECTING)
@@ -114,7 +133,6 @@ public abstract class ConnectionStateMachine {
 
         configuration.configure(DISCONNECTING)
                 .onEntry(() -> {
-                    // Send 'exit communication' message.
                     send(new ExitCommunicationMessage());
                 })
                 .permit(ON_DISCONNECTED, NOT_CONNECTED)
@@ -146,8 +164,16 @@ public abstract class ConnectionStateMachine {
     }
 
 
-    private void onWatchdog() {
-        stateMachine.fire(ON_WATCHDOG);
+    /* Starts the watchdog. */
+    private void startWatchdog() {
+        cancelWatchdog();
+        watchdogTimer.schedule(watchDogTimerTask, ofSeconds(10).toMillis());
+    }
+
+    /* Cancels the watchdog. */
+    private void cancelWatchdog() {
+        watchdogTimer.cancel();
+        watchdogTimer.purge();
     }
 
 
@@ -169,6 +195,5 @@ public abstract class ConnectionStateMachine {
      * Is called if disconnected from device.
      */
     abstract void onDisconnected();
-
 
 }
