@@ -12,6 +12,9 @@ public enum ErrorCode {
     ERROR_DEVICE_NOT_SUPPORTED,
 
     /* IO or connection error. */
-    ERROR_COMMUNICATION_FAILED
+    ERROR_COMMUNICATION_FAILED,
+
+    /* Communication timed out (no ping received). */
+    ERROR_TIMEOUT
 
 }

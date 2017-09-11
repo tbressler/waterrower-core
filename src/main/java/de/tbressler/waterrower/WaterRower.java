@@ -3,6 +3,7 @@ package de.tbressler.waterrower;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.in.AcknowledgeMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
 import de.tbressler.waterrower.io.msg.in.PingMessage;
@@ -20,15 +21,15 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static de.tbressler.waterrower.log.Log.LIBRARY;
-import static de.tbressler.waterrower.model.ErrorCode.ERROR_COMMUNICATION_FAILED;
-import static de.tbressler.waterrower.model.ErrorCode.ERROR_DEVICE_NOT_SUPPORTED;
+import static de.tbressler.waterrower.model.ErrorCode.*;
 import static de.tbressler.waterrower.utils.WaterRowerCompatibility.isSupportedWaterRower;
+import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.ofSeconds;
 import static java.util.Objects.requireNonNull;
 
@@ -42,7 +43,7 @@ import static java.util.Objects.requireNonNull;
 public class WaterRower {
 
     private static Duration MAXIMUM_DEVICE_VERIFICATION_DURATION = ofSeconds(5);
-
+    private static Duration MAXIMUM_PING_DURATION = ofSeconds(5);
 
     /* The RXTX communication service. */
     private final RxtxCommunicationService communicationService;
@@ -75,9 +76,15 @@ public class WaterRower {
     // TODO Watchdog for ping messages.
 
     /* Last time a ping was received. */
-    private long lastReceivedPing = 0;
+    private AtomicLong lastReceivedPing = new AtomicLong(0);
     /* Watchdog that checks if a ping is received periodically. */
-    private Timer pingWatchdog = new Timer("ping-watchdog");
+    private Watchdog pingWatchdog = new Watchdog(MAXIMUM_PING_DURATION, true, "ping-watchdog") {
+        @Override
+        protected void wakeUpAndCheck() {
+            if (currentTimeMillis() - lastReceivedPing.get() > MAXIMUM_PING_DURATION.toMillis())
+                fireOnError(ERROR_TIMEOUT);
+        }
+    };
 
 
     /* The listener for the RXTX connection. */
@@ -113,6 +120,7 @@ public class WaterRower {
         @Override
         public void onDisconnected() {
             deviceConfirmed.set(false);
+            pingWatchdog.stop();
             fireOnDisconnected();
         }
 
@@ -207,8 +215,12 @@ public class WaterRower {
 
                 Log.debug(LIBRARY, "Monitor type and firmware are supported by this library. Successfully connected with Water Rower.");
 
+                // Set device model confirmed and stop watchdog:
                 deviceConfirmed.set(true);
                 deviceVerificationWatchdog.stop();
+
+                // Start ping watchdog.
+                pingWatchdog.start();
 
                 fireOnConnected(modelInformation);
 
@@ -219,11 +231,12 @@ public class WaterRower {
                 fireOnError(ERROR_DEVICE_NOT_SUPPORTED);
             }
 
-        } else if (msg instanceof PingMessage) {
+        } else if ((msg instanceof PingMessage)
+                || (msg instanceof AcknowledgeMessage)) {
 
-            Log.debug(LIBRARY, "Ping received.");
+            Log.debug(LIBRARY, "'Ping' or 'Acknowledge' message received.");
 
-            // TODO Take care of ping message. Use watchdog.
+            lastReceivedPing.set(currentTimeMillis());
         }
     }
 
@@ -242,6 +255,11 @@ public class WaterRower {
             if (!isConnected())
                 throw new IOException("Service is not connected! Can not disconnect.");
 
+            // Stop watchdogs:
+            deviceVerificationWatchdog.stop();
+            pingWatchdog.stop();
+
+            // Send goodbye and disconnect.
             sendGoodbyeAndDisconnectAsync();
 
         } finally {
