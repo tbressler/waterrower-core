@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.model;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -46,6 +47,15 @@ public class ModelInformation {
      */
     public String getFirmwareVersion() {
         return firmwareVersion;
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("monitorType", monitorType)
+                .add("firmwareVersion", firmwareVersion)
+                .toString();
     }
 
 }

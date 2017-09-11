@@ -18,7 +18,7 @@ public class Log {
     public static final Marker SERIAL = getMarker("Serial");
     /** Marker for messages that are send and received via serial communication. */
     public static final Marker MESSAGES = getMarker("Messages");
-    /* */
+    /* Marker for library logs. */
     public static final Marker LIBRARY = getMarker("Library");
 
     /* The logger. */

@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io.msg.in;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.model.MonitorType;
+import de.tbressler.waterrower.model.ModelInformation;
 
 import static java.util.Objects.requireNonNull;
 
@@ -20,42 +20,27 @@ import static java.util.Objects.requireNonNull;
  */
 public class ModelInformationMessage extends AbstractMessage {
 
-    /* The type of monitor (e.g. S4 or S5). */
-    private final MonitorType monitorType;
-
-    /* The firmware version of the monitor */
-    private final String firmwareVersion;
+    /* The model tzpe and firmware. */
+    private final ModelInformation modelInformation;
 
 
     /**
      * Current model information.
      *
-     * @param monitorType The type of monitor (e.g. S4 or S5), must not be null.
-     * @param firmwareVersion The firmware version of the monitor, must not be null.
+     * @param modelInformation The model tzpe and firmware, must not be null.
      */
-    public ModelInformationMessage(MonitorType monitorType, String firmwareVersion) {
-        this.monitorType = requireNonNull(monitorType);
-        this.firmwareVersion = requireNonNull(firmwareVersion);
+    public ModelInformationMessage(ModelInformation modelInformation) {
+        this.modelInformation = requireNonNull(modelInformation);
     }
 
 
     /**
-     * Returns the type of monitor (e.g. S4 or S5).
+     * Returns the model type and firmware.
      *
-     * @return The type of monitor, never null.
+     * @return The model type and firmware, never null.
      */
-    public MonitorType getMonitorType() {
-        return monitorType;
-    }
-
-
-    /**
-     * The firmware version of the monitor.
-     *
-     * @return The firmware version of the monitor, never null.
-     */
-    public String getFirmwareVersion() {
-        return firmwareVersion;
+    public ModelInformation getModelInformation() {
+        return modelInformation;
     }
 
 }

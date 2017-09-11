@@ -1,5 +1,8 @@
 package de.tbressler.waterrower;
 
+import de.tbressler.waterrower.model.ErrorCode;
+import de.tbressler.waterrower.model.ModelInformation;
+
 /**
  * Interface for Water Rower listeners.
  *
@@ -9,9 +12,11 @@ package de.tbressler.waterrower;
 public interface IWaterRowerListener {
 
     /**
-     * Will be called, if the Water Rower monitor was connected.
+     * Will be called, if a supported Water Rower monitor was connected.
+     *
+     * @param modelInformation Model information (e.g. monitor type and firmware version).
      */
-    void onConnected();
+    void onConnected(ModelInformation modelInformation);
 
     /**
      * Will be called, if the Water Rower monitor was disconnected.
@@ -20,7 +25,9 @@ public interface IWaterRowerListener {
 
     /**
      * Will be called, if an error occurred while communicating with Water Rower monitor.
+     *
+     * @param errorCode The error code.
      */
-    void onError();
+    void onError(ErrorCode errorCode);
 
 }

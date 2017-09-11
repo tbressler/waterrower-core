@@ -2,6 +2,7 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
+import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.MonitorType;
 
 import static de.tbressler.waterrower.model.MonitorType.*;
@@ -43,7 +44,7 @@ public class ModelInformationMessageInterpreter extends AbstractMessageInterpret
         MonitorType monitorType = parseMonitorType(payload);
         String firmwareVersion = payload.substring(3,5) + "." + payload.substring(5,7);
 
-        return new ModelInformationMessage(monitorType, firmwareVersion);
+        return new ModelInformationMessage(new ModelInformation(monitorType, firmwareVersion));
     }
 
     private MonitorType parseMonitorType(String payload) {

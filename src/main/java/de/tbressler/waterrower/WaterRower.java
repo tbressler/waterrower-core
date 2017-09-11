@@ -3,29 +3,46 @@ package de.tbressler.waterrower;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
+import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
+import de.tbressler.waterrower.io.msg.in.PingMessage;
 import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
+import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.ResetMessage;
 import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import de.tbressler.waterrower.log.Log;
+import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
+import de.tbressler.waterrower.utils.Watchdog;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static de.tbressler.waterrower.log.Log.LIBRARY;
+import static de.tbressler.waterrower.model.ErrorCode.ERROR_COMMUNICATION_FAILED;
+import static de.tbressler.waterrower.model.ErrorCode.ERROR_DEVICE_NOT_SUPPORTED;
+import static de.tbressler.waterrower.utils.WaterRowerCompatibility.isSupportedWaterRower;
+import static java.time.Duration.ofSeconds;
 import static java.util.Objects.requireNonNull;
 
 /**
- *
+ * The entry point of the Water Rower library.
+ * This class connects with the Water Rower and exchanges the information between PC and Water Rower monitor.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
 public class WaterRower {
+
+    private static Duration MAXIMUM_DEVICE_VERIFICATION_DURATION = ofSeconds(5);
+
 
     /* The RXTX communication service. */
     private final RxtxCommunicationService communicationService;
@@ -39,6 +56,29 @@ public class WaterRower {
     /* The lock to synchronize connect and disconnect. */
     private ReentrantLock lock = new ReentrantLock(true);
 
+    /* Model information of connected Water Rower, maybe null if not connected. */
+    private ModelInformation modelInformation;
+
+
+    /* True if connected device is supported Water Rower. */
+    private AtomicBoolean deviceConfirmed = new AtomicBoolean(false);
+    /* Watchdog that checks if the device sends it's model information in order to verify compatibility with the library. */
+    private Watchdog deviceVerificationWatchdog = new Watchdog(MAXIMUM_DEVICE_VERIFICATION_DURATION, "device-verification-watchdog") {
+        @Override
+        protected void wakeUpAndCheck() {
+            if (deviceConfirmed.get() == false)
+                fireOnError(ERROR_DEVICE_NOT_SUPPORTED);
+        }
+    };
+
+
+    // TODO Watchdog for ping messages.
+
+    /* Last time a ping was received. */
+    private long lastReceivedPing = 0;
+    /* Watchdog that checks if a ping is received periodically. */
+    private Timer pingWatchdog = new Timer("ping-watchdog");
+
 
     /* The listener for the RXTX connection. */
     private IRxtxConnectionListener connectionListener = new IRxtxConnectionListener() {
@@ -49,33 +89,44 @@ public class WaterRower {
 
                 Log.debug(LIBRARY, "RXTX connected. Sending 'start communication' message.");
 
+                deviceConfirmed.set(false);
+                deviceVerificationWatchdog.start();
+
                 sendMessageAsync(new StartCommunicationMessage());
 
             } catch (IOException e) {
                 Log.error("Couldn't send 'start communication' message!", e);
-                fireOnError();
+                fireOnError(ERROR_COMMUNICATION_FAILED);
             }
         }
 
         @Override
         public void onMessageReceived(AbstractMessage msg) {
-            throw new IllegalStateException("Not yet implemented!");
+            try {
+                handleBackgroundMessages(msg);
+            } catch (IOException e) {
+                Log.error("A communication error occurred!", e);
+                fireOnError(ERROR_COMMUNICATION_FAILED);
+            }
         }
 
         @Override
         public void onDisconnected() {
+            deviceConfirmed.set(false);
             fireOnDisconnected();
         }
 
         @Override
         public void onError() {
-            fireOnError();
+            fireOnError(ERROR_COMMUNICATION_FAILED);
         }
 
     };
 
 
     /**
+     * The entry point of the Water Rower library.
+     * This class connects with the Water Rower and exchanges the information between PC and Water Rower monitor.
      *
      * @param communicationService The RXTX communication service, must not be null.
      * @param executorService The executor service for asynchronous tasks, must not be null.
@@ -93,7 +144,7 @@ public class WaterRower {
      *
      * @param address The serial port, must not be null.
      *
-     * @throws IOException
+     * @throws IOException If connect fails.
      */
     public void connect(RxtxDeviceAddress address) throws IOException {
         requireNonNull(address);
@@ -116,7 +167,7 @@ public class WaterRower {
 
                     } catch (IOException e) {
                         Log.warn(LIBRARY, "Couldn't connect to serial port! " + e.getMessage());
-                        fireOnError();
+                        fireOnError(ERROR_COMMUNICATION_FAILED);
                     }
                 }
             });
@@ -127,10 +178,60 @@ public class WaterRower {
     }
 
 
+    /* Handles background messages, like model information or ping messages. */
+    private void handleBackgroundMessages(AbstractMessage msg) throws IOException {
+
+        if (msg instanceof HardwareTypeMessage) {
+
+            if (((HardwareTypeMessage) msg).isWaterRower()) {
+
+                Log.debug(LIBRARY, "Connected with Water Rower. Sending request for model information.");
+
+                sendMessageAsync(new RequestModelInformationMessage());
+
+            } else {
+
+                Log.warn(LIBRARY, "The connected device is not a Water Rower!");
+
+                fireOnError(ERROR_DEVICE_NOT_SUPPORTED);
+            }
+
+        } else if (msg instanceof ModelInformationMessage) {
+
+            modelInformation = ((ModelInformationMessage) msg).getModelInformation();
+
+            Log.debug(LIBRARY, "Received model information from connected Water Rower:\n" +
+                    " Model: " + modelInformation);
+
+            if (isSupportedWaterRower(modelInformation)) {
+
+                Log.debug(LIBRARY, "Monitor type and firmware are supported by this library. Successfully connected with Water Rower.");
+
+                deviceConfirmed.set(true);
+                deviceVerificationWatchdog.stop();
+
+                fireOnConnected(modelInformation);
+
+            } else {
+
+                Log.warn(LIBRARY, "The monitor type and/or firmware of the connected Water Rower are not supported by this library!");
+
+                fireOnError(ERROR_DEVICE_NOT_SUPPORTED);
+            }
+
+        } else if (msg instanceof PingMessage) {
+
+            Log.debug(LIBRARY, "Ping received.");
+
+            // TODO Take care of ping message. Use watchdog.
+        }
+    }
+
+
     /**
      * Disconnects from the rowing computer.
      *
-     * @throws IOException
+     * @throws IOException If disconnect fails.
      */
     public void disconnect() throws IOException {
 
@@ -167,7 +268,7 @@ public class WaterRower {
 
                 } catch (IOException e) {
                     Log.warn(LIBRARY, "Couldn't disconnect from serial port! " + e.getMessage());
-                    fireOnError();
+                    fireOnError(ERROR_COMMUNICATION_FAILED);
                 }
             }
         });
@@ -196,7 +297,7 @@ public class WaterRower {
                         sendMessageInternally(msg);
                     } catch (IOException e) {
                         Log.error("Message couldn't be send!", e);
-                        fireOnError();
+                        fireOnError(ERROR_COMMUNICATION_FAILED);
                     }
                 }
             });
@@ -218,10 +319,10 @@ public class WaterRower {
     /**
      * Returns the model information from the rowing computer.
      *
-     * @return
+     * @return Monitor type and firmware version, maybe null if not connected or not yet retrieved.
      */
     public ModelInformation getModelInformation() {
-        throw new IllegalStateException("Not implemented yet!");
+        return modelInformation;
     }
 
 
@@ -246,23 +347,24 @@ public class WaterRower {
         listeners.add(requireNonNull(listener));
     }
 
+
     /* Notifies listeners when error occurred. */
-    private void fireOnError() {
+    private void fireOnError(ErrorCode errorCode) {
         for(IWaterRowerListener listener : listeners)
-            listener.onError();
+            listener.onError(errorCode);
     }
 
     /* Notifies listeners when connected. */
-    private void fireOnConnected() {
+    private void fireOnConnected(ModelInformation modelInformation) {
         for(IWaterRowerListener listener : listeners)
-            listener.onConnected();
+            listener.onConnected(modelInformation);
     }
 
     /* Notifies listeners when disconnected. */
     private void fireOnDisconnected() {
-        for(IWaterRowerListener listener : listeners)
-            listener.onDisconnected();
+        listeners.forEach(IWaterRowerListener::onDisconnected);
     }
+
 
     /**
      * Removes the listener.

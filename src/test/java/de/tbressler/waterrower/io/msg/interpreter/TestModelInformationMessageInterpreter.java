@@ -1,6 +1,7 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
+import de.tbressler.waterrower.model.ModelInformation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,8 +55,9 @@ public class TestModelInformationMessageInterpreter {
         ModelInformationMessage msg = hardwareTypeMessageInterpreter.decode(bytes);
 
         assertNotNull(msg);
-        assertEquals(WATER_ROWER_S4, msg.getMonitorType());
-        assertEquals("02.00", msg.getFirmwareVersion());
+        ModelInformation modelInformation = msg.getModelInformation();
+        assertEquals(WATER_ROWER_S4, modelInformation.getMonitorType());
+        assertEquals("02.00", modelInformation.getFirmwareVersion());
     }
 
     @Test
@@ -65,8 +67,9 @@ public class TestModelInformationMessageInterpreter {
         ModelInformationMessage msg = hardwareTypeMessageInterpreter.decode(bytes);
 
         assertNotNull(msg);
-        assertEquals(WATER_ROWER_S5, msg.getMonitorType());
-        assertEquals("12.34", msg.getFirmwareVersion());
+        ModelInformation modelInformation = msg.getModelInformation();
+        assertEquals(WATER_ROWER_S5, modelInformation.getMonitorType());
+        assertEquals("12.34", modelInformation.getFirmwareVersion());
     }
 
     @Test
@@ -76,8 +79,9 @@ public class TestModelInformationMessageInterpreter {
         ModelInformationMessage msg = hardwareTypeMessageInterpreter.decode(bytes);
 
         assertNotNull(msg);
-        assertEquals(UNKNOWN_MONITOR_TYPE, msg.getMonitorType());
-        assertEquals("12.34", msg.getFirmwareVersion());
+        ModelInformation modelInformation = msg.getModelInformation();
+        assertEquals(UNKNOWN_MONITOR_TYPE, modelInformation.getMonitorType());
+        assertEquals("12.34", modelInformation.getFirmwareVersion());
     }
 
     @Test
