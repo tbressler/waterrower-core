@@ -2,6 +2,8 @@ package de.tbressler.waterrower.io.msg.in;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Unknown packet / error (S4/S5 -> PC).
  *
@@ -13,4 +15,11 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ErrorMessage extends AbstractMessage {}
+public class ErrorMessage extends AbstractMessage {
+
+    @Override
+    public String toString() {
+        return toStringHelper(this).toString();
+    }
+
+}

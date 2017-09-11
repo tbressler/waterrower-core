@@ -3,10 +3,7 @@ package de.tbressler.waterrower;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.io.msg.in.AcknowledgeMessage;
-import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
-import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
-import de.tbressler.waterrower.io.msg.in.PingMessage;
+import de.tbressler.waterrower.io.msg.in.*;
 import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
 import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.ResetMessage;
@@ -110,7 +107,7 @@ public class WaterRower {
         @Override
         public void onMessageReceived(AbstractMessage msg) {
             try {
-                handleBackgroundMessages(msg);
+                handleLowLevelMessages(msg);
             } catch (IOException e) {
                 Log.error("A communication error occurred!", e);
                 fireOnError(ERROR_COMMUNICATION_FAILED);
@@ -187,7 +184,7 @@ public class WaterRower {
 
 
     /* Handles background messages, like model information or ping messages. */
-    private void handleBackgroundMessages(AbstractMessage msg) throws IOException {
+    private void handleLowLevelMessages(AbstractMessage msg) throws IOException {
 
         if (msg instanceof HardwareTypeMessage) {
 
@@ -237,6 +234,12 @@ public class WaterRower {
             Log.debug(LIBRARY, "'Ping' or 'Acknowledge' message received.");
 
             lastReceivedPing.set(currentTimeMillis());
+
+        } else if (msg instanceof ErrorMessage) {
+
+            Log.debug(LIBRARY, "Error message received from Water Rower monitor.");
+
+            fireOnError(ERROR_MESSAGE_RECEIVED);
         }
     }
 
@@ -352,6 +355,9 @@ public class WaterRower {
      * @throws IOException
      */
     public void performReset() throws IOException {
+
+        Log.debug(LIBRARY, "Requesting Water Rower monitor to reset.");
+
         sendMessageAsync(new ResetMessage());
     }
 

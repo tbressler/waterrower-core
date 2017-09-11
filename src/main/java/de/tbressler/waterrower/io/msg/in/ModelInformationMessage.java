@@ -3,6 +3,7 @@ package de.tbressler.waterrower.io.msg.in;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.model.ModelInformation;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -41,6 +42,14 @@ public class ModelInformationMessage extends AbstractMessage {
      */
     public ModelInformation getModelInformation() {
         return modelInformation;
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("modelInformation", modelInformation)
+                .toString();
     }
 
 }

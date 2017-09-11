@@ -2,6 +2,8 @@ package de.tbressler.waterrower.io.msg.in;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Hardware Type (S4/S5 -> PC).
  *
@@ -39,6 +41,14 @@ public class HardwareTypeMessage extends AbstractMessage {
      */
     public boolean isWaterRower() {
         return isWaterRower;
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("isWaterRower", isWaterRower)
+                .toString();
     }
 
 }

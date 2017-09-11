@@ -2,6 +2,8 @@ package de.tbressler.waterrower.io.msg.out;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Request the rowing computer to reset (PC -> S4/S5).
  *
@@ -14,4 +16,11 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ResetMessage extends AbstractMessage {}
+public class ResetMessage extends AbstractMessage {
+
+    @Override
+    public String toString() {
+        return toStringHelper(this).toString();
+    }
+
+}

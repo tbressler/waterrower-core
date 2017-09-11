@@ -2,6 +2,8 @@ package de.tbressler.waterrower.io.msg.in;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Ping (S4/S5 -> PC).
  *
@@ -14,4 +16,10 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
  * @version 1.0
  */
 public class PingMessage extends AbstractMessage {
+
+    @Override
+    public String toString() {
+        return toStringHelper(this).toString();
+    }
+
 }
