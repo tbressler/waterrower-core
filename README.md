@@ -1,5 +1,5 @@
 # Water Rower Core Library
-A Java library for the Water Rower S4/S5 monitor.
+The first Java library for the Water Rower S4/S5 monitor.
 
 ## Usage
 

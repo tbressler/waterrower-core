@@ -39,8 +39,12 @@ import static java.util.Objects.requireNonNull;
  */
 public class WaterRower {
 
+    /* Maximum duration for the Water Rower device to send its device information. */
     private static Duration MAXIMUM_DEVICE_VERIFICATION_DURATION = ofSeconds(5);
+
+    /* Maximum duration between ping messages.*/
     private static Duration MAXIMUM_PING_DURATION = ofSeconds(5);
+
 
     /* The RXTX communication service. */
     private final RxtxCommunicationService communicationService;
@@ -69,8 +73,6 @@ public class WaterRower {
         }
     };
 
-
-    // TODO Watchdog for ping messages.
 
     /* Last time a ping was received. */
     private AtomicLong lastReceivedPing = new AtomicLong(0);
