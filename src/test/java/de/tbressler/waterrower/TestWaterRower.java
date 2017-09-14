@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
+import static de.tbressler.waterrower.model.ErrorCode.ERROR_COMMUNICATION_FAILED;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
@@ -115,7 +116,7 @@ public class TestWaterRower {
         waterRower.connect(address);
 
         verify(communicationService, times(1)).open(address);
-        // TODO FIX verify(waterRowerListener, times(1)).onError(errorCode);
+        verify(waterRowerListener, times(1)).onError(ERROR_COMMUNICATION_FAILED);
     }
 
 
@@ -176,7 +177,7 @@ public class TestWaterRower {
         waterRower.disconnect();
 
         verify(communicationService, times(1)).send(any(ExitCommunicationMessage.class));
-        // TODO FIX verify(waterRowerListener, times(1)).onError(errorCode);
+        verify(waterRowerListener, times(1)).onError(ERROR_COMMUNICATION_FAILED);
     }
 
     /**
@@ -191,7 +192,7 @@ public class TestWaterRower {
 
         verify(communicationService, times(1)).send(any(ExitCommunicationMessage.class));
         verify(communicationService, times(1)).close();
-        // TODO FIX verify(waterRowerListener, times(1)).onError(errorCode);
+        verify(waterRowerListener, times(1)).onError(ERROR_COMMUNICATION_FAILED);
     }
 
 
@@ -225,7 +226,7 @@ public class TestWaterRower {
 
         rxtxConnectionListener.onConnected();
 
-        // TODO FIX verify(waterRowerListener, times(1)).onError(errorCode);
+        verify(waterRowerListener, times(1)).onError(ERROR_COMMUNICATION_FAILED);
     }
 
     @Test
@@ -234,7 +235,7 @@ public class TestWaterRower {
 
         rxtxConnectionListener.onConnected();
 
-        // TODO FIX verify(waterRowerListener, times(1)).onError(errorCode);
+        verify(waterRowerListener, times(1)).onError(ERROR_COMMUNICATION_FAILED);
     }
 
     /**
@@ -243,7 +244,7 @@ public class TestWaterRower {
     @Test
     public void rxtxListenerOnError_notificationOfListeners_whenOnErrorIsCalled() {
         rxtxConnectionListener.onError();
-        // TODO FIX verify(waterRowerListener, times(1)).onError(errorCode);
+        verify(waterRowerListener, times(1)).onError(ERROR_COMMUNICATION_FAILED);
     }
 
     /**

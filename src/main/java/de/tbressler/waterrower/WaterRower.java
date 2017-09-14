@@ -118,6 +118,7 @@ public class WaterRower {
 
         @Override
         public void onDisconnected() {
+            Log.debug(LIBRARY, "RXTX disconnected.");
             deviceConfirmed.set(false);
             pingWatchdog.stop();
             fireOnDisconnected();
@@ -302,6 +303,19 @@ public class WaterRower {
         return communicationService.isConnected();
     }
 
+
+    /**
+     * Returns true if connected to a supported Water Rower monitor.
+     *
+     * @return True if connected to Water Rower monitor.
+     */
+    public boolean isConnectedWithSupportedMonitor() {
+        if (isConnected())
+            return deviceConfirmed.get();
+        return false;
+    }
+
+
     /* Sends given message asynchronous. */
     void sendMessageAsync(AbstractMessage msg) throws IOException {
         requireNonNull(msg);
@@ -354,7 +368,7 @@ public class WaterRower {
      * power button. Used prior to configuring the rowing computer from a PC. Interactive mode will be disabled on a
      * reset.
      *
-     * @throws IOException
+     * @throws IOException If message couldn't be send.
      */
     public void performReset() throws IOException {
 

@@ -3,11 +3,13 @@ The first Java library for the Water Rower S4/S5 monitor.
 
 ## Usage
 
-The usage of the library is very simple. Start with the following example:
+The usage of the library is very simple. Just start with the following example:
 
 ```Java
 
-// Place code example here!
+WaterRower waterRower = new WaterRower();
+waterRower.connect(...);
+...
 
 ```
 
@@ -16,4 +18,4 @@ The usage of the library is very simple. Start with the following example:
 The following devices were tested:
 
 - S4: 2.xx
-- xxx
+- S5: ????

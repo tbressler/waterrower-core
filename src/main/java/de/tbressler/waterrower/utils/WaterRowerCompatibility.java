@@ -3,6 +3,8 @@ package de.tbressler.waterrower.utils;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.MonitorType;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Helper class to check compatibility of model/monitor type and firmware version with this library.
  *
@@ -11,6 +13,9 @@ import de.tbressler.waterrower.model.MonitorType;
  */
 public class WaterRowerCompatibility {
 
+    /* Private constructor. */
+    private WaterRowerCompatibility() {}
+
     /**
      * Returns true if monitor type and firmware are supported by this library.
      *
@@ -18,6 +23,8 @@ public class WaterRowerCompatibility {
      * @return True if monitor type and firmware are supported by this library.
      */
     public static boolean isSupportedWaterRower(ModelInformation modelInformation) {
+        requireNonNull(modelInformation);
+
         if (!isModelTypeSupported(modelInformation.getMonitorType()))
             return false;
         if (!isFirmwareVersionSupported(modelInformation.getFirmwareVersion()))

@@ -229,20 +229,17 @@ public class RxtxCommunicationService {
 
     /* Notify all listeners about a successful connection. */
     private void fireOnConnected() {
-        for (IRxtxConnectionListener listener : connectionListeners)
-            listener.onConnected();
+        connectionListeners.forEach(IRxtxConnectionListener::onConnected);
     }
 
     /* Notify all listeners about an error. */
     private void fireOnError() {
-        for (IRxtxConnectionListener listener : connectionListeners)
-            listener.onError();
+        connectionListeners.forEach(IRxtxConnectionListener::onError);
     }
 
     /* Notify all listeners about a disconnect. */
     private void fireOnDisconnected() {
-        for (IRxtxConnectionListener listener : connectionListeners)
-            listener.onDisconnected();
+        connectionListeners.forEach(IRxtxConnectionListener::onDisconnected);
     }
 
     /* Notify all listeners about a received message. */

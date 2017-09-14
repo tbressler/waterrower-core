@@ -61,7 +61,7 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
     /* Checks if the RXTX serial handler is not null. */
     private void checkIfRxTxSerialHandlerIsSet() throws IOException {
         if (serialHandler == null) {
-            IOException exception = new IOException("You forgot to set the serial handler, before initializing the channel.");
+            IOException exception = new IOException("You forgot to set the serial handler before initializing the channel.");
             Log.error("RXTX channel couldn't be initialized!", exception);
             throw exception;
         }
@@ -81,7 +81,7 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
 
     /* Logs the serial configuration. */
     private void logSerialConfiguration(RxtxChannelConfig config) {
-        Log.debug(SERIAL, "RXTX channel configured: " +
+        Log.debug(SERIAL, "RXTX channel configured to: " +
                 "\n Baudrate: " + config.getBaudrate() +
                 "\n Databits: " + config.getDatabits().name() +
                 "\n Stopbits: " + config.getStopbits().name() +
