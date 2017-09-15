@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.model;
 
 /**
- * Type of monitor.
+ * The type of monitor.
  *
  * @author Tobias Bressler
  * @version 1.0

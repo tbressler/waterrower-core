@@ -9,13 +9,13 @@ package de.tbressler.waterrower.model;
 public enum ErrorCode {
 
     /* The device is not supported. */
-    ERROR_DEVICE_NOT_SUPPORTED,
+    DEVICE_NOT_SUPPORTED,
 
     /* IO or connection error. */
-    ERROR_COMMUNICATION_FAILED,
+    COMMUNICATION_FAILED,
 
     /* Communication timed out (no ping received). */
-    ERROR_TIMEOUT,
+    TIMEOUT,
 
     /* The Water Rower monitor sent a error message. */
     ERROR_MESSAGE_RECEIVED

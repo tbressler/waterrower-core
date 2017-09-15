@@ -69,7 +69,7 @@ public class WaterRower {
         @Override
         protected void wakeUpAndCheck() {
             if (deviceConfirmed.get() == false)
-                fireOnError(ERROR_DEVICE_NOT_SUPPORTED);
+                fireOnError(DEVICE_NOT_SUPPORTED);
         }
     };
 
@@ -81,7 +81,7 @@ public class WaterRower {
         @Override
         protected void wakeUpAndCheck() {
             if (currentTimeMillis() - lastReceivedPing.get() > MAXIMUM_PING_DURATION.toMillis())
-                fireOnError(ERROR_TIMEOUT);
+                fireOnError(TIMEOUT);
         }
     };
 
@@ -102,7 +102,7 @@ public class WaterRower {
 
             } catch (IOException e) {
                 Log.error("Couldn't send 'start communication' message!", e);
-                fireOnError(ERROR_COMMUNICATION_FAILED);
+                fireOnError(COMMUNICATION_FAILED);
             }
         }
 
@@ -112,7 +112,7 @@ public class WaterRower {
                 handleLowLevelMessages(msg);
             } catch (IOException e) {
                 Log.error("A communication error occurred!", e);
-                fireOnError(ERROR_COMMUNICATION_FAILED);
+                fireOnError(COMMUNICATION_FAILED);
             }
         }
 
@@ -126,7 +126,7 @@ public class WaterRower {
 
         @Override
         public void onError() {
-            fireOnError(ERROR_COMMUNICATION_FAILED);
+            fireOnError(COMMUNICATION_FAILED);
         }
 
     };
@@ -175,7 +175,7 @@ public class WaterRower {
 
                     } catch (IOException e) {
                         Log.warn(LIBRARY, "Couldn't connect to serial port! " + e.getMessage());
-                        fireOnError(ERROR_COMMUNICATION_FAILED);
+                        fireOnError(COMMUNICATION_FAILED);
                     }
                 }
             });
@@ -201,7 +201,7 @@ public class WaterRower {
 
                 Log.warn(LIBRARY, "The connected device is not a Water Rower!");
 
-                fireOnError(ERROR_DEVICE_NOT_SUPPORTED);
+                fireOnError(DEVICE_NOT_SUPPORTED);
             }
 
         } else if (msg instanceof ModelInformationMessage) {
@@ -228,7 +228,7 @@ public class WaterRower {
 
                 Log.warn(LIBRARY, "The monitor type and/or firmware of the connected Water Rower are not supported by this library!");
 
-                fireOnError(ERROR_DEVICE_NOT_SUPPORTED);
+                fireOnError(DEVICE_NOT_SUPPORTED);
             }
 
         } else if ((msg instanceof PingMessage)
@@ -292,7 +292,7 @@ public class WaterRower {
 
                 } catch (IOException e) {
                     Log.warn(LIBRARY, "Couldn't disconnect from serial port! " + e.getMessage());
-                    fireOnError(ERROR_COMMUNICATION_FAILED);
+                    fireOnError(COMMUNICATION_FAILED);
                 }
             }
         });
@@ -334,7 +334,7 @@ public class WaterRower {
                         sendMessageInternally(msg);
                     } catch (IOException e) {
                         Log.error("Message couldn't be send!", e);
-                        fireOnError(ERROR_COMMUNICATION_FAILED);
+                        fireOnError(COMMUNICATION_FAILED);
                     }
                 }
             });
