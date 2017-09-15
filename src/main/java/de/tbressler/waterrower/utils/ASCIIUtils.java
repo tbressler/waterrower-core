@@ -6,15 +6,18 @@ import static java.util.Objects.requireNonNull;
 /**
  * Utils for conversion of ASCII data.
  * The class supports:
- * - ACD
+ * - ACD (ASCII coded decimal)
+ * - ACH (ASCII coded hexadecimal)
  *
  * @author Tobias Bressler
  * @version 1.0
  */
 public class ASCIIUtils {
 
+
     /* Private constructor. */
     private ASCIIUtils() {}
+
 
     /**
      * Returns the ACD (ASCII coded decimal) as int value.

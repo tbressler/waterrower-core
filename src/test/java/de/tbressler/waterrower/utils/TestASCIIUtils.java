@@ -65,6 +65,11 @@ public class TestASCIIUtils {
         intToAcd(123, 2);
     }
 
+    @Test(expected = NumberFormatException.class)
+    public void intToAcd_withSomeValueAnd0Chars_throwsNumberFormatException() {
+        intToAcd(123, 0);
+    }
+
     @Test
     public void intToAcd_with1And3Chars_returnsString001() {
         assertEquals("001", intToAcd(1, 3));
