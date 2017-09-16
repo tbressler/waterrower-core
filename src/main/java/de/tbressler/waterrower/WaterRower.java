@@ -11,7 +11,7 @@ import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
-import de.tbressler.waterrower.model.StrokeType;
+import de.tbressler.waterrower.subscriptions.AbstractSubscription;
 import de.tbressler.waterrower.utils.Watchdog;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 
@@ -250,11 +250,7 @@ public class WaterRower {
 
     /* Handles messages. */
     private void handleMessages(AbstractMessage msg) {
-        if (msg instanceof StrokeMessage) {
-            fireOnStroke(((StrokeMessage) msg).getStrokeType());
-        } else if (msg instanceof PulseCountMessage) {
-            fireOnPulseCount(((PulseCountMessage) msg).getPulsesCounted());
-        }
+        // TODO Send received messages to subscriptions.
     }
 
 
@@ -389,6 +385,11 @@ public class WaterRower {
     }
 
 
+    public void subscribe(AbstractSubscription subscription) {
+        // TODO Register subscriptions.
+    }
+
+
     /**
      * Adds the listener.
      *
@@ -414,18 +415,6 @@ public class WaterRower {
     /* Notifies listeners when disconnected. */
     private void fireOnDisconnected() {
         listeners.forEach(IWaterRowerListener::onDisconnected);
-    }
-
-    /* Notifies listeners about stroke update. */
-    private void fireOnStroke(StrokeType strokeType) {
-        for(IWaterRowerListener listener : listeners)
-            listener.onStroke(strokeType);
-    }
-
-    /* Notifies listeners about pulse count update. */
-    private void fireOnPulseCount(int pulsesCounted) {
-        for(IWaterRowerListener listener : listeners)
-            listener.onPulseCount(pulsesCounted);
     }
 
 

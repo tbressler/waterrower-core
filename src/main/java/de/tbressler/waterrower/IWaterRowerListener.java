@@ -2,7 +2,6 @@ package de.tbressler.waterrower;
 
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
-import de.tbressler.waterrower.model.StrokeType;
 
 /**
  * Interface for Water Rower listeners.
@@ -30,23 +29,5 @@ public interface IWaterRowerListener {
      * @param errorCode The error code.
      */
     void onError(ErrorCode errorCode);
-
-
-    /**
-     * Will be called, when the rowing computer determined acceleration (start of stroke) or
-     * deceleration (end of stroke) occurring in the paddle.
-     *
-     * @param strokeType The type of stroke (e.g. start or end), never null.
-     */
-    void onStroke(StrokeType strokeType);
-
-    /**
-     * Will be called, when pulse count was updated. The value is representing the number of
-     * pulse’s counted during the last 25mS period; this value can range from 1 to 50
-     * typically. (Zero values will not be transmitted).
-     *
-     * @param pulsesCount The number of pulse’s counted during the last 25mS period.
-     */
-    void onPulseCount(int pulsesCount);
 
 }
