@@ -27,7 +27,7 @@ public class TestStrokeMessageInterpreter {
 
 
     /**
-     * Checks if getMessageTypeChar always returns '_'.
+     * Checks if getMessageTypeChar always returns 'S'.
      */
     @Test
     public void getMessageTypeChar_returnsS() {
