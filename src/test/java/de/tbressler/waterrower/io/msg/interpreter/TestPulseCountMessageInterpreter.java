@@ -28,7 +28,7 @@ public class TestPulseCountMessageInterpreter {
      * Checks if getMessageTypeChar always returns 'P'.
      */
     @Test
-    public void getMessageTypeChar_returnsS() {
+    public void getMessageTypeChar_returnsP() {
         assertEquals("P", pulseCountMessageInterpreter.getMessageTypeChar());
     }
 
@@ -83,8 +83,26 @@ public class TestPulseCountMessageInterpreter {
     }
 
     @Test
-    public void decode_withTooShortMessage_returnsNull() {
+    public void decode_withInvalidHexadecimal_returnsNull() {
+        byte[] bytes = new String("PXY").getBytes();
+
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+
+        assertNull(msg);
+    }
+
+    @Test
+    public void decode_withTooShortMessage1_returnsNull() {
         byte[] bytes = new String("P").getBytes();
+
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+
+        assertNull(msg);
+    }
+
+    @Test
+    public void decode_withTooShortMessage2_returnsNull() {
+        byte[] bytes = new String("P0").getBytes();
 
         PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
 
