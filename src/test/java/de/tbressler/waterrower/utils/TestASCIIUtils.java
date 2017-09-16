@@ -2,8 +2,7 @@ package de.tbressler.waterrower.utils;
 
 import org.junit.Test;
 
-import static de.tbressler.waterrower.utils.ASCIIUtils.acdToInt;
-import static de.tbressler.waterrower.utils.ASCIIUtils.intToAcd;
+import static de.tbressler.waterrower.utils.ASCIIUtils.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -14,8 +13,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestASCIIUtils {
 
+    // ACD to int:
+
     @Test(expected = NullPointerException.class)
-    public void acdToInt_withNull_throwsException() {
+    public void acdToInt_withNull_throwsNPE() {
         acdToInt(null);
     }
 
@@ -44,6 +45,7 @@ public class TestASCIIUtils {
         assertEquals(1, acdToInt("001"));
     }
 
+    // Int to ACD:
 
     @Test
     public void intToAcd_with0ValueAnd1Chars_returnsString0() {
@@ -83,6 +85,90 @@ public class TestASCIIUtils {
     @Test
     public void intToAcd_with12And3Chars_returnsString012() {
         assertEquals("012", intToAcd(12, 3));
+    }
+
+    // ACH to int:
+
+    @Test(expected = NullPointerException.class)
+    public void achToInt_withNull_throwsNPE() {
+        achToInt(null);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void achToInt_withInvalidHexValues_throwsNumberFormatException() {
+        achToInt("YZ");
+    }
+
+    @Test
+    public void achToInt_withF_returns15() {
+        assertEquals(15, achToInt("F"));
+    }
+
+    @Test
+    public void achToInt_with0F_returns15() {
+        assertEquals(15, achToInt("0F"));
+    }
+
+    @Test
+    public void achToInt_withFF_returns255() {
+        assertEquals(255, achToInt("FF"));
+    }
+
+    @Test
+    public void achToInt_with00_returns0() {
+        assertEquals(0, achToInt("00"));
+    }
+
+    @Test
+    public void achToInt_with0_returns0() {
+        assertEquals(0, achToInt("0"));
+    }
+
+    @Test
+    public void achToInt_withD00_returns0() {
+        assertEquals(3328, achToInt("D00"));
+    }
+
+    // Int to ACH:
+
+    @Test
+    public void intToAch_with0ValueAnd1Chars_returns0() {
+        assertEquals("0", intToAch(0, 1));
+    }
+
+    @Test
+    public void intToAch_with8ValueAnd1Chars_returns8() {
+        assertEquals("8", intToAch(8, 1));
+    }
+
+    @Test
+    public void intToAch_with15ValueAnd1Chars_returnsF() {
+        assertEquals("F", intToAch(15, 1));
+    }
+
+    @Test
+    public void intToAch_with16ValueAnd2Chars_returns10() {
+        assertEquals("10", intToAch(16, 2));
+    }
+
+    @Test
+    public void intToAch_with3328ValueAnd3Chars_returnsD00() {
+        assertEquals("D00", intToAch(3328, 3));
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void intToAch_with3328ValueAnd2Chars_throwsNumberFormatException() {
+        intToAch(3328, 2);
+    }
+
+    @Test
+    public void intToAch_with15ValueAnd2Chars_returns0F() {
+        assertEquals("0F", intToAch(15, 2));
+    }
+
+    @Test
+    public void intToAch_with16ValueAnd3Chars_returns010() {
+        assertEquals("010", intToAch(16, 3));
     }
 
 }
