@@ -3,8 +3,8 @@ package de.tbressler.waterrower.io.msg.interpreter;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.StrokeMessage;
 
-import static de.tbressler.waterrower.io.msg.in.StrokeMessage.StrokeType.END_OF_STROKE;
-import static de.tbressler.waterrower.io.msg.in.StrokeMessage.StrokeType.START_OF_STROKE;
+import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
+import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
 
 /**
  * Interpreter for:
