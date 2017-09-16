@@ -39,6 +39,7 @@ public class RxtxMessageParser {
         interpreters.add(new HardwareTypeMessageInterpreter());
         interpreters.add(new ModelInformationMessageInterpreter());
         interpreters.add(new PingMessageInterpreter());
+        interpreters.add(new PulseCountMessageInterpreter());
         interpreters.add(new StrokeMessageInterpreter());
 
         // Outgoing communication:
