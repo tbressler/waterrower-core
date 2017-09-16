@@ -1,7 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
-import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.StrokeMessage;
 
 import static de.tbressler.waterrower.io.msg.in.StrokeMessage.StrokeType.END_OF_STROKE;

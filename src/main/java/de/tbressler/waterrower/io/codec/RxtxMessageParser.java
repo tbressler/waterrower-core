@@ -70,7 +70,7 @@ public class RxtxMessageParser {
             return interpreter.decode(bytes);
         }
 
-        Log.warn(SERIAL, "Message couldn't been parsed to an object!" +
+        Log.warn(SERIAL, "Message couldn't be parsed to an object!" +
                 " Unknown message type '"+ msgType +"'.");
 
         return null;
@@ -86,7 +86,7 @@ public class RxtxMessageParser {
      */
     public byte[] encode(AbstractMessage msg) {
 
-        Log.debug(SERIAL, "Parsing message to byte.");
+        Log.debug(SERIAL, "Parsing message '"+msg.toString()+"' to bytes.");
 
         for (IMessageInterpreter interpreter : interpreters) {
             if (msg.getClass().equals(interpreter.getMessageType()))
@@ -94,7 +94,7 @@ public class RxtxMessageParser {
             return  interpreter.encode(msg);
         }
 
-        Log.warn(SERIAL, "Message couldn't been parsed to byte array!" +
+        Log.warn(SERIAL, "Message couldn't be parsed to a byte array!" +
                 " Unknown message type.");
 
         return null;

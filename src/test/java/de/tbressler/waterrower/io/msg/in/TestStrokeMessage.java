@@ -2,8 +2,8 @@ package de.tbressler.waterrower.io.msg.in;
 
 import org.junit.Test;
 
-import static de.tbressler.waterrower.io.msg.in.StrokeMessage.StrokeType.END_OF_STROKE;
-import static de.tbressler.waterrower.io.msg.in.StrokeMessage.StrokeType.START_OF_STROKE;
+import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
+import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

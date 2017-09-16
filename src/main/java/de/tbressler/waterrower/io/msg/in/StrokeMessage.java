@@ -1,6 +1,7 @@
 package de.tbressler.waterrower.io.msg.in;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.model.StrokeType;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
@@ -10,17 +11,17 @@ import static java.util.Objects.requireNonNull;
  *
  * This packet is auto transmitted by the rowing computer.
  *
- * Start of strokeType:
+ * Start of stroke:
  *
- * Start of strokeType pull to show when the rowing computer determined acceleration occurring in the
- * paddle. This packet has the highest priority of transmission on the USB.
+ * Start of stroke pull to show when the rowing computer determined acceleration occurring in
+ * the paddle. This packet has the highest priority of transmission on the USB.
  *
  * [S][S] + 0x0D0A
  *
- * End of strokeType:
+ * End of stroke:
  *
- * End of strokeType pull to show when the rowing computer determined deceleration occurring in the
- * paddle. (Now entered the relax phase). This packet has the second highest priority of
+ * End of stroke pull to show when the rowing computer determined deceleration occurring in
+ * the paddle. (Now entered the relax phase). This packet has the second highest priority of
  * transmission on the USB.
  *
  * [S][E] + 0x0D0A
@@ -30,22 +31,15 @@ import static java.util.Objects.requireNonNull;
  */
 public class StrokeMessage extends AbstractMessage {
 
-    /**
-     * The type of strokeType.
-     */
-    public enum StrokeType {
-        START_OF_STROKE,
-        END_OF_STROKE
-    }
 
-    /* The type of strokeType. */
+    /* The type of stroke. */
     private final StrokeType strokeType;
 
 
     /**
      * Stroke start/end message.
      *
-     * @param stroke The type of strokeType, must not be null.
+     * @param stroke The type of stroke, must not be null.
      */
     public StrokeMessage(StrokeType stroke) {
         this.strokeType = requireNonNull(stroke);

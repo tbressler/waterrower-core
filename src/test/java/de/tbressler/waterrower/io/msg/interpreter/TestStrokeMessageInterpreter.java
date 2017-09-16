@@ -1,14 +1,12 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
-import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.StrokeMessage;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.tbressler.waterrower.io.msg.in.StrokeMessage.StrokeType.END_OF_STROKE;
-import static de.tbressler.waterrower.io.msg.in.StrokeMessage.StrokeType.START_OF_STROKE;
+import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
+import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 
 /**
  * Tests for class StrokeMessageInterpreter.
