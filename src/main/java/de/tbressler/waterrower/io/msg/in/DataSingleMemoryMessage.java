@@ -1,8 +1,10 @@
 package de.tbressler.waterrower.io.msg.in;
 
-import de.tbressler.waterrower.io.msg.out.ReadSingleMemoryMessage;
+import de.tbressler.waterrower.io.msg.Memory;
+import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 
 /**
  * Value from a single memory location (S4/S5 -> PC).
@@ -22,7 +24,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class DataSingleMemoryMessage extends ReadSingleMemoryMessage {
+public class DataSingleMemoryMessage extends ReadMemoryMessage {
 
 
     /* The single byte of data (0 .. 255) from memory location. */
@@ -38,7 +40,7 @@ public class DataSingleMemoryMessage extends ReadSingleMemoryMessage {
      * @param value The single byte of data (0 .. 255) from memory location.
      */
     public DataSingleMemoryMessage(int location, int value) {
-        super(location);
+        super(SINGLE_MEMORY, location);
         if ((value < 0) || (value > 255))
             throw new IllegalArgumentException("The value must be between 0 and 255!");
         this.value = value;

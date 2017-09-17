@@ -1,8 +1,10 @@
 package de.tbressler.waterrower.io.msg.out;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.Memory;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Read a single memory location (PC -> S4/S5).
@@ -17,23 +19,29 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ReadSingleMemoryMessage extends AbstractMessage {
+public class ReadMemoryMessage extends AbstractMessage {
 
 
     /* The memory location (0 .. 4095). */
     protected final int location;
+
+    /* Defines if you want to read single, double or triple memory locations. */
+    protected final Memory memory;
 
 
     /**
      * This message requests the contents of a single location XXX, this will return a single
      * byte in hex format.
      *
+     * @param memory Define if you want to read single, double or triple memory locations, must
+     *               not be null.
      * @param location The memory location (0 .. 4095), please refer to memory map of the Water
-     *                 Rower monitor.
+ *                 Rower monitor.
      */
-    public ReadSingleMemoryMessage(int location) {
+    public ReadMemoryMessage(Memory memory, int location) {
         if ((location < 0) || (location > 4095))
             throw new IllegalArgumentException("The value for the memory location must be between 0 and 4095!");
+        this.memory = requireNonNull(memory);
         this.location = location;
     }
 
@@ -49,10 +57,20 @@ public class ReadSingleMemoryMessage extends AbstractMessage {
     }
 
 
+    /**
+     *
+     * @return
+     */
+    public Memory getMemory() {
+        return memory;
+    }
+
+
     @Override
     public String toString() {
         return toStringHelper(this)
                 .add("location", location)
+                .add("memory", memory)
                 .toString();
     }
 
