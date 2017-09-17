@@ -47,7 +47,7 @@ public class TestWaterRower {
     @Before
     public void setUp() {
         waterRower = new WaterRower(communicationService, directExecutorService);
-        waterRower.addWaterRowerConnectionListener(waterRowerListener);
+        waterRower.addConnectionListener(waterRowerListener);
 
         captureRxtxConnectionListener();
     }
@@ -261,16 +261,16 @@ public class TestWaterRower {
      * Checks if an exception is thrown when listener is null.
      */
     @Test(expected = NullPointerException.class)
-    public void addWaterRowerListener_withNull_throwsException() {
-        waterRower.addWaterRowerConnectionListener(null);
+    public void addConnectionListener_withNull_throwsException() {
+        waterRower.addConnectionListener(null);
     }
 
     /**
      * Checks if an exception is thrown when listener is null.
      */
     @Test(expected = NullPointerException.class)
-    public void removeWaterRowerListener_withNull_throwsException() {
-        waterRower.removeWaterRowerConnectionListener(null);
+    public void removeConnectionListener_withNull_throwsException() {
+        waterRower.removeConnectionListener(null);
     }
 
 }

@@ -399,7 +399,7 @@ public class WaterRower {
      *
      * @param listener The listener, must not be null.
      */
-    public void addWaterRowerConnectionListener(IWaterRowerConnectionListener listener) {
+    public void addConnectionListener(IWaterRowerConnectionListener listener) {
         listeners.add(requireNonNull(listener));
     }
 
@@ -427,7 +427,7 @@ public class WaterRower {
      *
      * @param listener The listener that should be removed, must not be null.
      */
-    public void removeWaterRowerConnectionListener(IWaterRowerConnectionListener listener) {
+    public void removeConnectionListener(IWaterRowerConnectionListener listener) {
         listeners.remove(requireNonNull(listener));
     }
 
