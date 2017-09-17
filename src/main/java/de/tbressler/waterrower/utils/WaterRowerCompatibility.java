@@ -16,6 +16,7 @@ public class WaterRowerCompatibility {
     /* Private constructor. */
     private WaterRowerCompatibility() {}
 
+
     /**
      * Returns true if monitor type and firmware are supported by this library.
      *

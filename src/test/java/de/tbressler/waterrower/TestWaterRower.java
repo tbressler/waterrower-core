@@ -36,7 +36,7 @@ public class TestWaterRower {
     // Mocks:
     private RxtxCommunicationService communicationService = mock(RxtxCommunicationService.class, "communicationService");
     private RxtxDeviceAddress address = mock(RxtxDeviceAddress.class, "address");
-    private IWaterRowerListener waterRowerListener = mock(IWaterRowerListener.class, "waterRowerListener");
+    private IWaterRowerConnectionListener waterRowerListener = mock(IWaterRowerConnectionListener.class, "waterRowerListener");
     private AbstractMessage message = mock(AbstractMessage.class, "message");
 
     // Capture:
@@ -47,7 +47,7 @@ public class TestWaterRower {
     @Before
     public void setUp() {
         waterRower = new WaterRower(communicationService, directExecutorService);
-        waterRower.addWaterRowerListener(waterRowerListener);
+        waterRower.addWaterRowerConnectionListener(waterRowerListener);
 
         captureRxtxConnectionListener();
     }
@@ -262,7 +262,7 @@ public class TestWaterRower {
      */
     @Test(expected = NullPointerException.class)
     public void addWaterRowerListener_withNull_throwsException() {
-        waterRower.addWaterRowerListener(null);
+        waterRower.addWaterRowerConnectionListener(null);
     }
 
     /**
@@ -270,7 +270,7 @@ public class TestWaterRower {
      */
     @Test(expected = NullPointerException.class)
     public void removeWaterRowerListener_withNull_throwsException() {
-        waterRower.removeWaterRowerListener(null);
+        waterRower.removeWaterRowerConnectionListener(null);
     }
 
 }

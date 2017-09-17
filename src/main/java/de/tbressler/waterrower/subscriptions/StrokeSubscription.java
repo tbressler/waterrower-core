@@ -19,13 +19,13 @@ import de.tbressler.waterrower.model.StrokeType;
 public abstract class StrokeSubscription extends AbstractSubscription {
 
     @Override
-    public AbstractMessage request() {
+    protected AbstractMessage request() {
         // No request necessary! Strokes will be send automatically.
         return null;
     }
 
     @Override
-    void handle(AbstractMessage msg) {
+    protected void handle(AbstractMessage msg) {
         if (msg instanceof StrokeMessage) {
             onStroke(((StrokeMessage) msg).getStrokeType());
         }

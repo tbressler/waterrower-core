@@ -20,14 +20,14 @@ public abstract class AbstractSubscription {
      *
      * @return The request message or null, if not message must be send.
      */
-    abstract AbstractMessage request();
+    abstract protected AbstractMessage request();
 
     /**
      * Handles the received message from the Water Rower S4/S5 monitor.
      *
      * @param msg The message from the Water Rower S4/S5 monitor.
      */
-    abstract void handle(AbstractMessage msg);
+    abstract protected void handle(AbstractMessage msg);
 
 
 }

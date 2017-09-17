@@ -12,13 +12,13 @@ import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
 public abstract class PulseCountSubscription extends AbstractSubscription {
 
     @Override
-    public AbstractMessage request() {
-        // No request necessary! Strokes will be send automatically.
+    protected AbstractMessage request() {
+        // No request necessary! Pulse count will be send automatically.
         return null;
     }
 
     @Override
-    void handle(AbstractMessage msg) {
+    protected void handle(AbstractMessage msg) {
         if (msg instanceof PulseCountMessage) {
             onPulseCount(((PulseCountMessage) msg).getPulsesCounted());
         }

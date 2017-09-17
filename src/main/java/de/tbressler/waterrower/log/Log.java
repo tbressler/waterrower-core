@@ -25,6 +25,10 @@ public class Log {
     private static final Logger logger = getLogger();
 
 
+    /* Private constructor. */
+    private Log() {}
+
+
     /** Logs debug messages. */
     public static void debug(Marker marker, String msg) {
         logger.debug(marker, msg);

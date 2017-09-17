@@ -54,7 +54,7 @@ public class WaterRower {
     private final ExecutorService executorService;
 
     /* Listeners. */
-    private List<IWaterRowerListener> listeners = new ArrayList<>();
+    private List<IWaterRowerConnectionListener> listeners = new ArrayList<>();
 
     /* The lock to synchronize connect and disconnect. */
     private ReentrantLock lock = new ReentrantLock(true);
@@ -69,7 +69,7 @@ public class WaterRower {
     private Watchdog deviceVerificationWatchdog = new Watchdog(MAXIMUM_DEVICE_VERIFICATION_DURATION, "device-verification-watchdog") {
         @Override
         protected void wakeUpAndCheck() {
-            if (deviceConfirmed.get() == false)
+            if (!deviceConfirmed.get())
                 fireOnError(DEVICE_NOT_SUPPORTED);
         }
     };
@@ -386,7 +386,11 @@ public class WaterRower {
 
 
     public void subscribe(AbstractSubscription subscription) {
-        // TODO Register subscriptions.
+        // TODO Register subscription.
+    }
+
+    public void unsubscribe(AbstractSubscription subscription) {
+        // TODO Unregister subscription.
     }
 
 
@@ -395,26 +399,26 @@ public class WaterRower {
      *
      * @param listener The listener, must not be null.
      */
-    public void addWaterRowerListener(IWaterRowerListener listener) {
+    public void addWaterRowerConnectionListener(IWaterRowerConnectionListener listener) {
         listeners.add(requireNonNull(listener));
     }
 
 
     /* Notifies listeners when error occurred. */
     private void fireOnError(ErrorCode errorCode) {
-        for(IWaterRowerListener listener : listeners)
+        for(IWaterRowerConnectionListener listener : listeners)
             listener.onError(errorCode);
     }
 
     /* Notifies listeners when connected. */
     private void fireOnConnected(ModelInformation modelInformation) {
-        for(IWaterRowerListener listener : listeners)
+        for(IWaterRowerConnectionListener listener : listeners)
             listener.onConnected(modelInformation);
     }
 
     /* Notifies listeners when disconnected. */
     private void fireOnDisconnected() {
-        listeners.forEach(IWaterRowerListener::onDisconnected);
+        listeners.forEach(IWaterRowerConnectionListener::onDisconnected);
     }
 
 
@@ -423,7 +427,7 @@ public class WaterRower {
      *
      * @param listener The listener that should be removed, must not be null.
      */
-    public void removeWaterRowerListener(IWaterRowerListener listener) {
+    public void removeWaterRowerConnectionListener(IWaterRowerConnectionListener listener) {
         listeners.remove(requireNonNull(listener));
     }
 

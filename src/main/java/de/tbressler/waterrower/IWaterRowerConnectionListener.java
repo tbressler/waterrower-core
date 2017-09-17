@@ -4,12 +4,12 @@ import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 
 /**
- * Interface for Water Rower listeners.
+ * Listener interface for the connection to the Water Rower monitor.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public interface IWaterRowerListener {
+public interface IWaterRowerConnectionListener {
 
     /**
      * Will be called, if a supported Water Rower monitor was connected.
