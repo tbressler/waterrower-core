@@ -9,6 +9,7 @@ The usage of the library is very simple. Just start with the following example:
 
 // Establish a connection:
 WaterRower waterRower = new WaterRower();
+waterRower.addConnectionListener(...);
 waterRower.connect(...);
 
 // Subscribe to events:
@@ -19,6 +20,9 @@ waterRower.subscribe(new StrokeSubscription() {
 }
 
 ...
+
+// Disconnect:
+waterRower.disconnect();
 
 ```
 
