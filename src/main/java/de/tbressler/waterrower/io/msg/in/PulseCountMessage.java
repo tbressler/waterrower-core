@@ -19,7 +19,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  *
  * This packet has the third highest priority of transmission on the USB.
  *
- * [P][XX] + 0x0D0A
+ * [P] + XX + 0x0D0A
  *
  * @author Tobias Bressler
  * @version 1.0
