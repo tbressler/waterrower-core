@@ -23,6 +23,13 @@ public class TestMemoryLocation {
     @Test public void distance_low() { assertMemoryLocation(MEMORY_DISTANCE_LOW, "057"); }
     @Test public void distance_hi() { assertMemoryLocation(MEMORY_DISTANCE_HI, "058"); }
 
+    @Test public void tank_volume() { assertMemoryLocation(MEMORY_TANK_VOLUME, "0A9"); }
+
+    @Test public void strokes_cnt_low() { assertMemoryLocation(MEMORY_STROKES_CNT_LOW, "140"); }
+    @Test public void strokes_cnt_hi() { assertMemoryLocation(MEMORY_STROKES_CNT_HI, "141"); }
+    @Test public void stroke_average() { assertMemoryLocation(MEMORY_STROKE_AVERAGE, "142"); }
+    @Test public void stroke_pull() { assertMemoryLocation(MEMORY_STROKE_PULL, "143"); }
+
 
     /* Assert the memory locations. */
     private void assertMemoryLocation(MemoryLocation location, String expected) {

@@ -17,8 +17,21 @@ public enum MemoryLocation {
     /* This is the displayed distance: */
 
     MEMORY_DISTANCE_LOW(0x057),     // low byte of meters
-    MEMORY_DISTANCE_HI(0x058);      // hi byte of meters and km (65535meters max)
+    MEMORY_DISTANCE_HI(0x058),      // hi byte of meters and km (65535meters max)
 
+    /* Tank volume in liters: */
+
+    MEMORY_TANK_VOLUME(0x0A9),      // volume of water in tank
+
+    /* Stroke counter: */
+
+    MEMORY_STROKES_CNT_LOW(0x140),  // low byte count
+    MEMORY_STROKES_CNT_HI(0x141),   // high byte count
+    MEMORY_STROKE_AVERAGE(0x142),   // average time for a whole stroke
+    MEMORY_STROKE_PULL(0x143);      // average time for a pull (acc to dec)
+
+    // Stroke_pull is first subtracted from stroke_average then a modifier of 1.25 multiplied
+    // by the result to generate the ratio value for display.
 
 
     /* The memory location as decimal. */
