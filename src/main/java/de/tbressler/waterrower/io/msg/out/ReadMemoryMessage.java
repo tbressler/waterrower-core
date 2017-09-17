@@ -58,8 +58,9 @@ public class ReadMemoryMessage extends AbstractMessage {
 
 
     /**
+     * Returns if this message reads from single, double or triple memory locations.
      *
-     * @return
+     * @return Single, double or triple memory locations.
      */
     public Memory getMemory() {
         return memory;
@@ -69,8 +70,8 @@ public class ReadMemoryMessage extends AbstractMessage {
     @Override
     public String toString() {
         return toStringHelper(this)
-                .add("location", location)
                 .add("memory", memory)
+                .add("location", location)
                 .toString();
     }
 
