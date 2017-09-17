@@ -7,14 +7,28 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Read a single memory location (PC -> S4/S5).
+ * Read memory locations (PC -> S4/S5).
+ *
+ * Read a single memory location:
  *
  * Requests the contents of a single location XXX, this will return a single byte in hex format.
  *
+ * [I][RS] + XXX + 0x0D0A
+ *
+ * Read double memory locations:
+ *
+ * Requests the contents of two location starting from XXX, this will return two bytes in hex format.
+ *
+ * [I][RD] + XXX + 0x0D0A
+ *
+ * Read triple memory locations:
+ *
+ * Requests the contents of three locations starting from XXX, this will return three bytes in hex format.
+ *
+ * [I][RT] + XXX + 0x0D0A
+ *
  * XXX is in ACH format and has a maximum range of 0x000 to 0xFFF, however not all locations are
  * available (see Memory Map), errors will be replied for out of spec memory reads.
- *
- * [I][RS] + XXX + 0x0D0A
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -23,10 +37,10 @@ public class ReadMemoryMessage extends AbstractMessage {
 
 
     /* The memory location (0 .. 4095). */
-    protected final int location;
+    private final int location;
 
     /* Defines if you want to read single, double or triple memory locations. */
-    protected final Memory memory;
+    private final Memory memory;
 
 
     /**
