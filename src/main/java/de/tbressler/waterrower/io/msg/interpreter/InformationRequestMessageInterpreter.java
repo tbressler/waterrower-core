@@ -1,7 +1,9 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
+import de.tbressler.waterrower.io.msg.InformationRequestMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
+import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.MonitorType;
 
@@ -9,6 +11,12 @@ import static de.tbressler.waterrower.model.MonitorType.*;
 
 /**
  * Interpreter for:
+ *
+ * Request Model Information (PC -> S4/S5).
+ *
+ * Request details from the rowing computer on what it is and firmware version.
+ *
+ * [I][V?] + 0x0D0A
  *
  * Current Model Information (S4/S5 -> PC).
  *
@@ -19,10 +27,12 @@ import static de.tbressler.waterrower.model.MonitorType.*;
  *
  * [I][V] + [Model] + [Version High] + [Version Low] + 0x0D0A
  *
+ * TODO More ...
+ *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ModelInformationMessageInterpreter extends AbstractMessageInterpreter<ModelInformationMessage> {
+public class InformationRequestMessageInterpreter extends AbstractMessageInterpreter<InformationRequestMessage> {
 
     @Override
     public String getMessageTypeChar() {
@@ -30,21 +40,26 @@ public class ModelInformationMessageInterpreter extends AbstractMessageInterpret
     }
 
     @Override
-    public Class<ModelInformationMessage> getMessageType() {
-        return ModelInformationMessage.class;
+    public Class<InformationRequestMessage> getMessageType() {
+        return InformationRequestMessage.class;
     }
 
     @Override
-    public ModelInformationMessage decode(byte[] bytes) {
-        if (bytes.length < 7)
-            return null;
+    public InformationRequestMessage decode(byte[] bytes) {
 
         String payload = new String(bytes);
 
-        MonitorType monitorType = parseMonitorType(payload);
-        String firmwareVersion = payload.substring(3,5) + "." + payload.substring(5,7);
+        if (payload.startsWith("IV")) {
 
-        return new ModelInformationMessage(new ModelInformation(monitorType, firmwareVersion));
+            MonitorType monitorType = parseMonitorType(payload);
+            String firmwareVersion = payload.substring(3, 5) + "." + payload.substring(5, 7);
+
+            return new ModelInformationMessage(new ModelInformation(monitorType, firmwareVersion));
+        }
+
+        // TODO More ...
+
+        return null;
     }
 
     private MonitorType parseMonitorType(String payload) {
@@ -58,8 +73,15 @@ public class ModelInformationMessageInterpreter extends AbstractMessageInterpret
     }
 
     @Override
-    public byte[] encode(ModelInformationMessage msg) {
-        throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
+    public byte[] encode(InformationRequestMessage msg) {
+
+        if (msg instanceof RequestModelInformationMessage) {
+            return new String("IV?").getBytes();
+        }
+
+        // TODO More ...
+
+        return new byte[0];
     }
 
 }

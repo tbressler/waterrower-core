@@ -33,18 +33,19 @@ public class RxtxMessageParser {
     /* Adds message interpreters to this parser. */
     private void createAndAddMessageInterpreters() {
 
+        // Information request messages:
+        interpreters.add(new InformationRequestMessageInterpreter());
+
         // Incoming communication:
+        interpreters.add(new PingMessageInterpreter());
+        interpreters.add(new StrokeMessageInterpreter());
         interpreters.add(new AcknowledgeMessageInterpreter());
         interpreters.add(new ErrorMessageInterpreter());
-        interpreters.add(new HardwareTypeMessageInterpreter());
-        interpreters.add(new ModelInformationMessageInterpreter());
-        interpreters.add(new PingMessageInterpreter());
         interpreters.add(new PulseCountMessageInterpreter());
-        interpreters.add(new StrokeMessageInterpreter());
+        interpreters.add(new HardwareTypeMessageInterpreter());
 
         // Outgoing communication:
         interpreters.add(new ExitCommunicationMessageInterpreter());
-        interpreters.add(new RequestModelInformationMessageInterpreter());
         interpreters.add(new ResetMessageInterpreter());
         interpreters.add(new StartCommunicationMessageInterpreter());
     }

@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.io.msg.out;
 
-import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.InformationRequestMessage;
 import de.tbressler.waterrower.io.msg.Memory;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
@@ -33,7 +33,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ReadMemoryMessage extends AbstractMessage {
+public class ReadMemoryMessage extends InformationRequestMessage {
 
 
     /* The memory location (0 .. 4095). */

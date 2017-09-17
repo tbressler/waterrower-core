@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.io.msg.in;
 
-import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.InformationRequestMessage;
 import de.tbressler.waterrower.model.ModelInformation;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
@@ -19,9 +19,9 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ModelInformationMessage extends AbstractMessage {
+public class ModelInformationMessage extends InformationRequestMessage {
 
-    /* The model tzpe and firmware. */
+    /* The model type and firmware. */
     private final ModelInformation modelInformation;
 
 

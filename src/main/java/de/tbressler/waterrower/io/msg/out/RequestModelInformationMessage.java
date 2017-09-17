@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.io.msg.out;
 
-import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.InformationRequestMessage;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -14,7 +14,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class RequestModelInformationMessage extends AbstractMessage {
+public class RequestModelInformationMessage extends InformationRequestMessage {
 
     @Override
     public String toString() {
