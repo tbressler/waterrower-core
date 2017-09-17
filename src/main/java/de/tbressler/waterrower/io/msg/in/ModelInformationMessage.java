@@ -28,7 +28,7 @@ public class ModelInformationMessage extends AbstractMessage {
     /**
      * Current model information.
      *
-     * @param modelInformation The model tzpe and firmware, must not be null.
+     * @param modelInformation The model type and firmware, must not be null.
      */
     public ModelInformationMessage(ModelInformation modelInformation) {
         this.modelInformation = requireNonNull(modelInformation);
