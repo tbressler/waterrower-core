@@ -29,18 +29,12 @@ public class TestErrorMessageInterpreter {
     }
 
 
-    /**
-     * Checks if getMessageTypeChar always returns 'E'.
-     */
     @Test
-    public void getMessageTypeChar_returnsO() {
-        assertEquals("E", errorMessageInterpreter.getMessageTypeChar());
+    public void getMessageTypeChar_returnsERROR() {
+        assertEquals("ERROR", errorMessageInterpreter.getMessageIdentifier());
     }
 
 
-    /**
-     * Checks if getMessageType always returns ErrorMessage.class.
-     */
     @Test
     public void getMessageType_returnsErrorMessageClass() {
         assertEquals(ErrorMessage.class, errorMessageInterpreter.getMessageType());
@@ -49,14 +43,10 @@ public class TestErrorMessageInterpreter {
 
     @Test
     public void decode_withValidMessage_returnsErrorMessage() {
-        byte[] bytes = new String("ERROR").getBytes();
-        assertNotNull(errorMessageInterpreter.decode(bytes));
+        assertNotNull(errorMessageInterpreter.decode("ERROR"));
     }
 
 
-    /**
-     * Checks if an IllegalStateException is thrown, when encode is called.
-     */
     @Test(expected = IllegalStateException.class)
     public void encode_throwsIllegalStateException() {
         errorMessageInterpreter.encode(errorMessage);

@@ -23,8 +23,8 @@ public class PingMessageInterpreter extends AbstractMessageInterpreter<PingMessa
 
 
     @Override
-    public String getMessageTypeChar() {
-        return "P";
+    public String getMessageIdentifier() {
+        return "PING";
     }
 
     @Override
@@ -33,14 +33,12 @@ public class PingMessageInterpreter extends AbstractMessageInterpreter<PingMessa
     }
 
     @Override
-    public PingMessage decode(byte[] bytes) {
-        if (bytes.length < 4)
-            return null;
+    public PingMessage decode(String msg) {
         return PING_MESSAGE;
     }
 
     @Override
-    public byte[] encode(PingMessage msg) {
+    public String encode(PingMessage msg) {
         throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
     }
 

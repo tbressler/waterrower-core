@@ -26,18 +26,12 @@ public class TestStrokeMessageInterpreter {
     }
 
 
-    /**
-     * Checks if getMessageTypeChar always returns 'S'.
-     */
     @Test
     public void getMessageTypeChar_returnsS() {
-        assertEquals("S", strokeMessageInterpreter.getMessageTypeChar());
+        assertEquals("S", strokeMessageInterpreter.getMessageIdentifier());
     }
 
 
-    /**
-     * Checks if getMessageType always returns StrokeMessage.class.
-     */
     @Test
     public void getMessageType_returnsStrokeMessageClass() {
         assertEquals(StrokeMessage.class, strokeMessageInterpreter.getMessageType());
@@ -46,9 +40,7 @@ public class TestStrokeMessageInterpreter {
 
     @Test
     public void decode_withStrokeStart_returnsStrokeStartMessage() {
-        byte[] bytes = new String("SS").getBytes();
-
-        StrokeMessage msg = strokeMessageInterpreter.decode(bytes);
+        StrokeMessage msg = strokeMessageInterpreter.decode("SS");
 
         assertNotNull(msg);
         assertEquals(START_OF_STROKE, msg.getStrokeType());
@@ -56,9 +48,7 @@ public class TestStrokeMessageInterpreter {
 
     @Test
     public void decode_withStrokeEnd_returnsStrokeEndMessage() {
-        byte[] bytes = new String("SE").getBytes();
-
-        StrokeMessage msg = strokeMessageInterpreter.decode(bytes);
+        StrokeMessage msg = strokeMessageInterpreter.decode("SE");
 
         assertNotNull(msg);
         assertEquals(END_OF_STROKE, msg.getStrokeType());
@@ -66,25 +56,19 @@ public class TestStrokeMessageInterpreter {
 
     @Test
     public void decode_withInvalidMessage_returnsNull() {
-        byte[] bytes = new String("SB").getBytes();
-
-        StrokeMessage msg = strokeMessageInterpreter.decode(bytes);
+        StrokeMessage msg = strokeMessageInterpreter.decode("SB");
 
         assertNull(msg);
     }
 
     @Test
     public void decode_withTooShortMessage_returnsNull() {
-        byte[] bytes = new String("S").getBytes();
-
-        StrokeMessage msg = strokeMessageInterpreter.decode(bytes);
+        StrokeMessage msg = strokeMessageInterpreter.decode("S");
 
         assertNull(msg);
     }
 
-    /**
-     * Checks if an IllegalStateException is thrown, when encode is called.
-     */
+
     @Test(expected = IllegalStateException.class)
     public void encode_throwsIllegalStateException() {
         strokeMessageInterpreter.encode(new StrokeMessage(START_OF_STROKE));

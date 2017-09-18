@@ -29,18 +29,12 @@ public class TestAcknowledgeMessageInterpreter {
     }
 
 
-    /**
-     * Checks if getMessageTypeChar always returns 'O'.
-     */
     @Test
-    public void getMessageTypeChar_returnsO() {
-        assertEquals("O", acknowledgeMessageInterpreter.getMessageTypeChar());
+    public void getMessageTypeChar_returnsOK() {
+        assertEquals("OK", acknowledgeMessageInterpreter.getMessageIdentifier());
     }
 
 
-    /**
-     * Checks if getMessageType always returns AcknowledgeMessage.class.
-     */
     @Test
     public void getMessageType_returnsAcknowledgeMessageClass() {
         assertEquals(AcknowledgeMessage.class, acknowledgeMessageInterpreter.getMessageType());
@@ -49,14 +43,10 @@ public class TestAcknowledgeMessageInterpreter {
 
     @Test
     public void decode_withValidMessage_returnsAcknowledgeMessage() {
-        byte[] bytes = new String("OK").getBytes();
-        assertNotNull(acknowledgeMessageInterpreter.decode(bytes));
+        assertNotNull(acknowledgeMessageInterpreter.decode("OK"));
     }
 
 
-    /**
-     * Checks if an IllegalStateException is thrown, when encode is called.
-     */
     @Test(expected = IllegalStateException.class)
     public void encode_throwsIllegalStateException() {
         acknowledgeMessageInterpreter.encode(acknowledgeMessage);

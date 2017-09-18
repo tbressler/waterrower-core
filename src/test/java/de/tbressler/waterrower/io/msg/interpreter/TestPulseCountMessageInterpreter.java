@@ -24,18 +24,12 @@ public class TestPulseCountMessageInterpreter {
     }
 
 
-    /**
-     * Checks if getMessageTypeChar always returns 'P'.
-     */
     @Test
     public void getMessageTypeChar_returnsP() {
-        assertEquals("P", pulseCountMessageInterpreter.getMessageTypeChar());
+        assertEquals("P", pulseCountMessageInterpreter.getMessageIdentifier());
     }
 
 
-    /**
-     * Checks if getMessageType always returns PulseCountMessage.class.
-     */
     @Test
     public void getMessageType_returnsStrokeMessageClass() {
         assertEquals(PulseCountMessage.class, pulseCountMessageInterpreter.getMessageType());
@@ -43,20 +37,24 @@ public class TestPulseCountMessageInterpreter {
 
 
     @Test
-    public void decode_withPulsesCount00_returnsMessageWith0() {
-        byte[] bytes = new String("P00").getBytes();
+    public void decode_withPingMessage_returnsNull() {
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode("PING");
 
-        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+        assertNull(msg);
+    }
+
+    @Test
+    public void decode_withPulsesCount00_returnsMessageWith0() {
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode("P00");
 
         assertNotNull(msg);
         assertEquals(0, msg.getPulsesCounted());
     }
 
+
     @Test
     public void decode_withPulsesCount01_returnsMessageWith1() {
-        byte[] bytes = new String("P01").getBytes();
-
-        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode("P01");
 
         assertNotNull(msg);
         assertEquals(1, msg.getPulsesCounted());
@@ -64,9 +62,7 @@ public class TestPulseCountMessageInterpreter {
 
     @Test
     public void decode_withPulsesCount10_returnsMessageWith16() {
-        byte[] bytes = new String("P10").getBytes();
-
-        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode("P10");
 
         assertNotNull(msg);
         assertEquals(16, msg.getPulsesCounted());
@@ -74,9 +70,7 @@ public class TestPulseCountMessageInterpreter {
 
     @Test
     public void decode_withPulsesCountFF_returnsMessageWith16() {
-        byte[] bytes = new String("PFF").getBytes();
-
-        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode("PFF");
 
         assertNotNull(msg);
         assertEquals(255, msg.getPulsesCounted());
@@ -84,34 +78,26 @@ public class TestPulseCountMessageInterpreter {
 
     @Test
     public void decode_withInvalidHexadecimal_returnsNull() {
-        byte[] bytes = new String("PXY").getBytes();
-
-        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode("PXY");
 
         assertNull(msg);
     }
 
     @Test
     public void decode_withTooShortMessage1_returnsNull() {
-        byte[] bytes = new String("P").getBytes();
-
-        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode("P");
 
         assertNull(msg);
     }
 
     @Test
     public void decode_withTooShortMessage2_returnsNull() {
-        byte[] bytes = new String("P0").getBytes();
-
-        PulseCountMessage msg = pulseCountMessageInterpreter.decode(bytes);
+        PulseCountMessage msg = pulseCountMessageInterpreter.decode("P0");
 
         assertNull(msg);
     }
 
-    /**
-     * Checks if an IllegalStateException is thrown, when encode is called.
-     */
+
     @Test(expected = IllegalStateException.class)
     public void encode_throwsIllegalStateException() {
         pulseCountMessageInterpreter.encode(new PulseCountMessage(12));

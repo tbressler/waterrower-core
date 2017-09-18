@@ -20,7 +20,7 @@ import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 public class HardwareTypeMessageInterpreter extends AbstractMessageInterpreter<HardwareTypeMessage> {
 
     @Override
-    public String getMessageTypeChar() {
+    public String getMessageIdentifier() {
         return "_";
     }
 
@@ -30,18 +30,13 @@ public class HardwareTypeMessageInterpreter extends AbstractMessageInterpreter<H
     }
 
     @Override
-    public HardwareTypeMessage decode(byte[] bytes) {
-        if (bytes.length < 3)
-            return null;
-
-        String payload = new String(bytes);
-        boolean isWaterRower = payload.equals("_WR_");
-
+    public HardwareTypeMessage decode(String msg) {
+        boolean isWaterRower = msg.startsWith("_WR_");
         return new HardwareTypeMessage(isWaterRower);
     }
 
     @Override
-    public byte[] encode(HardwareTypeMessage msg) {
+    public String encode(HardwareTypeMessage msg) {
         throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
     }
 

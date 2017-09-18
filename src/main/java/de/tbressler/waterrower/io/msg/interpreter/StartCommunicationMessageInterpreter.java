@@ -19,7 +19,7 @@ import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 public class StartCommunicationMessageInterpreter extends AbstractMessageInterpreter<StartCommunicationMessage> {
 
     @Override
-    public String getMessageTypeChar() {
+    public String getMessageIdentifier() {
         return null;
     }
 
@@ -29,13 +29,13 @@ public class StartCommunicationMessageInterpreter extends AbstractMessageInterpr
     }
 
     @Override
-    public StartCommunicationMessage decode(byte[] bytes) {
+    public StartCommunicationMessage decode(String msg) {
         throw new IllegalStateException("This type of message should not be send by Water Rower S4/S5 monitor to the PC.");
     }
 
     @Override
-    public byte[] encode(StartCommunicationMessage msg) {
-        return new String("USB").getBytes();
+    public String encode(StartCommunicationMessage msg) {
+        return "USB";
     }
 
 }

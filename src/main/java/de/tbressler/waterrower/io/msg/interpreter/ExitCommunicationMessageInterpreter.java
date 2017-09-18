@@ -19,7 +19,7 @@ import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
 public class ExitCommunicationMessageInterpreter extends AbstractMessageInterpreter<ExitCommunicationMessage> {
 
     @Override
-    public String getMessageTypeChar() {
+    public String getMessageIdentifier() {
         return null;
     }
 
@@ -29,13 +29,13 @@ public class ExitCommunicationMessageInterpreter extends AbstractMessageInterpre
     }
 
     @Override
-    public ExitCommunicationMessage decode(byte[] bytes) {
+    public ExitCommunicationMessage decode(String msg) {
         throw new IllegalStateException("This type of message should not be send by Water Rower S4/S5 monitor to the PC.");
     }
 
     @Override
-    public byte[] encode(ExitCommunicationMessage msg) {
-        return new String("EXIT").getBytes();
+    public String encode(ExitCommunicationMessage msg) {
+        return "EXIT";
     }
 
 }

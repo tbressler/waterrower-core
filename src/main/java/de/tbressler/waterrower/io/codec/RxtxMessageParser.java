@@ -33,7 +33,7 @@ public class RxtxMessageParser {
     /* Adds message interpreters to this parser. */
     private void createAndAddMessageInterpreters() {
 
-        // Information request messages:
+        // Information poll messages:
         interpreters.add(new InformationRequestMessageInterpreter());
 
         // Incoming communication:
@@ -62,18 +62,26 @@ public class RxtxMessageParser {
 
         Log.debug(SERIAL, "Parsing message to object.");
 
-        String msgType = new String(bytes, 0, 1, UTF_8);
+        String msg = new String(bytes, UTF_8);
 
+        String msgIdentifier;
         for (IMessageInterpreter interpreter : interpreters) {
-            if (interpreter.getMessageTypeChar() == null)
+
+            // Check message identifiers:
+            msgIdentifier = interpreter.getMessageIdentifier();
+            if (msgIdentifier == null)
                 continue;
-            if (msgType.equals(interpreter.getMessageTypeChar()))
+            if (!msg.startsWith(msgIdentifier))
                 continue;
-            return interpreter.decode(bytes);
+
+            // Decode message to an object:
+            AbstractMessage decodedMsg = interpreter.decode(msg);
+
+            if (decodedMsg != null)
+                return decodedMsg;
         }
 
-        Log.warn(SERIAL, "Message couldn't be parsed to an object!" +
-                " Unknown message type '"+ msgType +"'.");
+        Log.warn(SERIAL, "Message couldn't be decoded! Unknown message '"+ msg +"'.");
 
         return null;
     }
@@ -91,13 +99,19 @@ public class RxtxMessageParser {
         Log.debug(SERIAL, "Parsing message '"+msg.toString()+"' to bytes.");
 
         for (IMessageInterpreter interpreter : interpreters) {
+
+            // Check if message type matches:
             if (msg.getClass().equals(interpreter.getMessageType()))
                 continue;
-            return  interpreter.encode(msg);
+
+            // Encode object to message:
+            String encodedMsg = interpreter.encode(msg);
+
+            if (encodedMsg != null)
+                return encodedMsg.getBytes(UTF_8);
         }
 
-        Log.warn(SERIAL, "Message couldn't be parsed to a byte array!" +
-                " Unknown message type.");
+        Log.warn(SERIAL, "Message couldn't be encoded! Unknown message type '"+msg.getClass().getName()+"'.");
 
         return null;
     }

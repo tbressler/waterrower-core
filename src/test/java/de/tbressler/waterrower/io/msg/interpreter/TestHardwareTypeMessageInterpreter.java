@@ -28,18 +28,12 @@ public class TestHardwareTypeMessageInterpreter {
     }
 
 
-    /**
-     * Checks if getMessageTypeChar always returns '_'.
-     */
     @Test
-    public void getMessageTypeChar_returnsO() {
-        assertEquals("_", hardwareTypeMessageInterpreter.getMessageTypeChar());
+    public void getMessageTypeChar_returns_() {
+        assertEquals("_", hardwareTypeMessageInterpreter.getMessageIdentifier());
     }
 
 
-    /**
-     * Checks if getMessageType always returns HardwareTypeMessage.class.
-     */
     @Test
     public void getMessageType_returnsHardwareTypeMessageClass() {
         assertEquals(HardwareTypeMessage.class, hardwareTypeMessageInterpreter.getMessageType());
@@ -48,9 +42,7 @@ public class TestHardwareTypeMessageInterpreter {
 
     @Test
     public void decode_withValidWaterRowerMessage_returnsHardwareTypeMessage() {
-        byte[] bytes = new String("_WR_").getBytes();
-
-        HardwareTypeMessage msg = hardwareTypeMessageInterpreter.decode(bytes);
+        HardwareTypeMessage msg = hardwareTypeMessageInterpreter.decode("_WR_");
 
         assertNotNull(msg);
         assertTrue(msg.isWaterRower());
@@ -58,18 +50,13 @@ public class TestHardwareTypeMessageInterpreter {
 
     @Test
     public void decode_withValidMessageButNotWaterRower_returnsHardwareTypeMessage() {
-        byte[] bytes = new String("_SOME_").getBytes();
-
-        HardwareTypeMessage msg = hardwareTypeMessageInterpreter.decode(bytes);
+        HardwareTypeMessage msg = hardwareTypeMessageInterpreter.decode("_SOME_");
 
         assertNotNull(msg);
         assertFalse(msg.isWaterRower());
     }
 
 
-    /**
-     * Checks if an IllegalStateException is thrown, when encode is called.
-     */
     @Test(expected = IllegalStateException.class)
     public void encode_throwsIllegalStateException() {
         hardwareTypeMessageInterpreter.encode(hardwareTypeMessage);

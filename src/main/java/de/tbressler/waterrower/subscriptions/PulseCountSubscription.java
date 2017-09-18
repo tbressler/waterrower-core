@@ -12,8 +12,8 @@ import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
 public abstract class PulseCountSubscription extends AbstractSubscription {
 
     @Override
-    protected AbstractMessage request() {
-        // No request necessary! Pulse count will be send automatically.
+    protected AbstractMessage poll() {
+        // No poll necessary! Pulse count will be send automatically by Water Rower monitor.
         return null;
     }
 

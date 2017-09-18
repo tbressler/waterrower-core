@@ -23,8 +23,8 @@ public class ErrorMessageInterpreter extends AbstractMessageInterpreter<ErrorMes
 
 
     @Override
-    public String getMessageTypeChar() {
-        return "E";
+    public String getMessageIdentifier() {
+        return "ERROR";
     }
 
     @Override
@@ -33,14 +33,12 @@ public class ErrorMessageInterpreter extends AbstractMessageInterpreter<ErrorMes
     }
 
     @Override
-    public ErrorMessage decode(byte[] bytes) {
-        if (bytes.length < 5)
-            return null;
+    public ErrorMessage decode(String msg) {
         return ERROR_MESSAGE;
     }
 
     @Override
-    public byte[] encode(ErrorMessage msg) {
+    public String encode(ErrorMessage msg) {
         throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
     }
 

@@ -34,7 +34,7 @@ import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
 public class StrokeMessageInterpreter extends AbstractMessageInterpreter<StrokeMessage> {
 
     @Override
-    public String getMessageTypeChar() {
+    public String getMessageIdentifier() {
         return "S";
     }
 
@@ -44,22 +44,17 @@ public class StrokeMessageInterpreter extends AbstractMessageInterpreter<StrokeM
     }
 
     @Override
-    public StrokeMessage decode(byte[] bytes) {
-        if (bytes.length < 2)
-            return null;
-
-        String payload = new String(bytes);
-
-        if (payload.equals("SS")) {
+    public StrokeMessage decode(String msg) {
+        if (msg.startsWith("SS")) {
             return new StrokeMessage(START_OF_STROKE);
-        } else if (payload.equals("SE")) {
+        } else if (msg.startsWith("SE")) {
             return new StrokeMessage(END_OF_STROKE);
         }
         return null;
     }
 
     @Override
-    public byte[] encode(StrokeMessage msg) {
+    public String encode(StrokeMessage msg) {
         throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
     }
 

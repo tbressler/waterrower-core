@@ -23,8 +23,8 @@ public class AcknowledgeMessageInterpreter extends AbstractMessageInterpreter<Ac
 
 
     @Override
-    public String getMessageTypeChar() {
-        return "O";
+    public String getMessageIdentifier() {
+        return "OK";
     }
 
     @Override
@@ -33,14 +33,12 @@ public class AcknowledgeMessageInterpreter extends AbstractMessageInterpreter<Ac
     }
 
     @Override
-    public AcknowledgeMessage decode(byte[] bytes) {
-        if (bytes.length != 2)
-            return null;
+    public AcknowledgeMessage decode(String msg) {
         return ACKNOWLEDGE_MESSAGE;
     }
 
     @Override
-    public byte[] encode(AcknowledgeMessage msg) {
+    public String encode(AcknowledgeMessage msg) {
         throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
     }
 

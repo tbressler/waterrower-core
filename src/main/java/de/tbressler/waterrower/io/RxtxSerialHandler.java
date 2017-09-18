@@ -33,7 +33,7 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
             onMessageReceived((AbstractMessage) msg);
 
         } finally {
-           ReferenceCountUtil.release(msg);
+            ReferenceCountUtil.release(msg);
         }
     }
 

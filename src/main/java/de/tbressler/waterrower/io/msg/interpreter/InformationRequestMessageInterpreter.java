@@ -2,12 +2,18 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.InformationRequestMessage;
+import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
+import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
+import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.MonitorType;
 
+import static de.tbressler.waterrower.log.Log.SERIAL;
 import static de.tbressler.waterrower.model.MonitorType.*;
+import static de.tbressler.waterrower.utils.ASCIIUtils.achToInt;
+import static de.tbressler.waterrower.utils.ASCIIUtils.intToAch;
 
 /**
  * Interpreter for:
@@ -27,7 +33,43 @@ import static de.tbressler.waterrower.model.MonitorType.*;
  *
  * [I][V] + [Model] + [Version High] + [Version Low] + 0x0D0A
  *
- * TODO More ...
+ * Value from single memory location:
+ *
+ * Returns the single byte of data Y1 from location XXX for the users application.
+ *
+ * [I][DS] + XXX + Y1 + 0x0D0A
+ *
+ * Value from double memory locations:
+ *
+ * Returns two bytes of data starting from the second location first (Y2) then location XXX (Y1).
+ * This is for reading 16bit values which have (H)igh and (L)ow pair in one go.
+ *
+ * [I][DD] + XXX + Y2 + Y1 + 0x0D0A
+ *
+ * Value from triple memory locations:
+ *
+ * Returns three bytes of data starting from the third location first (Y3) then (Y2) to location
+ * XXX (Y1). This is for reading 24bit values like a clock, which has Hours, Minutes & Seconds.
+ *
+ * [I][DT] + XXX + Y3 + Y2 + Y1 + 0x0D0A
+ *
+ * Read a single memory location:
+ *
+ * Requests the contents of a single location XXX, this will return a single byte in hex format.
+ *
+ * [I][RS] + XXX + 0x0D0A
+ *
+ * Read double memory locations:
+ *
+ * Requests the contents of two location starting from XXX, this will return two bytes in hex format.
+ *
+ * [I][RD] + XXX + 0x0D0A
+ *
+ * Read triple memory locations:
+ *
+ * Requests the contents of three locations starting from XXX, this will return three bytes in hex format.
+ *
+ * [I][RT] + XXX + 0x0D0A
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -35,7 +77,7 @@ import static de.tbressler.waterrower.model.MonitorType.*;
 public class InformationRequestMessageInterpreter extends AbstractMessageInterpreter<InformationRequestMessage> {
 
     @Override
-    public String getMessageTypeChar() {
+    public String getMessageIdentifier() {
         return "I";
     }
 
@@ -45,23 +87,55 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
     }
 
     @Override
-    public InformationRequestMessage decode(byte[] bytes) {
+    public InformationRequestMessage decode(String msg) {
 
-        String payload = new String(bytes);
+        if (msg.startsWith("IV")) {
 
-        if (payload.startsWith("IV")) {
+            // Parse current model information:
 
-            MonitorType monitorType = parseMonitorType(payload);
-            String firmwareVersion = payload.substring(3, 5) + "." + payload.substring(5, 7);
+            MonitorType monitorType = parseMonitorType(msg);
+            String firmwareVersion = msg.substring(3, 5) + "." + msg.substring(5, 7);
 
             return new ModelInformationMessage(new ModelInformation(monitorType, firmwareVersion));
+
+        } else if (msg.startsWith("IDS")) {
+
+            // Parse value from single memory location:
+
+            int location = achToInt(msg.substring(3, 6));
+            int value1 = achToInt(msg.substring(6, 8));
+
+            return new DataMemoryMessage(location, value1);
+
+        } else if (msg.startsWith("IDD")) {
+
+            // Parse values from double memory locations:
+
+            int location = achToInt(msg.substring(3, 6));
+            int value1 = achToInt(msg.substring(6, 8));
+            int value2 = achToInt(msg.substring(8, 10));
+
+            return new DataMemoryMessage(location, value1, value2);
+
+        } else if (msg.startsWith("IDT")) {
+
+            // Parse values from triple memory locations:
+
+            int location = achToInt(msg.substring(3, 6));
+            int value1 = achToInt(msg.substring(6, 8));
+            int value2 = achToInt(msg.substring(8, 10));
+            int value3 = achToInt(msg.substring(10, 12));
+
+            return new DataMemoryMessage(location, value1, value2, value3);
         }
 
-        // TODO More ...
+        Log.warn(SERIAL, "Message couldn't be decoded!\n" +
+                " Message was: >" + msg + "<");
 
         return null;
     }
 
+    /* Parses and returns the monitor type from the given message. */
     private MonitorType parseMonitorType(String payload) {
         switch (payload.charAt(2)) {
             case '4':
@@ -73,15 +147,43 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
     }
 
     @Override
-    public byte[] encode(InformationRequestMessage msg) {
+    public String encode(InformationRequestMessage msg) {
 
         if (msg instanceof RequestModelInformationMessage) {
-            return new String("IV?").getBytes();
+            return "IV?";
+        } else if (msg instanceof ReadMemoryMessage) {
+            return encodeReadMemoryMessage((ReadMemoryMessage) msg);
         }
 
-        // TODO More ...
+        Log.warn(SERIAL, "Message couldn't be encoded!\n" +
+                " Message was: " + msg);
 
-        return new byte[0];
+        return null;
+    }
+
+    /* Encodes messages of type ReadMemoryMessage. */
+    private String encodeReadMemoryMessage(ReadMemoryMessage msg) {
+        String result = "IR";
+
+        switch (msg.getMemory()) {
+            case SINGLE_MEMORY:
+                result += "S";
+                break;
+            case DOUBLE_MEMORY:
+                result += "D";
+                break;
+            case TRIPLE_MEMORY:
+                result += "T";
+                break;
+            default:
+                Log.warn(SERIAL, "Message contains invalid values!\n" +
+                        " Message was: "+msg.toString());
+                return null;
+        }
+
+        result += intToAch(msg.getLocation(), 3);
+
+        return result;
     }
 
 }

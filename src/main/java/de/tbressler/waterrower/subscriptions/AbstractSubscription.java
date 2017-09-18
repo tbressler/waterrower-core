@@ -11,6 +11,9 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 public abstract class AbstractSubscription {
 
 
+    /**
+     * An abstract class for subscriptions.
+     */
     public AbstractSubscription() {}
 
 
@@ -18,9 +21,9 @@ public abstract class AbstractSubscription {
      * Returns the message that must be send to the Water Rower S4/S5 monitor to send the current value
      * for the subscription.
      *
-     * @return The request message or null, if not message must be send.
+     * @return The poll message or null, if not message must be send.
      */
-    abstract protected AbstractMessage request();
+    abstract protected AbstractMessage poll();
 
     /**
      * Handles the received message from the Water Rower S4/S5 monitor.
@@ -28,6 +31,5 @@ public abstract class AbstractSubscription {
      * @param msg The message from the Water Rower S4/S5 monitor.
      */
     abstract protected void handle(AbstractMessage msg);
-
 
 }

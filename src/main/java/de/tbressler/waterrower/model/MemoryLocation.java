@@ -10,28 +10,69 @@ public enum MemoryLocation {
 
     /* Distance variables: */
 
-    MEMORY_MS_DISTANCE_DEC(0x054),  // 0.1m count (only counts up from 0-9
-    MEMORY_MS_DISTANCE_LOW(0x055),  // low byte of meters
-    MEMORY_MS_DISTANCE_HI(0x056),   // hi byte of meters and km (65535meters max)
+    MS_DISTANCE_DEC(0x054),     // 0.1m count (only counts up from 0-9
+    MS_DISTANCE_LOW(0x055),     // low byte of meters
+    MS_DISTANCE_HI(0x056),      // hi byte of meters and km (65535meters max)
 
     /* This is the displayed distance: */
 
-    MEMORY_DISTANCE_LOW(0x057),     // low byte of meters
-    MEMORY_DISTANCE_HI(0x058),      // hi byte of meters and km (65535meters max)
+    DISTANCE_LOW(0x057),        // low byte of meters
+    DISTANCE_HI(0x058),         // hi byte of meters and km (65535meters max)
+
+    KCAL_WATTS_LOW(0x088),
+    KCAL_WATTS_HI(0x089),
+    TOTAL_KCAL_LOW(0x08a),
+    TOTAL_KCAL_HI(0x08b),
+    TOTAL_KCAL_UP(0x08c),
+
+    /* Total distance meter counter - this is stored at switch off: */
+
+    TOTAL_DIS_DEC(0x080),       // dec byte of meters
+    TOTAL_DIS_LOW(0x081),       // low byte of meters
+    TOTAL_DIS_HI(0x082),        // hi byte of meters and km (65535meters max)
 
     /* Tank volume in liters: */
 
-    MEMORY_TANK_VOLUME(0x0A9),      // volume of water in tank
+    TANK_VOLUME(0x0a9),         // volume of water in tank
 
     /* Stroke counter: */
 
-    MEMORY_STROKES_CNT_LOW(0x140),  // low byte count
-    MEMORY_STROKES_CNT_HI(0x141),   // high byte count
-    MEMORY_STROKE_AVERAGE(0x142),   // average time for a whole stroke
-    MEMORY_STROKE_PULL(0x143);      // average time for a pull (acc to dec)
+    STROKES_CNT_LOW(0x140),     // low byte count
+    STROKES_CNT_HI(0x141),      // high byte count
+    STROKE_AVERAGE(0x142),      // average time for a whole stroke
+    STROKE_PULL(0x143),         // average time for a pull (acc to dec)
 
     // Stroke_pull is first subtracted from stroke_average then a modifier of 1.25 multiplied
     // by the result to generate the ratio value for display.
+
+    /* Meters per second registers: */
+
+    M_S_LOW_TOTAL(0x148),       // total distance per second in cm low byte
+    M_S_HI_TOTAL(0x149),        // total distance per second in cm hi byte
+    M_S_LOW_AVERAGE(0x14a),     // instant average distance in cm low byte
+    M_S_HI_AVERAGE(0x14b),      // instant average distance in cm hi byte
+    M_S_STORED(0x14c),          // no. of the stored values.
+    M_S_PROJL_AVG(0x14d),       // all average for projected distance/duration maths
+    M_S_PROJH_AVG(0x14e),       // all average for projected distance/duration maths
+
+    /* Used to generate the display clock: */
+
+    DISPLAY_SEC_DEC(0x1e0),     // seconds 0.0-0.9
+    DISPLAY_SEC(0x1e1),         // seconds 0-59
+    DISPLAY_MIN(0x1e2),         // minutes 0-59
+    DISPLAY_HR(0x1e3),          // hours 0-9 only
+
+    /* Workout total times/distances/limits: */
+
+    WORKOUT_TIMEL(0x1e8),       // total workout time
+    WORKOUT_TIMEH(0x1e9),
+    WORKOUT_MS_L(0x1ea),        // total workout m/s
+    WORKOUT_MS_H(0x1eb),
+    WORKOUT_STROKEL(0x1ec),     // total workout strokes
+    WORKOUT_STROKEH(0x1ed),
+    WORKOUT_LIMIT_H(0x1ee),     // this is the limit value for workouts
+    WORKOUT_LIMIT_L(0x1ef);
+
 
 
     /* The memory location as decimal. */

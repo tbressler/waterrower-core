@@ -19,8 +19,8 @@ import de.tbressler.waterrower.model.StrokeType;
 public abstract class StrokeSubscription extends AbstractSubscription {
 
     @Override
-    protected AbstractMessage request() {
-        // No request necessary! Strokes will be send automatically.
+    protected AbstractMessage poll() {
+        // No poll necessary! Strokes will be send automatically by Water Rower monitor.
         return null;
     }
 

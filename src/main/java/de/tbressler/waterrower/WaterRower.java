@@ -166,19 +166,16 @@ public class WaterRower {
             if (isConnected())
                 throw new IOException("Service is already connected! Can not connect.");
 
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
+            executorService.submit(() -> {
+                try {
 
-                        Log.debug(LIBRARY, "Opening RXTX channel at '" + address.value() + "' connection.");
+                    Log.debug(LIBRARY, "Opening RXTX channel at '" + address.value() + "' connection.");
 
-                        communicationService.open(address);
+                    communicationService.open(address);
 
-                    } catch (IOException e) {
-                        Log.warn(LIBRARY, "Couldn't connect to serial port! " + e.getMessage());
-                        fireOnError(COMMUNICATION_FAILED);
-                    }
+                } catch (IOException e) {
+                    Log.warn(LIBRARY, "Couldn't connect to serial port! " + e.getMessage());
+                    fireOnError(COMMUNICATION_FAILED);
                 }
             });
 
@@ -195,7 +192,7 @@ public class WaterRower {
 
             if (((HardwareTypeMessage) msg).isWaterRower()) {
 
-                Log.debug(LIBRARY, "Connected with Water Rower. Sending request for model information.");
+                Log.debug(LIBRARY, "Connected with Water Rower. Sending poll for model information.");
 
                 sendMessageAsync(new RequestModelInformationMessage());
 
@@ -282,25 +279,22 @@ public class WaterRower {
 
     /* Sends "goodbye" message and disconnects asynchronous. */
     private void sendGoodbyeAndDisconnectAsync() {
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
+        executorService.submit(() -> {
+            try {
 
-                    Log.debug(LIBRARY, "Sending 'exit communication' message.");
+                Log.debug(LIBRARY, "Sending 'exit communication' message.");
 
-                    // Send "goodbye" message.
-                    sendMessageInternally(new ExitCommunicationMessage());
+                // Send "goodbye" message.
+                sendMessageInternally(new ExitCommunicationMessage());
 
-                    Log.debug(LIBRARY, "Closing RXTX channel.");
+                Log.debug(LIBRARY, "Closing RXTX channel.");
 
-                    // Close channel.
-                    communicationService.close();
+                // Close channel.
+                communicationService.close();
 
-                } catch (IOException e) {
-                    Log.warn(LIBRARY, "Couldn't disconnect from serial port! " + e.getMessage());
-                    fireOnError(COMMUNICATION_FAILED);
-                }
+            } catch (IOException e) {
+                Log.warn(LIBRARY, "Couldn't disconnect from serial port! " + e.getMessage());
+                fireOnError(COMMUNICATION_FAILED);
             }
         });
     }
@@ -334,15 +328,12 @@ public class WaterRower {
             if (!isConnected())
                 throw new IOException("Service is not connected! Can not send message.");
 
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        sendMessageInternally(msg);
-                    } catch (IOException e) {
-                        Log.error("Message couldn't be send!", e);
-                        fireOnError(COMMUNICATION_FAILED);
-                    }
+            executorService.submit(() -> {
+                try {
+                    sendMessageInternally(msg);
+                } catch (IOException e) {
+                    Log.error("Message couldn't be send!", e);
+                    fireOnError(COMMUNICATION_FAILED);
                 }
             });
 

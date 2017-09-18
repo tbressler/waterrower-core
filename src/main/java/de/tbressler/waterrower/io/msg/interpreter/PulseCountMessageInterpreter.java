@@ -31,7 +31,7 @@ import static de.tbressler.waterrower.utils.ASCIIUtils.achToInt;
 public class PulseCountMessageInterpreter extends AbstractMessageInterpreter<PulseCountMessage> {
 
     @Override
-    public String getMessageTypeChar() {
+    public String getMessageIdentifier() {
         return "P";
     }
 
@@ -41,15 +41,19 @@ public class PulseCountMessageInterpreter extends AbstractMessageInterpreter<Pul
     }
 
     @Override
-    public PulseCountMessage decode(byte[] bytes) {
-        if (bytes.length < 3)
+    public PulseCountMessage decode(String msg) {
+
+        // Workaround: Discard ping messages, because
+        // they also start with a 'P'.
+        if (msg.startsWith("PING"))
             return null;
 
-        String payload = new String(bytes);
+        if (msg.length() < 3)
+            return null;
 
         try {
 
-            String pulsesCount = payload.substring(1, 3);
+            String pulsesCount = msg.substring(1, 3);
             return new PulseCountMessage(achToInt(pulsesCount));
 
         } catch (NumberFormatException e) {
@@ -59,7 +63,7 @@ public class PulseCountMessageInterpreter extends AbstractMessageInterpreter<Pul
     }
 
     @Override
-    public byte[] encode(PulseCountMessage msg) {
+    public String encode(PulseCountMessage msg) {
         throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
     }
 

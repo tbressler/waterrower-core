@@ -15,7 +15,7 @@ public interface IMessageInterpreter<T extends AbstractMessage> {
      *
      * @return The identifier char or null.
      */
-    String getMessageTypeChar();
+    String getMessageIdentifier();
 
     /**
      * Returns the type of message which this interpreter can encode.
@@ -25,19 +25,19 @@ public interface IMessageInterpreter<T extends AbstractMessage> {
     Class<T> getMessageType();
 
     /**
-     * Decodes the given byte array to a message object. If the message can not be decoded the method returns null.
+     * Decodes the given ASCII string to a message object. If the message can not be decoded the method returns null.
      *
-     * @param bytes The message byte array.
+     * @param msg The message as ASCII string.
      * @return The message object or null.
      */
-    T decode(byte[] bytes);
+    T decode(String msg);
 
     /**
-     * Encodes the given message object to a byte array. If the message can not be encoded the method returns null.
+     * Encodes the given message object to a ASCII string. If the message can not be encoded the method returns null.
      *
      * @param msg The message object.
-     * @return The byte array or null.
+     * @return The message as ASCII string.
      */
-    byte[] encode(T msg);
+    String encode(T msg);
 
 }

@@ -29,18 +29,12 @@ public class TestPingMessageInterpreter {
     }
 
 
-    /**
-     * Checks if getMessageTypeChar always returns 'P'.
-     */
     @Test
     public void getMessageTypeChar_returnsO() {
-        assertEquals("P", pingMessageInterpreter.getMessageTypeChar());
+        assertEquals("PING", pingMessageInterpreter.getMessageIdentifier());
     }
 
 
-    /**
-     * Checks if getMessageType always returns PingMessage.class.
-     */
     @Test
     public void getMessageType_returnsPingMessageClass() {
         assertEquals(PingMessage.class, pingMessageInterpreter.getMessageType());
@@ -49,14 +43,10 @@ public class TestPingMessageInterpreter {
 
     @Test
     public void decode_withValidMessage_returnsPingMessage() {
-        byte[] bytes = new String("PING").getBytes();
-        assertNotNull(pingMessageInterpreter.decode(bytes));
+        assertNotNull(pingMessageInterpreter.decode("PING"));
     }
 
 
-    /**
-     * Checks if an IllegalStateException is thrown, when encode is called.
-     */
     @Test(expected = IllegalStateException.class)
     public void encode_throwsIllegalStateException() {
         pingMessageInterpreter.encode(pingMessage);
