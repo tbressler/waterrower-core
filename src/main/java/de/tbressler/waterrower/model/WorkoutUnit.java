@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.model;
 
 /**
- * Units for workouts.
+ * Different units for distance and duration workouts.
  *
  * @author Tobias Bressler
  * @version 1.0

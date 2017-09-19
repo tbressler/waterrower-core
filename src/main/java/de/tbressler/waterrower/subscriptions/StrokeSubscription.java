@@ -16,16 +16,16 @@ import de.tbressler.waterrower.model.StrokeType;
  * @author Tobias Bressler
  * @version 1.0
  */
-public abstract class StrokeSubscription extends AbstractSubscription {
+public abstract class StrokeSubscription implements ISubscription {
 
     @Override
-    protected AbstractMessage poll() {
+    public AbstractMessage poll() {
         // No poll necessary! Strokes will be send automatically by Water Rower monitor.
         return null;
     }
 
     @Override
-    protected void handle(AbstractMessage msg) {
+    public void handle(AbstractMessage msg) {
         if (msg instanceof StrokeMessage) {
             onStroke(((StrokeMessage) msg).getStrokeType());
         }

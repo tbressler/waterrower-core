@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.model;
 
 /**
- * The type of strokeType.
+ * Different types of strokes.
  *
  * @author Tobias Bressler
  * @version 1.0

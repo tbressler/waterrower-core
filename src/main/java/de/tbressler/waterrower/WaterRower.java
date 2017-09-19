@@ -11,7 +11,7 @@ import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
-import de.tbressler.waterrower.subscriptions.AbstractSubscription;
+import de.tbressler.waterrower.subscriptions.ISubscription;
 import de.tbressler.waterrower.utils.Watchdog;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 
@@ -326,13 +326,13 @@ public class WaterRower {
         try {
 
             if (!isConnected())
-                throw new IOException("Service is not connected! Can not send message.");
+                throw new IOException("Not connected! Can not send message to Water Rower.");
 
             executorService.submit(() -> {
                 try {
                     sendMessageInternally(msg);
                 } catch (IOException e) {
-                    Log.error("Message couldn't be send!", e);
+                    Log.error("Message couldn't be send to Water Rower!", e);
                     fireOnError(COMMUNICATION_FAILED);
                 }
             });
@@ -381,7 +381,7 @@ public class WaterRower {
      *
      * @param subscription The subscription and callback, must not be null.
      */
-    public void subscribe(AbstractSubscription subscription) {
+    public void subscribe(ISubscription subscription) {
         requireNonNull(subscription);
 
         // TODO Register subscription.
@@ -392,7 +392,7 @@ public class WaterRower {
      *
      * @param subscription The subscription, must not be null.
      */
-    public void unsubscribe(AbstractSubscription subscription) {
+    public void unsubscribe(ISubscription subscription) {
         requireNonNull(subscription);
 
         // TODO Unregister subscription.
