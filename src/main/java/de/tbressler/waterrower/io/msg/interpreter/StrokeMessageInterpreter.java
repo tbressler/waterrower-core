@@ -33,6 +33,13 @@ import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
  */
 public class StrokeMessageInterpreter extends AbstractMessageInterpreter<StrokeMessage> {
 
+    /* Single instance of a start of stroke message. */
+    private final static StrokeMessage START_OF_STROKE_MESSAGE = new StrokeMessage(START_OF_STROKE);
+
+    /* Single instance of an end of stroke message. */
+    private final static StrokeMessage END_OF_STROKE_MESSAGE = new StrokeMessage(END_OF_STROKE);
+
+
     @Override
     public String getMessageIdentifier() {
         return "S";
@@ -46,9 +53,9 @@ public class StrokeMessageInterpreter extends AbstractMessageInterpreter<StrokeM
     @Override
     public StrokeMessage decode(String msg) {
         if (msg.startsWith("SS")) {
-            return new StrokeMessage(START_OF_STROKE);
+            return START_OF_STROKE_MESSAGE;
         } else if (msg.startsWith("SE")) {
-            return new StrokeMessage(END_OF_STROKE);
+            return END_OF_STROKE_MESSAGE;
         }
         return null;
     }

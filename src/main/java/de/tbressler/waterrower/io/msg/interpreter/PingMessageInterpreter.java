@@ -19,7 +19,7 @@ import de.tbressler.waterrower.io.msg.in.PingMessage;
 public class PingMessageInterpreter extends AbstractMessageInterpreter<PingMessage> {
 
     /* Single instance of an acknowledge message. */
-    private PingMessage PING_MESSAGE = new PingMessage();
+    private final static PingMessage PING_MESSAGE = new PingMessage();
 
 
     @Override

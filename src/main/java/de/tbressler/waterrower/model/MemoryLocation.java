@@ -110,7 +110,7 @@ public enum MemoryLocation {
      * @param location The memory location as decimal (0x000 .. 0xFFF).
      */
     MemoryLocation(int location) {
-        if ((location < 0) || (location > 4095))
+        if ((location < 0x000) || (location > 0xFFF))
             throw new IllegalArgumentException("Invalid memory location! Location must be between 0x000 and 0xFFF.");
         this.location = location;
     }
