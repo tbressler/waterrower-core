@@ -50,8 +50,16 @@ public class WaterRower {
     /* The RXTX communication service. */
     private final RxtxCommunicationService communicationService;
 
-    /* The executor service for asynchronous tasks. */
-    private final ExecutorService executorService;
+    /* The executor service for connection and sending. */
+    private final ExecutorService connectionExecutorService;
+
+
+    /* List of subscriptions. */
+    private final List<ISubscription> subscriptions = new ArrayList<>();
+
+    /* The executor service for polling of subscriptions. */
+    private final ExecutorService subscriptionExecutorService;
+
 
     /* Listeners. */
     private List<IWaterRowerConnectionListener> listeners = new ArrayList<>();
@@ -139,13 +147,17 @@ public class WaterRower {
      * This class connects with the Water Rower and exchanges the information between PC and Water Rower monitor.
      *
      * @param communicationService The RXTX communication service, must not be null.
-     * @param executorService The executor service for asynchronous tasks, must not be null.
+     * @param connectionExecutorService The executor service for connection and sending, must not be null.
+     * @param subscriptionExecutorService The executor service for polling of subscriptions, must not be null.
      */
-    public WaterRower(RxtxCommunicationService communicationService, ExecutorService executorService) {
+    public WaterRower(RxtxCommunicationService communicationService,
+                      ExecutorService connectionExecutorService,
+                      ExecutorService subscriptionExecutorService) {
         this.communicationService = requireNonNull(communicationService);
         this.communicationService.addRxtxConnectionListener(connectionListener);
 
-        this.executorService = requireNonNull(executorService);
+        this.connectionExecutorService = requireNonNull(connectionExecutorService);
+        this.subscriptionExecutorService = requireNonNull(subscriptionExecutorService);
     }
 
 
@@ -166,7 +178,7 @@ public class WaterRower {
             if (isConnected())
                 throw new IOException("Service is already connected! Can not connect.");
 
-            executorService.submit(() -> {
+            connectionExecutorService.submit(() -> {
                 try {
 
                     Log.debug(LIBRARY, "Opening RXTX channel at '" + address.value() + "' connection.");
@@ -230,8 +242,7 @@ public class WaterRower {
                 fireOnError(DEVICE_NOT_SUPPORTED);
             }
 
-        } else if ((msg instanceof PingMessage)
-                || (msg instanceof AcknowledgeMessage)) {
+        } else if ((msg instanceof PingMessage) || (msg instanceof AcknowledgeMessage)) {
 
             Log.debug(LIBRARY, "'Ping' or 'Acknowledge' message received.");
 
@@ -279,7 +290,7 @@ public class WaterRower {
 
     /* Sends "goodbye" message and disconnects asynchronous. */
     private void sendGoodbyeAndDisconnectAsync() {
-        executorService.submit(() -> {
+        connectionExecutorService.submit(() -> {
             try {
 
                 Log.debug(LIBRARY, "Sending 'exit communication' message.");
@@ -328,7 +339,7 @@ public class WaterRower {
             if (!isConnected())
                 throw new IOException("Not connected! Can not send message to Water Rower.");
 
-            executorService.submit(() -> {
+            connectionExecutorService.submit(() -> {
                 try {
                     sendMessageInternally(msg);
                 } catch (IOException e) {
@@ -382,9 +393,7 @@ public class WaterRower {
      * @param subscription The subscription and callback, must not be null.
      */
     public void subscribe(ISubscription subscription) {
-        requireNonNull(subscription);
-
-        // TODO Register subscription.
+        subscriptions.add(requireNonNull(subscription));
     }
 
     /**
@@ -393,9 +402,7 @@ public class WaterRower {
      * @param subscription The subscription, must not be null.
      */
     public void unsubscribe(ISubscription subscription) {
-        requireNonNull(subscription);
-
-        // TODO Unregister subscription.
+        subscriptions.remove(requireNonNull(subscription));
     }
 
 

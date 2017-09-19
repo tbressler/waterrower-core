@@ -31,7 +31,8 @@ public class TestWaterRower {
     private WaterRower waterRower;
 
     /* Direct executor service, so that the test can be executed in one thread only. */
-    private ExecutorService directExecutorService = newDirectExecutorService();
+    private ExecutorService connectionExecutorService = newDirectExecutorService();
+    private ExecutorService subscriptionExecutorService = newDirectExecutorService();
 
     // Mocks:
     private RxtxCommunicationService communicationService = mock(RxtxCommunicationService.class, "communicationService");
@@ -46,7 +47,7 @@ public class TestWaterRower {
 
     @Before
     public void setUp() {
-        waterRower = new WaterRower(communicationService, directExecutorService);
+        waterRower = new WaterRower(communicationService, connectionExecutorService, subscriptionExecutorService);
         waterRower.addConnectionListener(waterRowerListener);
 
         captureRxtxConnectionListener();
@@ -64,15 +65,20 @@ public class TestWaterRower {
      */
     @Test(expected = NullPointerException.class)
     public void new_withNullCommunicationService_throwsException() {
-       new WaterRower(null, directExecutorService);
+       new WaterRower(null, connectionExecutorService, subscriptionExecutorService);
     }
 
     /**
      * Checks if an exception is thrown, when executorService is null.
      */
     @Test(expected = NullPointerException.class)
-    public void new_withNullExecutorService_throwsException() {
-        new WaterRower(communicationService, null);
+    public void new_withNullConnectionExecutorService_throwsException() {
+        new WaterRower(communicationService, null, subscriptionExecutorService);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void new_withNullSubscriptionExecutorService_throwsException() {
+        new WaterRower(communicationService, connectionExecutorService, null);
     }
 
 
