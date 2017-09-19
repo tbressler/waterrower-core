@@ -8,6 +8,32 @@ package de.tbressler.waterrower.model;
  */
 public enum MemoryLocation {
 
+    /*
+     * Flags:
+     *
+     * These registers can be read to determine the current state of the display; they are formed of
+     * 8 separate true or false flags. These flags are defined at the end of the memory map.
+     */
+
+    FEXTENDED(0x03e),           // working and workout control flags
+                                // bits for extended zones and workout modes:
+                                //   0 = fzone_hr fextended; working in heartrate zone
+                                //   1 = fzone_int fextended; working in intensity zone
+                                //   2 = fzone_sr fextended; working in strokerate zone
+                                //   3 = fprognostics fextended; prognostics active.
+                                //   4 = fworkout_dis fextended; workout distance mode
+                                //   5 = fworkout_dur fextended; workout duration mode
+                                //   6 =  fworkout_dis_i fextended; workout distance interval mode
+                                //   7 = fworkout_dur_i fextended; workout duration interval mode
+
+    /*
+     * Variables:
+     *
+     * The following memory locations are available to the user for reading. Other locations not specified are
+     * unavailable for reading. A lot of the timers count 1bit per 25mS of actual time, remember this for ALL maths,
+     * otherwise things can be confusing of how much time say a stroke was done IN.
+     */
+
     /* Distance variables: */
 
     MS_DISTANCE_DEC(0x054),     // 0.1m count (only counts up from 0-9

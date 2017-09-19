@@ -16,6 +16,8 @@ public class TestMemoryLocation {
 
     /* Check all memory locations of the enums: */
 
+    @Test public void fextended() { assertMemoryLocation(FEXTENDED, "03E"); }
+
     @Test public void ms_distance_dec() { assertMemoryLocation(MS_DISTANCE_DEC, "054"); }
     @Test public void ms_distance_low() { assertMemoryLocation(MS_DISTANCE_LOW, "055"); }
     @Test public void ms_distance_hi() { assertMemoryLocation(MS_DISTANCE_HI, "056"); }

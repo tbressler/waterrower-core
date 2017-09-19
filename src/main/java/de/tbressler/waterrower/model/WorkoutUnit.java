@@ -1,14 +1,26 @@
 package de.tbressler.waterrower.model;
 
 /**
+ * Units for workouts.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */
 public enum WorkoutUnit {
 
-    METER,
-    MILE,
-    KM,
-    STROKE
+    /* Meters */
+    METERS,
+
+    /* Miles */
+    MILES,
+
+    /* Km's */
+    KMS,
+
+    /* Strokes */
+    STROKES,
+
+    /* Seconds */
+    SECONDS
 
 }

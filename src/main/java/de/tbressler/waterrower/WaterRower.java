@@ -376,11 +376,25 @@ public class WaterRower {
     }
 
 
+    /**
+     * Subscribe to events. This will start the polling for the given data.
+     *
+     * @param subscription The subscription and callback, must not be null.
+     */
     public void subscribe(AbstractSubscription subscription) {
+        requireNonNull(subscription);
+
         // TODO Register subscription.
     }
 
+    /**
+     * Unsubscribe from events. This will stop the polling for the given data.
+     *
+     * @param subscription The subscription, must not be null.
+     */
     public void unsubscribe(AbstractSubscription subscription) {
+        requireNonNull(subscription);
+
         // TODO Unregister subscription.
     }
 

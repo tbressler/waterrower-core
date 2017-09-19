@@ -1,6 +1,8 @@
 package de.tbressler.waterrower.io.msg;
 
 /**
+ * Defines how many bytes should be read from memory locations.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */
