@@ -8,7 +8,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * A watchdog.
+ * An abstract watchdog.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -50,10 +50,12 @@ public abstract class Watchdog {
         scheduleWatchdogTask();
     }
 
+    /* Schedule the watchdog task for execution. */
     private void scheduleWatchdogTask() {
         executorService.schedule(() -> executeWatchdogTask(), interval.toMillis(), MILLISECONDS);
     }
 
+    /* Execute the watchdog task. */
     private void executeWatchdogTask() {
 
         // Check if already stopped.
