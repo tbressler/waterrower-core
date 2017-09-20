@@ -57,6 +57,7 @@ public class SubscriptionPollingService {
 
 
     /**
+     * The subscription polling manager.
      *
      * @param interval The polling interval (in milliseconds), must not be null.
      * @param connector The connector to the Water Rower, must not be null.
@@ -76,26 +77,34 @@ public class SubscriptionPollingService {
      * Start the subscription polling service.
      */
     public void start() {
-
         isActive.set(true);
+        scheduleTask();
+    }
 
-        executorService.scheduleAtFixedRate(() -> {
+    /* Schedule the task for execution. */
+    private void scheduleTask() {
+        executorService.schedule(this::executeTask, interval.toMillis(), MILLISECONDS);
+    }
 
-            for (ISubscription subscription : subscriptions) {
+    /* Execute the task. */
+    private void executeTask() {
 
-                // If not active skip execution.
-                if (!isActive.get())
-                    return;
+        for (ISubscription subscription : subscriptions) {
 
-                try {
-                    AbstractMessage msg = subscription.poll();
-                    connector.send(msg);
-                } catch (IOException e) {
-                    Log.error("Couldn't poll for subscriptions, due to errors!", e);
-                }
+            // If not active skip execution.
+            if (!isActive.get())
+                return;
+
+            try {
+                AbstractMessage msg = subscription.poll();
+                connector.send(msg);
+            } catch (IOException e) {
+                Log.error("Couldn't poll for subscriptions, due to errors!", e);
             }
+        }
 
-        }, 0, interval.toMillis(), MILLISECONDS);
+        if (isActive.get())
+            scheduleTask();
     }
 
 
@@ -104,7 +113,6 @@ public class SubscriptionPollingService {
      */
     public void stop() {
         isActive.set(false);
-        executorService.shutdown();
     }
 
 

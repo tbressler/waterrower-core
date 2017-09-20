@@ -52,7 +52,7 @@ public abstract class Watchdog {
 
     /* Schedule the watchdog task for execution. */
     private void scheduleWatchdogTask() {
-        executorService.schedule(() -> executeWatchdogTask(), interval.toMillis(), MILLISECONDS);
+        executorService.schedule(this::executeWatchdogTask, interval.toMillis(), MILLISECONDS);
     }
 
     /* Execute the watchdog task. */
