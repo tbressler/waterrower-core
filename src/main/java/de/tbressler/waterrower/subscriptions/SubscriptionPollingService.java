@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -77,6 +78,9 @@ public class SubscriptionPollingService {
      * Start the subscription polling service.
      */
     public void start() {
+
+        Log.debug(LIBRARY, "Start subscription polling service.");
+
         isActive.set(true);
         scheduleTask();
     }
@@ -88,6 +92,8 @@ public class SubscriptionPollingService {
 
     /* Execute the task. */
     private void executeTask() {
+
+        Log.debug(LIBRARY, "Start polling for subscriptions...");
 
         for (ISubscription subscription : subscriptions) {
 
@@ -103,6 +109,8 @@ public class SubscriptionPollingService {
             }
         }
 
+        Log.debug(LIBRARY, "Finished polling.");
+
         if (isActive.get())
             scheduleTask();
     }
@@ -112,6 +120,9 @@ public class SubscriptionPollingService {
      * Stop the subscription polling service.
      */
     public void stop() {
+
+        Log.debug(LIBRARY, "Stop subscription polling service.");
+
         isActive.set(false);
     }
 
