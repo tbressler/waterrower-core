@@ -1,6 +1,5 @@
 package de.tbressler.waterrower;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
@@ -14,7 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static de.tbressler.waterrower.log.Log.LIBRARY;
-import static de.tbressler.waterrower.model.ErrorCode.COMMUNICATION_FAILED;
 import static java.util.Objects.requireNonNull;
 
 /**

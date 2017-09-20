@@ -3,7 +3,6 @@ package de.tbressler.waterrower;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +11,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
-import static de.tbressler.waterrower.model.ErrorCode.COMMUNICATION_FAILED;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 /**
  * Tests for class WaterRowerConnector.

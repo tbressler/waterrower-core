@@ -1,7 +1,5 @@
 package de.tbressler.waterrower.subscriptions;
 
-import static org.junit.Assert.*;
-
 /**
  * Tests for class SubscriptionPollingService.
  *

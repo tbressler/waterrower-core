@@ -18,10 +18,10 @@ public abstract class Watchdog {
     /* The wakeup interval for the watchdog. */
     private Duration interval;
 
-    /* */
+    /* Repeat the watchdog periodically. */
     private final boolean doRepeat;
 
-    /* The timer. */
+    /* The executor service. */
     private final ScheduledExecutorService executorService;
 
     /* True if watchdog is stopped. */
