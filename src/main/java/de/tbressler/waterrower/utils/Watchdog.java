@@ -1,10 +1,11 @@
 package de.tbressler.waterrower.utils;
 
 import java.time.Duration;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * A watchdog.
@@ -17,31 +18,27 @@ public abstract class Watchdog {
     /* The wakeup interval for the watchdog. */
     private Duration interval;
 
+    /* */
+    private final boolean doRepeat;
+
     /* The timer. */
-    private final Timer timer;
+    private final ScheduledExecutorService executorService;
+
+    /* True if watchdog is stopped. */
+    private AtomicBoolean isStopped = new AtomicBoolean(true);
 
 
     /**
      * A watchdog.
      *
      * @param interval The interval, must not be null.
-     * @param name The internal name for the timer.
+     * @param repeat True if the watchdog task should be repeated periodically.
+     * @param executorService The scheduled executor service, must not be null.
      */
-    public Watchdog(Duration interval, String name) {
+    public Watchdog(Duration interval, boolean repeat, ScheduledExecutorService executorService) {
         this.interval = requireNonNull(interval);
-        this.timer = new Timer(name);
-    }
-
-    /**
-     * A watchdog.
-     *
-     * @param interval The interval, must not be null.
-     * @param isDaemon True if the associated thread should run as a daemon.
-     * @param name The internal name for the timer.
-     */
-    public Watchdog(Duration interval, boolean isDaemon, String name) {
-        this.interval = requireNonNull(interval);
-        this.timer = new Timer(name, isDaemon);
+        this.doRepeat = repeat;
+        this.executorService = requireNonNull(executorService);
     }
 
 
@@ -49,12 +46,26 @@ public abstract class Watchdog {
      * Starts the watchdog.
      */
     public void start() {
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                wakeUpAndCheck();
-            }
-        }, interval.toMillis());
+        isStopped.set(false);
+        scheduleWatchdogTask();
+    }
+
+    private void scheduleWatchdogTask() {
+        executorService.schedule(() -> executeWatchdogTask(), interval.toMillis(), MILLISECONDS);
+    }
+
+    private void executeWatchdogTask() {
+
+        // Check if already stopped.
+        if (isStopped.get())
+            return;
+
+        wakeUpAndCheck();
+
+        // Start the next period if the task should
+        // be executed periodically.
+        if (doRepeat && !isStopped.get())
+            scheduleWatchdogTask();
     }
 
 
@@ -65,20 +76,10 @@ public abstract class Watchdog {
 
 
     /**
-     * Resets the watchdog.
-     */
-    public void reset() {
-        stop();
-        start();
-    }
-
-
-    /**
      * Stops the watchdog.
      */
     public void stop() {
-        timer.cancel();
-        timer.purge();
+        isStopped.set(true);
     }
 
 }

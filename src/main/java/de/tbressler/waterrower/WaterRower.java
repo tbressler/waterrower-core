@@ -3,7 +3,9 @@ package de.tbressler.waterrower;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.io.msg.in.*;
+import de.tbressler.waterrower.io.msg.in.ErrorMessage;
+import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
+import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
 import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.ResetMessage;
@@ -12,7 +14,8 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.subscriptions.ISubscription;
-import de.tbressler.waterrower.utils.Watchdog;
+import de.tbressler.waterrower.utils.DeviceVerificationWatchdog;
+import de.tbressler.waterrower.utils.PingWatchdog;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 
 import java.io.IOException;
@@ -20,16 +23,16 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static de.tbressler.waterrower.model.ErrorCode.*;
 import static de.tbressler.waterrower.utils.WaterRowerCompatibility.isSupportedWaterRower;
-import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.ofSeconds;
 import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
 /**
  * The entry point of the Water Rower library.
@@ -41,10 +44,10 @@ import static java.util.Objects.requireNonNull;
 public class WaterRower {
 
     /* Maximum duration for the Water Rower device to send its device information. */
-    private static Duration MAXIMUM_DEVICE_VERIFICATION_DURATION = ofSeconds(5);
+    private static Duration DEVICE_VERIFICATION_INTERVAL = ofSeconds(5);
 
     /* Maximum duration between ping messages.*/
-    private static Duration MAXIMUM_PING_DURATION = ofSeconds(5);
+    private static Duration PING_INTERVAL = ofSeconds(5);
 
 
     /* The RXTX communication service. */
@@ -54,11 +57,7 @@ public class WaterRower {
     private final ExecutorService connectionExecutorService;
 
 
-    /* List of subscriptions. */
-    private final List<ISubscription> subscriptions = new ArrayList<>();
-
-    /* The executor service for polling of subscriptions. */
-    private final ExecutorService subscriptionExecutorService;
+    private final ScheduledExecutorService scheduledExecutorService = newSingleThreadScheduledExecutor();
 
 
     /* Listeners. */
@@ -71,26 +70,21 @@ public class WaterRower {
     private ModelInformation modelInformation;
 
 
-    /* True if connected device is supported Water Rower. */
-    private AtomicBoolean deviceConfirmed = new AtomicBoolean(false);
-    /* Watchdog that checks if the device sends it's model information in order to verify compatibility with the library. */
-    private Watchdog deviceVerificationWatchdog = new Watchdog(MAXIMUM_DEVICE_VERIFICATION_DURATION, "device-verification-watchdog") {
+    /* Watchdog that checks if the device sends it's model information in order to verify
+     * compatibility with the library. */
+    private DeviceVerificationWatchdog deviceVerificationWatchdog = new DeviceVerificationWatchdog(DEVICE_VERIFICATION_INTERVAL, scheduledExecutorService) {
         @Override
-        protected void wakeUpAndCheck() {
-            if (!deviceConfirmed.get())
-                fireOnError(DEVICE_NOT_SUPPORTED);
+        public void onDeviceNotConfirmed() {
+            fireOnError(DEVICE_NOT_SUPPORTED);
         }
     };
 
 
-    /* Last time a ping was received. */
-    private AtomicLong lastReceivedPing = new AtomicLong(0);
     /* Watchdog that checks if a ping is received periodically. */
-    private Watchdog pingWatchdog = new Watchdog(MAXIMUM_PING_DURATION, true, "ping-watchdog") {
+    private PingWatchdog pingWatchdog = new PingWatchdog(PING_INTERVAL, scheduledExecutorService) {
         @Override
-        protected void wakeUpAndCheck() {
-            if (currentTimeMillis() - lastReceivedPing.get() > MAXIMUM_PING_DURATION.toMillis())
-                fireOnError(TIMEOUT);
+        protected void onTimeout() {
+            fireOnError(TIMEOUT);
         }
     };
 
@@ -104,7 +98,6 @@ public class WaterRower {
 
                 Log.debug(LIBRARY, "RXTX connected. Sending 'start communication' message.");
 
-                deviceConfirmed.set(false);
                 deviceVerificationWatchdog.start();
 
                 sendMessageAsync(new StartCommunicationMessage());
@@ -118,8 +111,12 @@ public class WaterRower {
         @Override
         public void onMessageReceived(AbstractMessage msg) {
             try {
+
+                pingWatchdog.pingReceived();
+
                 handleLowLevelMessages(msg);
                 handleMessages(msg);
+
             } catch (IOException e) {
                 Log.error("A communication error occurred!", e);
                 fireOnError(COMMUNICATION_FAILED);
@@ -129,7 +126,6 @@ public class WaterRower {
         @Override
         public void onDisconnected() {
             Log.debug(LIBRARY, "RXTX disconnected.");
-            deviceConfirmed.set(false);
             pingWatchdog.stop();
             fireOnDisconnected();
         }
@@ -148,16 +144,13 @@ public class WaterRower {
      *
      * @param communicationService The RXTX communication service, must not be null.
      * @param connectionExecutorService The executor service for connection and sending, must not be null.
-     * @param subscriptionExecutorService The executor service for polling of subscriptions, must not be null.
      */
     public WaterRower(RxtxCommunicationService communicationService,
-                      ExecutorService connectionExecutorService,
-                      ExecutorService subscriptionExecutorService) {
+                      ExecutorService connectionExecutorService) {
         this.communicationService = requireNonNull(communicationService);
         this.communicationService.addRxtxConnectionListener(connectionListener);
 
         this.connectionExecutorService = requireNonNull(connectionExecutorService);
-        this.subscriptionExecutorService = requireNonNull(subscriptionExecutorService);
     }
 
 
@@ -196,7 +189,6 @@ public class WaterRower {
         }
     }
 
-
     /* Handles background messages, like model information or ping messages. */
     private void handleLowLevelMessages(AbstractMessage msg) throws IOException {
 
@@ -227,7 +219,7 @@ public class WaterRower {
                 Log.debug(LIBRARY, "Monitor type and firmware are supported by this library. Successfully connected with Water Rower.");
 
                 // Set device model confirmed and stop watchdog:
-                deviceConfirmed.set(true);
+                deviceVerificationWatchdog.setDeviceConfirmed(true);
                 deviceVerificationWatchdog.stop();
 
                 // Start ping watchdog.
@@ -241,12 +233,6 @@ public class WaterRower {
 
                 fireOnError(DEVICE_NOT_SUPPORTED);
             }
-
-        } else if ((msg instanceof PingMessage) || (msg instanceof AcknowledgeMessage)) {
-
-            Log.debug(LIBRARY, "'Ping' or 'Acknowledge' message received.");
-
-            lastReceivedPing.set(currentTimeMillis());
 
         } else if (msg instanceof ErrorMessage) {
 
@@ -323,7 +309,7 @@ public class WaterRower {
      */
     public boolean isConnectedWithSupportedMonitor() {
         if (isConnected())
-            return deviceConfirmed.get();
+            return deviceVerificationWatchdog.isDeviceConfirmed();
         return false;
     }
 
@@ -393,7 +379,7 @@ public class WaterRower {
      * @param subscription The subscription and callback, must not be null.
      */
     public void subscribe(ISubscription subscription) {
-        subscriptions.add(requireNonNull(subscription));
+        // TODO Subscribe
     }
 
     /**
@@ -402,7 +388,7 @@ public class WaterRower {
      * @param subscription The subscription, must not be null.
      */
     public void unsubscribe(ISubscription subscription) {
-        subscriptions.remove(requireNonNull(subscription));
+        // TODO Unsubscribe
     }
 
 
