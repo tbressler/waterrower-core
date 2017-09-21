@@ -176,9 +176,19 @@ public class RxtxCommunicationService {
     public void send(AbstractMessage msg) throws IOException {
         requireNonNull(msg);
 
-        checkIfChannelIsOpen();
+        lock.lock();
 
-        // TODO Send message!
+        try {
+
+            checkIfChannelIsOpen();
+
+            Log.debug(SERIAL, "Sending message '" + msg.toString() + "'.");
+
+            currentChannel.write(msg);
+
+        } finally {
+            lock.unlock();
+        }
     }
 
 
