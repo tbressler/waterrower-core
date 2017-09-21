@@ -1,4 +1,7 @@
 # WaterRower Core Library
+
+[![License](https://img.shields.io/badge/License-APL%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
+
 A Java library which connects the WaterRower S4/S5 Performance Monitor with your multi-platform Java application.
 
 ## Usage
