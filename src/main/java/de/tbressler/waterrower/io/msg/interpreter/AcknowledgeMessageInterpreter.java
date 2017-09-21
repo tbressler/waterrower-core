@@ -39,7 +39,7 @@ public class AcknowledgeMessageInterpreter extends AbstractMessageInterpreter<Ac
 
     @Override
     public String encode(AcknowledgeMessage msg) {
-        throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
+        throw new IllegalStateException("This type of message can not be send to the WaterRower S4/S5 monitor.");
     }
 
 }

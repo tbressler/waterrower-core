@@ -61,7 +61,7 @@ public class ReadMemoryMessage extends InformationRequestMessage {
 
 
     /**
-     * Returns the memory location (0 .. 4095), please refer to memory map of the Water Rower
+     * Returns the memory location (0 .. 4095), please refer to memory map of the WaterRower
      * monitor.
      *
      * @return The memory location (0 .. 4095).

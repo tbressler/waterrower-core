@@ -44,7 +44,7 @@ dependencies {
 jar {
 
     manifest {
-        attributes  'Implementation-Title': 'Water Rower Core Library',
+        attributes  'Implementation-Title': 'WaterRower Core Library',
                     'Implementation-Version': version
     }
 

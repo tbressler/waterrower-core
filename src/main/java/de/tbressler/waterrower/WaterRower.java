@@ -34,15 +34,17 @@ import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
 /**
- * The entry point of the Water Rower library.
- * This class connects with the Water Rower and exchanges the information between PC and Water Rower monitor.
+ * The entry point of the WaterRower library.
+ *
+ * This class connects with the WaterRower and exchanges the information between PC and
+ * WaterRower monitor.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
 public class WaterRower {
 
-    /* Maximum duration for the Water Rower device to send its device information. */
+    /* Maximum duration for the WaterRower device to send its device information. */
     private static Duration DEVICE_VERIFICATION_INTERVAL = ofSeconds(5);
 
     /* Maximum duration between ping messages.*/
@@ -65,7 +67,7 @@ public class WaterRower {
     /* The lock to synchronize connect and disconnect. */
     private ReentrantLock lock = new ReentrantLock(true);
 
-    /* Model information of connected Water Rower, maybe null if not connected. */
+    /* Model information of connected WaterRower, maybe null if not connected. */
     private ModelInformation modelInformation;
 
 
@@ -138,8 +140,10 @@ public class WaterRower {
 
 
     /**
-     * The entry point of the Water Rower library.
-     * This class connects with the Water Rower and exchanges the information between PC and Water Rower monitor.
+     * The entry point of the WaterRower library.
+     *
+     * This class connects with the WaterRower and exchanges the information between PC and
+     * WaterRower monitor.
      *
      * @param communicationService The RXTX communication service, must not be null.
      * @param connectionExecutorService The executor service for connection and sending, must not be null.
@@ -195,13 +199,13 @@ public class WaterRower {
 
             if (((HardwareTypeMessage) msg).isWaterRower()) {
 
-                Log.debug(LIBRARY, "Connected with Water Rower. Sending poll for model information.");
+                Log.debug(LIBRARY, "Connected with WaterRower. Sending poll for model information.");
 
                 sendMessageAsync(new RequestModelInformationMessage());
 
             } else {
 
-                Log.warn(LIBRARY, "The connected device is not a Water Rower!");
+                Log.warn(LIBRARY, "The connected device is not a WaterRower!");
 
                 fireOnError(DEVICE_NOT_SUPPORTED);
             }
@@ -210,12 +214,12 @@ public class WaterRower {
 
             modelInformation = ((ModelInformationMessage) msg).getModelInformation();
 
-            Log.debug(LIBRARY, "Received model information from connected Water Rower:\n" +
+            Log.debug(LIBRARY, "Received model information from connected WaterRower:\n" +
                     " Model: " + modelInformation);
 
             if (isSupportedWaterRower(modelInformation)) {
 
-                Log.debug(LIBRARY, "Monitor type and firmware are supported by this library. Successfully connected with Water Rower.");
+                Log.debug(LIBRARY, "Monitor type and firmware are supported by this library. Successfully connected with WaterRower.");
 
                 // Set device model confirmed and stop watchdog:
                 deviceVerificationWatchdog.setDeviceConfirmed(true);
@@ -228,14 +232,14 @@ public class WaterRower {
 
             } else {
 
-                Log.warn(LIBRARY, "The monitor type and/or firmware of the connected Water Rower are not supported by this library!");
+                Log.warn(LIBRARY, "The monitor type and/or firmware of the connected WaterRower are not supported by this library!");
 
                 fireOnError(DEVICE_NOT_SUPPORTED);
             }
 
         } else if (msg instanceof ErrorMessage) {
 
-            Log.debug(LIBRARY, "Error message received from Water Rower monitor.");
+            Log.debug(LIBRARY, "Error message received from WaterRower monitor.");
 
             fireOnError(ERROR_MESSAGE_RECEIVED);
         }
@@ -302,9 +306,9 @@ public class WaterRower {
 
 
     /**
-     * Returns true if connected to a supported Water Rower monitor.
+     * Returns true if connected to a supported WaterRower monitor.
      *
-     * @return True if connected to Water Rower monitor.
+     * @return True if connected to WaterRower monitor.
      */
     public boolean isConnectedWithSupportedMonitor() {
         if (isConnected())
@@ -322,13 +326,13 @@ public class WaterRower {
         try {
 
             if (!isConnected())
-                throw new IOException("Not connected! Can not send message to Water Rower.");
+                throw new IOException("Not connected! Can not send message to WaterRower.");
 
             connectionExecutorService.submit(() -> {
                 try {
                     sendMessageInternally(msg);
                 } catch (IOException e) {
-                    Log.error("Message couldn't be send to Water Rower!", e);
+                    Log.error("Message couldn't be send to WaterRower!", e);
                     fireOnError(COMMUNICATION_FAILED);
                 }
             });
@@ -366,7 +370,7 @@ public class WaterRower {
      */
     public void performReset() throws IOException {
 
-        Log.debug(LIBRARY, "Requesting Water Rower monitor to reset.");
+        Log.debug(LIBRARY, "Requesting WaterRower monitor to reset.");
 
         sendMessageAsync(new ResetMessage());
     }

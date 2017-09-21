@@ -17,7 +17,7 @@ public enum ErrorCode {
     /* Communication timed out (no ping received). */
     TIMEOUT,
 
-    /* The Water Rower monitor sent a error message. */
+    /* The WaterRower monitor sent a error message. */
     ERROR_MESSAGE_RECEIVED
 
 }

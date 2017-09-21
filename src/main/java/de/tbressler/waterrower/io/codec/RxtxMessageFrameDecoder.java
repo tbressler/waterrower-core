@@ -22,7 +22,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
 
-    /* The frame delimiter for serial messages from the Water Rower S4/S5 monitor. */
+    /* The frame delimiter for serial messages from the WaterRower S4/S5 monitor. */
     private final static char DELIMITER = 0x0D0A;
 
     /* The message parser. */

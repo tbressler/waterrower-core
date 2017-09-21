@@ -1,7 +1,10 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.log.Log;
-import io.netty.channel.*;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 
 import java.net.SocketAddress;
 

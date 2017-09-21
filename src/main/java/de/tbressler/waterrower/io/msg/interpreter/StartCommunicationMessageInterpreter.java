@@ -30,7 +30,7 @@ public class StartCommunicationMessageInterpreter extends AbstractMessageInterpr
 
     @Override
     public StartCommunicationMessage decode(String msg) {
-        throw new IllegalStateException("This type of message should not be send by Water Rower S4/S5 monitor to the PC.");
+        throw new IllegalStateException("This type of message should not be send by WaterRower S4/S5 monitor to the PC.");
     }
 
     @Override

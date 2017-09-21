@@ -20,7 +20,7 @@ public abstract class StrokeSubscription implements ISubscription {
 
     @Override
     public AbstractMessage poll() {
-        // No poll necessary! Strokes will be send automatically by Water Rower monitor.
+        // No poll necessary! Strokes will be send automatically by WaterRower monitor.
         return null;
     }
 

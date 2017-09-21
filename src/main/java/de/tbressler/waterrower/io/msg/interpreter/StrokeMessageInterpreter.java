@@ -62,7 +62,7 @@ public class StrokeMessageInterpreter extends AbstractMessageInterpreter<StrokeM
 
     @Override
     public String encode(StrokeMessage msg) {
-        throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
+        throw new IllegalStateException("This type of message can not be send to the WaterRower S4/S5 monitor.");
     }
 
 }

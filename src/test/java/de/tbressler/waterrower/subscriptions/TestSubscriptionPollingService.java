@@ -6,14 +6,11 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static java.time.Duration.ofSeconds;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.mockito.ArgumentCaptor.forClass;

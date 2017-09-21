@@ -39,7 +39,7 @@ public class PingMessageInterpreter extends AbstractMessageInterpreter<PingMessa
 
     @Override
     public String encode(PingMessage msg) {
-        throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
+        throw new IllegalStateException("This type of message can not be send to the WaterRower S4/S5 monitor.");
     }
 
 }

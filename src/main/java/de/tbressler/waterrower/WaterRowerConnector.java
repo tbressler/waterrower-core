@@ -16,7 +16,7 @@ import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Handles the connection to the Water Rower.
+ * Handles the connection to the WaterRower.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -37,7 +37,7 @@ public class WaterRowerConnector {
 
 
     /**
-     * Handles the connection to the Water Rower.
+     * Handles the connection to the WaterRower.
      *
      * @param communicationService The RXTX communication service, must not be null.
      * @param connectionExecutorService The executor service, must not be null.
@@ -136,7 +136,7 @@ public class WaterRowerConnector {
         try {
 
             if (!isConnected())
-                throw new IOException("Not connected! Can not send message to Water Rower.");
+                throw new IOException("Not connected! Can not send message to WaterRower.");
 
             connectionExecutorService.submit(() -> {
                 try {
@@ -145,7 +145,7 @@ public class WaterRowerConnector {
                     communicationService.send(msg);
 
                 } catch (IOException e) {
-                    Log.error("Message couldn't be send to Water Rower!", e);
+                    Log.error("Message couldn't be send to WaterRower!", e);
                     fireOnError();
                 }
             });

@@ -5,11 +5,10 @@ import de.tbressler.waterrower.io.msg.in.StrokeMessage;
 import de.tbressler.waterrower.model.StrokeType;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
 import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 /**

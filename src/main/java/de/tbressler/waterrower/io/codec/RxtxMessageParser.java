@@ -12,7 +12,7 @@ import static com.google.common.base.Charsets.UTF_8;
 import static de.tbressler.waterrower.log.Log.SERIAL;
 
 /**
- * Decodes and encodes messages received from or sent to the Water Rower S4/S5 monitor.
+ * Decodes and encodes messages received from or sent to the WaterRower S4/S5 monitor.
  *
  * @author Tobias Bressler
  * @version 1.0

@@ -8,10 +8,10 @@ package de.tbressler.waterrower.model;
  */
 public enum MonitorType {
 
-    /** Water Rower monitor S4. */
+    /** WaterRower monitor S4. */
     WATER_ROWER_S4,
 
-    /** Water Rower monitor S5. */
+    /** WaterRower monitor S5. */
     WATER_ROWER_S5,
 
     /** Unknown type of monitor. */

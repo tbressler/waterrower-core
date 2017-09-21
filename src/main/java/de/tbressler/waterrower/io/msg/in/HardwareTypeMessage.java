@@ -7,7 +7,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 /**
  * Hardware Type (S4/S5 -> PC).
  *
- * The Water Rower will reply with this packet when it receives a "USB" packet and will then
+ * The WaterRower will reply with this packet when it receives a "USB" packet and will then
  * proceed to send other packets accordingly until it switch’s off or the application issues an
  * exit packet.
  *
@@ -18,16 +18,16 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  */
 public class HardwareTypeMessage extends AbstractMessage {
 
-    /* True if the hardware is a "Water Rower". */
+    /* True if the connected device is a WaterRower. */
     private final boolean isWaterRower;
 
 
     /**
-     * The Water Rower will reply with this packet when it receives a "USB" packet and will then
+     * The WaterRower will reply with this packet when it receives a "USB" packet and will then
      * proceed to send other packets accordingly until it switch’s off or the application issues an
      * exit packet.
      *
-     * @param isWaterRower True if the hardware is a "Water Rower".
+     * @param isWaterRower True if the connected device is a WaterRower.
      */
     public HardwareTypeMessage(boolean isWaterRower) {
         this.isWaterRower = isWaterRower;
@@ -35,9 +35,9 @@ public class HardwareTypeMessage extends AbstractMessage {
 
 
     /**
-     * Returns true if the hardware type is a "Water Rower".
+     * Returns true if the hardware type is a "WaterRower".
      *
-     * @return True if the hardware is a "Water Rower".
+     * @return True if the hardware is a "WaterRower".
      */
     public boolean isWaterRower() {
         return isWaterRower;

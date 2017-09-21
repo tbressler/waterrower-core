@@ -1,4 +1,4 @@
-# Water Rower Core Library
+# WaterRower Core Library
 A Java library which connects the WaterRower S4/S5 Performance Monitor with your multi-platform Java application.
 
 ## Usage

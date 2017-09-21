@@ -31,7 +31,7 @@ public class SubscriptionPollingService {
     /* List of subscriptions. */
     private final List<ISubscription> subscriptions = new ArrayList<>();
 
-    /* The connector to the Water Rower. */
+    /* The connector to the WaterRower. */
     private final WaterRowerConnector connector;
 
     /* The executor service for polling of subscriptions. */
@@ -41,7 +41,7 @@ public class SubscriptionPollingService {
     private final AtomicBoolean isActive = new AtomicBoolean(false);
 
 
-    /* Listener for the connection to the Water Rower, which handles the received messages*/
+    /* Listener for the connection to the WaterRower, which handles the received messages*/
     private final IRxtxConnectionListener listener = new RxtxConnectionListener() {
         @Override
         public void onMessageReceived(AbstractMessage msg) {
@@ -61,7 +61,7 @@ public class SubscriptionPollingService {
      * The subscription polling manager.
      *
      * @param interval The polling interval (in milliseconds), must not be null.
-     * @param connector The connector to the Water Rower, must not be null.
+     * @param connector The connector to the WaterRower, must not be null.
      * @param executorService The executor service for the subscription polling, must not be null.
      */
     public SubscriptionPollingService(Duration interval, WaterRowerConnector connector, ScheduledExecutorService executorService) {

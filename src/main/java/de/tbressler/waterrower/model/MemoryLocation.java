@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.model;
 
 /**
- * Memory locations of the Water Rower S4, version 2.00.
+ * Memory locations of the WaterRower S4, version 2.00.
  *
  * @author Tobias Bressler
  * @version 1.0

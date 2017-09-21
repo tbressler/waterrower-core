@@ -30,7 +30,7 @@ public class ExitCommunicationMessageInterpreter extends AbstractMessageInterpre
 
     @Override
     public ExitCommunicationMessage decode(String msg) {
-        throw new IllegalStateException("This type of message should not be send by Water Rower S4/S5 monitor to the PC.");
+        throw new IllegalStateException("This type of message should not be send by WaterRower S4/S5 monitor to the PC.");
     }
 
     @Override

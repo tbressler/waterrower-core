@@ -8,7 +8,7 @@ import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
  *
  * Hardware Type (S4/S5 -> PC).
  *
- * The Water Rower will reply with this packet when it receives a "USB" packet and will then
+ * The WaterRower will reply with this packet when it receives a "USB" packet and will then
  * proceed to send other packets accordingly until it switch’s off or the application issues an
  * exit packet.
  *
@@ -37,7 +37,7 @@ public class HardwareTypeMessageInterpreter extends AbstractMessageInterpreter<H
 
     @Override
     public String encode(HardwareTypeMessage msg) {
-        throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
+        throw new IllegalStateException("This type of message can not be send to the WaterRower S4/S5 monitor.");
     }
 
 }
