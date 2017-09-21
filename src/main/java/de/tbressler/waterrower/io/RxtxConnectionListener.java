@@ -3,7 +3,7 @@ package de.tbressler.waterrower.io;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 
 /**
- *
+ * Simple implementation of the interface IRxtxConnectionListener.
  *
  * @author Tobias Bressler
  * @version 1.0

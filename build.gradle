@@ -28,10 +28,6 @@ dependencies {
     compile group: 'org.bidib.jbidib', name: 'jbidibc-rxtx-2.2', version: '1.6.0'
     compile group: 'org.bidib.jbidib', name: 'bidib-rxtx-binaries', version: '2.2'
 
-    // State machine:
-    compile group: 'com.github.oxo42', name: 'stateless4j', version: '2.5.0'
-
-
     // Utils:
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
 

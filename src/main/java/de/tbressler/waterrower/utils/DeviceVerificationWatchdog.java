@@ -1,29 +1,50 @@
 package de.tbressler.waterrower.utils;
 
+import de.tbressler.waterrower.log.Log;
+
 import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static de.tbressler.waterrower.log.Log.LIBRARY;
+
 /**
- *
+ * A watchdog which checks after the given amount of time, if the device is confirmed.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
 public abstract class DeviceVerificationWatchdog extends Watchdog {
 
+    /* True if the device is confirmed. */
     private AtomicBoolean deviceConfirmed = new AtomicBoolean(false);
 
 
+    /**
+     * A watchdog which checks after the given amount of time, if the device is confirmed.
+     *
+     * @param duration The duration when to check if the device is confirmed, must not be null.
+     * @param executorService The executor service, must not be null.
+     */
     public DeviceVerificationWatchdog(Duration duration, ScheduledExecutorService executorService) {
         super(duration, false, executorService);
     }
 
 
+    /**
+     * Set the device as confirmed or unconfirmed.
+     *
+     * @param isConfirmed True if the device is confirmed.
+     */
     public void setDeviceConfirmed(boolean isConfirmed) {
         deviceConfirmed.set(isConfirmed);
     }
 
+    /**
+     * Returns true if the device is confirmed.
+     *
+     * @return True if the device is confirmed.
+     */
     public boolean isDeviceConfirmed() {
         return deviceConfirmed.get();
     }
@@ -31,11 +52,19 @@ public abstract class DeviceVerificationWatchdog extends Watchdog {
 
     @Override
     protected final void wakeUpAndCheck() {
-        if (!isDeviceConfirmed())
+        Log.debug(LIBRARY, "Checking if device type is confirmed.");
+        if (!isDeviceConfirmed()) {
+            Log.warn(LIBRARY, "The device type was not confirmed yet!");
             onDeviceNotConfirmed();
+        }
     }
 
+
+    /**
+     * Will be called, if the device was not confirmed in the given amount of time.
+     */
     abstract protected void onDeviceNotConfirmed();
+
 
     @Override
     public void start() {

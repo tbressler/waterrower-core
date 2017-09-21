@@ -37,9 +37,10 @@ public class WaterRowerConnector {
 
 
     /**
+     * Handles the connection to the Water Rower.
      *
-     * @param communicationService
-     * @param connectionExecutorService
+     * @param communicationService The RXTX communication service, must not be null.
+     * @param connectionExecutorService The executor service, must not be null.
      */
     public WaterRowerConnector(RxtxCommunicationService communicationService, ExecutorService connectionExecutorService) {
         this.communicationService = requireNonNull(communicationService);
@@ -155,7 +156,7 @@ public class WaterRowerConnector {
     }
 
 
-    public void addRxtxConnectionListener(IRxtxConnectionListener listener) {
+    public void addConnectionListener(IRxtxConnectionListener listener) {
         listeners.add(requireNonNull(listener));
         communicationService.addRxtxConnectionListener(listener);
     }
@@ -166,7 +167,7 @@ public class WaterRowerConnector {
     }
 
 
-    public void removeRxtxConnectionListener(IRxtxConnectionListener listener) {
+    public void removeConnectionListener(IRxtxConnectionListener listener) {
         listeners.remove(requireNonNull(listener));
         communicationService.removeRxtxConnectionListener(listener);
     }

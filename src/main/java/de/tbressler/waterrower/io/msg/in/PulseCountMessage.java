@@ -9,9 +9,9 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  *
  * This packet is auto transmitted by the rowing computer.
  *
- * “XX” is an ACH value representing the number of pulse’s counted during the last 25mS
+ * "XX" is an ACH value representing the number of pulse’s counted during the last 25mS
  * period; this value can range from 1 to 50 typically. (Zero values will not be transmitted).
- * Please refer to “Water Rower Series 4 Rowing Algorithm.doc” for in depth details on how to use
+ * Please refer to "Water Rower Series 4 Rowing Algorithm.doc" for in depth details on how to use
  * this data. At this time the constant values are:
  *
  * pins_per_xxcm 32 ; number of pin edges allowed to equal xxcm (dec)

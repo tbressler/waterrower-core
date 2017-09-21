@@ -15,20 +15,20 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for class PingWatchdog.
+ * Tests for class DeviceVerificationWatchdog.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestPingWatchdog {
+public class TestDeviceVerificationWatchdog {
 
     // Class under test.
-    private PingWatchdog pingWatchdog;
+    private DeviceVerificationWatchdog watchdog;
 
     // Mocks:
     private Duration interval = ofSeconds(2);
     private ScheduledExecutorService executor = mock(ScheduledExecutorService.class, "executor");
-    private PingWatchdog internalWatchdog = mock(PingWatchdog.class, "internalWatchdog");
+    private DeviceVerificationWatchdog internalWatchdog = mock(DeviceVerificationWatchdog.class, "internalWatchdog");
 
     // Capture:
     private ArgumentCaptor<Runnable> task = forClass(Runnable.class);
@@ -38,17 +38,17 @@ public class TestPingWatchdog {
 
     @Test(expected = NullPointerException.class)
     public void new_withNullInterval_throwsNPE() {
-        new PingWatchdog(null, executor) {
+        new DeviceVerificationWatchdog(null, executor) {
             @Override
-            protected void onTimeout() {}
+            protected void onDeviceNotConfirmed() {}
         };
     }
 
     @Test(expected = NullPointerException.class)
     public void new_withNullExecutor_throwsNPE() {
-        new PingWatchdog(interval, null) {
+        new DeviceVerificationWatchdog(interval, null) {
             @Override
-            protected void onTimeout() {}
+            protected void onDeviceNotConfirmed() {}
         };
     }
 
@@ -56,9 +56,9 @@ public class TestPingWatchdog {
 
     @Test
     public void start_schedulesTask() {
-        pingWatchdog = newPingWatchdog(ofMillis(1));
+        watchdog = newDeviceVerificationWatchdog(ofMillis(1));
 
-        pingWatchdog.start();
+        watchdog.start();
 
         verify(executor, times(1)).schedule(any(Runnable.class), eq((long)1), eq(MILLISECONDS));
     }
@@ -67,73 +67,58 @@ public class TestPingWatchdog {
 
     @Test
     public void callRunnable_afterStartWithoutPingAfter50ms_executesOnTimeout() {
-        pingWatchdog = newPingWatchdog(ofMillis(1));
+        watchdog = newDeviceVerificationWatchdog(ofMillis(1));
 
-        pingWatchdog.start();
+        watchdog.start();
 
         verify(executor, times(1)).schedule(task.capture(), eq((long)1), eq(MILLISECONDS));
 
-        sleepUninterruptedly(50);
-
         task.getValue().run();
 
-        verify(internalWatchdog, times(1)).onTimeout();
-        verify(executor, times(2)).schedule(any(Runnable.class), eq((long)1), eq(MILLISECONDS));
+        verify(internalWatchdog, times(1)).onDeviceNotConfirmed();
+        verify(executor, times(1)).schedule(any(Runnable.class), eq((long)1), eq(MILLISECONDS));
     }
 
     @Test
     public void callRunnable_afterStartWithPingReceivedInTime_executesOnTimeout() {
-        pingWatchdog = newPingWatchdog(ofMillis(1000));
+        watchdog = newDeviceVerificationWatchdog(ofMillis(1000));
 
-        pingWatchdog.start();
+        watchdog.start();
 
         verify(executor, times(1)).schedule(task.capture(), eq((long)1000), eq(MILLISECONDS));
 
-        sleepUninterruptedly(50);
-
-        pingWatchdog.pingReceived();
+        watchdog.setDeviceConfirmed(true);
         task.getValue().run();
 
-        verify(internalWatchdog, never()).onTimeout();
-        verify(executor, times(2)).schedule(any(Runnable.class), eq((long)1000), eq(MILLISECONDS));
+        verify(internalWatchdog, never()).onDeviceNotConfirmed();
+        verify(executor, times(1)).schedule(any(Runnable.class), eq((long)1000), eq(MILLISECONDS));
     }
 
     @Test
     public void callRunnable_afterStop_doesntExecuteOnTimeout() {
-        pingWatchdog = newPingWatchdog(ofMillis(1));
+        watchdog = newDeviceVerificationWatchdog(ofMillis(1));
 
-        pingWatchdog.start();
+        watchdog.start();
 
         verify(executor, times(1)).schedule(task.capture(), eq((long)1), eq(MILLISECONDS));
 
-        pingWatchdog.stop();
-
-        sleepUninterruptedly(50);
+        watchdog.stop();
 
         task.getValue().run();
 
-        verify(internalWatchdog, never()).onTimeout();
+        verify(internalWatchdog, never()).onDeviceNotConfirmed();
         verify(executor, times(1)).schedule(any(Runnable.class), eq((long)1), eq(MILLISECONDS));
     }
 
-
     // Helper methods:
 
-    private PingWatchdog newPingWatchdog(Duration duration) {
-        return new PingWatchdog(duration, executor) {
+    private DeviceVerificationWatchdog newDeviceVerificationWatchdog(Duration duration) {
+        return new DeviceVerificationWatchdog(duration, executor) {
             @Override
-            protected void onTimeout() {
-                internalWatchdog.onTimeout();
+            protected void onDeviceNotConfirmed() {
+                internalWatchdog.onDeviceNotConfirmed();
             }
         };
-    }
-
-    private void sleepUninterruptedly(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 }

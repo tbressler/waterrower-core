@@ -8,6 +8,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+import static com.google.common.base.Charsets.UTF_8;
 import static de.tbressler.waterrower.io.utils.ByteUtils.bufferToString;
 import static de.tbressler.waterrower.log.Log.MESSAGES;
 import static de.tbressler.waterrower.log.Log.SERIAL;
@@ -70,7 +71,7 @@ public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
             in.readBytes(byteArray, 0, length - 1);
             in.readChar(); // Read delimiter from byte-stream.
 
-            Log.debug(SERIAL, "Message buffer decoded to: >" + new String(byteArray) + "<");
+            Log.debug(SERIAL, "Message buffer decoded to: >" + new String(byteArray, UTF_8) + "<");
 
             if (byteArray.length == 0) {
                 Log.debug(SERIAL, "No payload! Maybe only the delimiter was received.");

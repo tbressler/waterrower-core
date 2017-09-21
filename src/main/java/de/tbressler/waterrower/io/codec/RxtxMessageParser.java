@@ -35,16 +35,13 @@ public class RxtxMessageParser {
 
         // Information poll messages:
         interpreters.add(new InformationRequestMessageInterpreter());
-
-        // Incoming communication:
+        interpreters.add(new ConfigureWorkoutMessageInterpreter());
         interpreters.add(new PingMessageInterpreter());
         interpreters.add(new StrokeMessageInterpreter());
         interpreters.add(new AcknowledgeMessageInterpreter());
         interpreters.add(new ErrorMessageInterpreter());
         interpreters.add(new PulseCountMessageInterpreter());
         interpreters.add(new HardwareTypeMessageInterpreter());
-
-        // Outgoing communication:
         interpreters.add(new ExitCommunicationMessageInterpreter());
         interpreters.add(new ResetMessageInterpreter());
         interpreters.add(new StartCommunicationMessageInterpreter());

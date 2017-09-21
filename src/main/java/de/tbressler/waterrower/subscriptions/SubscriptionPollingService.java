@@ -68,7 +68,7 @@ public class SubscriptionPollingService {
         this.interval = requireNonNull(interval);
 
         this.connector = requireNonNull(connector);
-        this.connector.addRxtxConnectionListener(listener);
+        this.connector.addConnectionListener(listener);
 
         this.executorService = requireNonNull(executorService);
     }

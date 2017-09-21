@@ -1,7 +1,9 @@
 # Water Rower Core Library
-The first Java library for the Water Rower S4/S5 monitor.
+A Java library which connects the WaterRower S4/S5 Performance Monitor with your multi-platform Java application.
 
 ## Usage
+
+The library requires JDK 1.8 or higher.
 
 The usage of the library is very simple. Just start with the following example:
 
@@ -32,3 +34,11 @@ The following devices were tested:
 
 - S4: 2.xx
 - S5: ????
+
+## License
+
+Apache 2.0
+
+## Links
+
+- [WaterRower website](https://www.waterrower.com/world)

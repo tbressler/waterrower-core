@@ -39,7 +39,7 @@ public class ErrorMessageInterpreter extends AbstractMessageInterpreter<ErrorMes
 
     @Override
     public String encode(ErrorMessage msg) {
-        throw new IllegalStateException("This type of message can not be send to the Water Rower S4/S5 monitor.");
+        throw new IllegalStateException("This type of message can not be send to the WaterRower.");
     }
 
 }

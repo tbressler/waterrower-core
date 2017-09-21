@@ -37,7 +37,7 @@ public class TestWaterRowerConnector {
     @Before
     public void setUp() {
         connector = new WaterRowerConnector(communicationService, executorService);
-        connector.addRxtxConnectionListener(connectionListener);
+        connector.addConnectionListener(connectionListener);
     }
 
     // Constructor:
@@ -149,24 +149,24 @@ public class TestWaterRowerConnector {
     // Listener:
 
     @Test(expected = NullPointerException.class)
-    public void addRxtxConnectionListener_withNull() throws IOException {
-        connector.addRxtxConnectionListener(null);
+    public void addConnectionListener_withNull() throws IOException {
+        connector.addConnectionListener(null);
     }
 
     @Test
-    public void addRxtxConnectionListener_addsListenerToRxtxCommunicationService() throws IOException {
-        connector.addRxtxConnectionListener(connectionListener);
+    public void addConnectionListener_addsListenerToRxtxCommunicationService() throws IOException {
+        connector.addConnectionListener(connectionListener);
         verify(communicationService, times(2)).addRxtxConnectionListener(connectionListener);
     }
 
     @Test(expected = NullPointerException.class)
-    public void removeRxtxConnectionListener_withNull() throws IOException {
-        connector.removeRxtxConnectionListener(null);
+    public void removeConnectionListener_withNull() throws IOException {
+        connector.removeConnectionListener(null);
     }
 
     @Test
-    public void removeRxtxConnectionListener_removesListenerToRxtxCommunicationService() throws IOException {
-        connector.removeRxtxConnectionListener(connectionListener);
+    public void removeConnectionListener_removesListenerToRxtxCommunicationService() throws IOException {
+        connector.removeConnectionListener(connectionListener);
         verify(communicationService, times(1)).removeRxtxConnectionListener(connectionListener);
     }
 

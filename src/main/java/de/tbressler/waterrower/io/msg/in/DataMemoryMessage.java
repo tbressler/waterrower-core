@@ -41,7 +41,6 @@ import static de.tbressler.waterrower.io.msg.Memory.*;
  */
 public class DataMemoryMessage extends ReadMemoryMessage {
 
-
     /* The single byte of data Y1 (0 .. 255) from memory location. */
     private final int value1;
 
