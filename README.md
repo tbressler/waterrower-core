@@ -56,7 +56,7 @@ The following devices were tested:
    limitations under the License.
 ```
 
-## Changlelog
+## Changelog
 
 Currently under development. No releases yet.
 
