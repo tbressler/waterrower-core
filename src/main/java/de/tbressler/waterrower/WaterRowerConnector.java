@@ -156,17 +156,26 @@ public class WaterRowerConnector {
     }
 
 
+    /**
+     * Adds the connection listener.
+     *
+     * @param listener The listener, must not be null.
+     */
     public void addConnectionListener(IRxtxConnectionListener listener) {
         listeners.add(requireNonNull(listener));
         communicationService.addRxtxConnectionListener(listener);
     }
 
-
+    /* Notifies the listeners about an error. */
     private void fireOnError() {
         listeners.forEach(IRxtxConnectionListener::onError);
     }
 
-
+    /**
+     * Removes the connection listener.
+     *
+     * @param listener The listener, must not be null.
+     */
     public void removeConnectionListener(IRxtxConnectionListener listener) {
         listeners.remove(requireNonNull(listener));
         communicationService.removeRxtxConnectionListener(listener);
