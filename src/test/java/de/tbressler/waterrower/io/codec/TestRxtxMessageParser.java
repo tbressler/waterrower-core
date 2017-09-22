@@ -1,0 +1,164 @@
+package de.tbressler.waterrower.io.codec;
+
+import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.msg.IMessageInterpreter;
+import de.tbressler.waterrower.io.msg.in.ErrorMessage;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.base.Charsets.UTF_8;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+/**
+ * Tests for class RxtxMessageParser.
+ *
+ * @author Tobias Bressler
+ * @version 1.0
+ */
+public class TestRxtxMessageParser {
+
+    // Class under test.
+    private RxtxMessageParser parser;
+
+    // Mocks:
+    private IMessageInterpreter interpreter1 = mock(IMessageInterpreter.class, "interpreter1");
+    private IMessageInterpreter interpreter2 = mock(IMessageInterpreter.class, "interpreter2");
+
+    private List<IMessageInterpreter> interpreters = new ArrayList<>();
+
+    private AbstractMessage message = mock(AbstractMessage.class, "message");
+
+
+    @Before
+    public void setUp() {
+        interpreters.add(interpreter1);
+        interpreters.add(interpreter2);
+        parser = new RxtxMessageParser(interpreters);
+    }
+
+    // Constructor:
+
+    @Test(expected = NullPointerException.class)
+    public void new_withNull_throwsNPE() {
+        new RxtxMessageParser(null);
+    }
+
+    // Check interpreters:
+
+    @Test
+    public void checkInterpreters() {
+        parser = new RxtxMessageParser();
+        List<IMessageInterpreter> interpreters = parser.getInterpreters();
+        assertEquals(11, interpreters.size());
+    }
+
+    // Decode:
+
+    @Test
+    public void decode_withSuccessfulInterpreter1_returnsMessage() {
+
+        mockInterpreter(interpreter1, "T", "TEST", message);
+        mockInterpreter(interpreter2, "X", "TEST", null);
+
+        AbstractMessage result = parser.decode(newBytes("TEST"));
+
+        assertEquals(message, result);
+    }
+
+    @Test
+    public void decode_withSuccessfulInterpreter2_returnsMessage() {
+
+        mockInterpreter(interpreter1, "T", "XYZ", null);
+        mockInterpreter(interpreter2, "X", "XYZ", message);
+
+        AbstractMessage result = parser.decode(newBytes("XYZ"));
+
+        assertEquals(message, result);
+    }
+
+    @Test
+    public void decode_withInterpreterThatReturnsNullAsIdentifier_returnsMessage() {
+
+        mockInterpreter(interpreter1, null, "XYZ", null);
+        mockInterpreter(interpreter2, "X", "XYZ", message);
+
+        AbstractMessage result = parser.decode(newBytes("XYZ"));
+
+        assertEquals(message, result);
+    }
+
+    @Test
+    public void decode_withInterpretersReturningNull_returnsNull() {
+
+        mockInterpreter(interpreter1, "Y", "TEST", null);
+        mockInterpreter(interpreter2, "X", "TEST", null);
+
+        AbstractMessage result = parser.decode(newBytes("XYZ"));
+
+        assertNull(result);
+    }
+
+    // Encoder:
+
+    @Test
+    public void encode_withSupportedMessageType1_returnsMessage() {
+        mockInterpreter(interpreter1, message.getClass(), message, "TEST");
+        mockInterpreter(interpreter2, ErrorMessage.class, message, null);
+
+        byte[] result = parser.encode(message);
+
+        assertArrayEquals("TEST".getBytes(UTF_8), result);
+    }
+
+    @Test
+    public void encode_withSupportedMessageType2_returnsMessage() {
+        mockInterpreter(interpreter1, AbstractMessage.class, message, null);
+        mockInterpreter(interpreter2, message.getClass(), message, "TEST");
+
+        byte[] result = parser.encode(message);
+
+        assertArrayEquals("TEST".getBytes(UTF_8), result);
+    }
+
+    @Test
+    public void encode_withUnsupportedMessageType1_returnsMessage() {
+        mockInterpreter(interpreter1, AbstractMessage.class, message, null);
+        mockInterpreter(interpreter2, AbstractMessage.class, message, null);
+
+        byte[] result = parser.encode(message);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void encode_withUnsupportedMessageType2_returnsMessage() {
+        mockInterpreter(interpreter1, message.getClass(), message, null);
+        mockInterpreter(interpreter2, AbstractMessage.class, message, null);
+
+        byte[] result = parser.encode(message);
+
+        assertNull(result);
+    }
+
+    // Helper methods:
+
+    private byte[] newBytes(String content) {
+        return content.getBytes(UTF_8);
+    }
+
+    private void mockInterpreter(IMessageInterpreter interpreter, String identifier, String decodeMsg, AbstractMessage msg) {
+        when(interpreter.getMessageIdentifier()).thenReturn(identifier);
+        when(interpreter.decode(decodeMsg)).thenReturn(msg);
+    }
+
+    private void mockInterpreter(IMessageInterpreter interpreter, Class messageType, AbstractMessage encodeMsg, String msg) {
+        when(interpreter.getMessageType()).thenReturn(messageType);
+        when(interpreter.encode(encodeMsg)).thenReturn(msg);
+    }
+
+}

@@ -10,7 +10,7 @@ import io.netty.util.ReferenceCountUtil;
 import static de.tbressler.waterrower.log.Log.SERIAL;
 
 /**
- * Handler for serial messages.
+ * Handler for different events on the serial connection (e.g. connect, disconnect).
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -38,9 +38,9 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * Receives serial messages.
+     * Is called if a message was received.
      *
-     * @param message The serial message.
+     * @param message The message.
      */
     abstract protected void onMessageReceived(AbstractMessage message);
 
@@ -52,7 +52,7 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * Called if connection was established.
+     * Is called if connection was established.
      */
     abstract protected void onConnected();
 
@@ -64,7 +64,7 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * Called if connection was closed.
+     * Is called if connection was closed.
      */
     protected abstract void onDisconnected();
 
@@ -74,4 +74,5 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
         Log.error("Unexpected exception caught in "+this.getClass().getSimpleName() + "!", cause);
         ctx.close();
     }
+
 }

@@ -50,7 +50,7 @@ public class TestRxtxMessageFrameEncoder {
     @Test(expected = IllegalArgumentException.class)
     public void encode_withInvalidMessage_throwsException() throws Exception {
         ByteBuf out = Unpooled.directBuffer();
-        messageFrameEncoder.encode(ctx, new String("invalid-message-type"), out);
+        messageFrameEncoder.encode(ctx, "invalid-message-type", out);
     }
 
     /**
@@ -58,7 +58,7 @@ public class TestRxtxMessageFrameEncoder {
      */
     @Test
     public void encode_withValidStartCommunicationMessage_returnsCorrectBytes() throws Exception {
-        when(parser.encode(any(StartCommunicationMessage.class))).thenReturn(new String("USB").getBytes());
+        when(parser.encode(any(StartCommunicationMessage.class))).thenReturn("USB".getBytes());
 
         ByteBuf out = Unpooled.buffer();
         messageFrameEncoder.encode(ctx, new StartCommunicationMessage(), out);
@@ -71,9 +71,6 @@ public class TestRxtxMessageFrameEncoder {
      */
     @Test
     public void encode_whenMessageCantBeParsed_dontWriteToBuffer() throws Exception {
-
-        // TODO Improve test with buffer!
-
         when(parser.encode(any(StartCommunicationMessage.class))).thenReturn(null);
 
         ByteBuf out = Unpooled.buffer();

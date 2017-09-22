@@ -22,9 +22,6 @@ import static java.util.Objects.requireNonNull;
  */
 public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
 
-    /* The frame delimiter for serial messages from the WaterRower S4/S5 monitor. */
-    private final static char DELIMITER = 0x0D0A;
-
     /* The message parser. */
     private final RxtxMessageParser parser;
 
@@ -41,59 +38,33 @@ public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 
-        int startPosition = in.readerIndex();
-        int numberOfBytes = in.readableBytes();
-
         Log.debug(MESSAGES, "Decoder received new message buffer:\n" +
                 " Buffer: " + bufferToString(in));
 
-        // Check if bytes are available.
+        int numberOfBytes = in.readableBytes();
+
+        // Check if bytes are available and this is not an empty frame.
         if (numberOfBytes == 0) {
-            Log.warn(SERIAL, "No bytes in message buffer!");
+            Log.warn(SERIAL, "No bytes in message buffer! Skipping frame.");
             return;
         }
 
-        int length = 0;
-        while (in.readableBytes() > 0) {
+        byte [] byteArray = new byte[numberOfBytes];
 
-            length++;
+        in.readBytes(byteArray, 0, numberOfBytes);
 
-            if (in.readChar() != DELIMITER)
-                continue; // Delimiter not found.
+        Log.debug(SERIAL, "Message buffer decoded to: >" + new String(byteArray, UTF_8) + "<");
 
-            if (in.readerIndex() == startPosition)
-                return; // Only the delimiter was found.
+        // Decode the message.
+         AbstractMessage decodedMessage = parser.decode(byteArray);
+         if (decodedMessage == null) {
+             Log.debug(SERIAL, "Couldn't decode bytes to message! Skipping it.");
+             return;
+         }
 
-            byte [] byteArray = new byte[in.readerIndex() - 1 - startPosition];
+         out.add(decodedMessage);
 
-            in.readerIndex(startPosition);
-
-            in.readBytes(byteArray, 0, length - 1);
-            in.readChar(); // Read delimiter from byte-stream.
-
-            Log.debug(SERIAL, "Message buffer decoded to: >" + new String(byteArray, UTF_8) + "<");
-
-            if (byteArray.length == 0) {
-                Log.debug(SERIAL, "No payload! Maybe only the delimiter was received.");
-                return;
-            }
-
-            // Decode the message.
-            AbstractMessage decodedMessage = parser.decode(byteArray);
-            if (decodedMessage == null) {
-                Log.debug(SERIAL, "Couldn't decode bytes to message! Skipping it.");
-                return;
-            }
-
-            out.add(decodedMessage);
-
-            return;
+         return;
         }
-
-        in.readerIndex(startPosition);
-
-        Log.debug(SERIAL, "No delimiter found in message buffer. Waiting for next frame.\n" +
-                " Buffer set to: " + bufferToString(in));
-    }
 
 }

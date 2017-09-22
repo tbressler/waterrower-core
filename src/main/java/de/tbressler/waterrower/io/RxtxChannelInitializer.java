@@ -8,13 +8,13 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.rxtx.RxtxChannel;
 import io.netty.channel.rxtx.RxtxChannelConfig;
-
-import java.io.IOException;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 
 import static de.tbressler.waterrower.log.Log.SERIAL;
 import static io.netty.channel.rxtx.RxtxChannelConfig.Databits.DATABITS_8;
 import static io.netty.channel.rxtx.RxtxChannelConfig.Paritybit.NONE;
 import static io.netty.channel.rxtx.RxtxChannelConfig.Stopbits.STOPBITS_1;
+import static io.netty.handler.codec.Delimiters.lineDelimiter;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -24,6 +24,10 @@ import static java.util.Objects.requireNonNull;
  * @version 1.0
  */
 public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
+
+    /* Maximum length of a single frame. */
+    private static final int MAX_FRAME_LENGTH = 32;
+
 
     /* The handler of the serial channel. */
     private RxtxSerialHandler serialHandler;
@@ -59,9 +63,9 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
     }
 
     /* Checks if the RXTX serial handler is not null. */
-    private void checkIfRxTxSerialHandlerIsSet() throws IOException {
+    private void checkIfRxTxSerialHandlerIsSet() {
         if (serialHandler == null) {
-            IOException exception = new IOException("You forgot to set the serial handler before initializing the channel.");
+            IllegalStateException exception = new IllegalStateException("You forgot to set the serial handler before initializing the channel.");
             Log.error("RXTX channel couldn't be initialized!", exception);
             throw exception;
         }
@@ -91,8 +95,15 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
     /* Configures the pipeline. */
     private void configurePipeline(RxtxChannel channel) {
         ChannelPipeline pipeline = channel.pipeline();
+
+        // Decode messages:
+        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(MAX_FRAME_LENGTH, lineDelimiter()));
         pipeline.addLast("decoder", new RxtxMessageFrameDecoder(parser));
+
+        // Encode messages:
         pipeline.addLast("encoder", new RxtxMessageFrameEncoder(parser));
+
+        // Handle messages and exceptions:
         pipeline.addLast("handler", serialHandler);
         pipeline.addLast("exceptions", new RxtxExceptionHandler());
 

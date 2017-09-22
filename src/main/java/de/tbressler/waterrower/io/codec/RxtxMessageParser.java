@@ -10,6 +10,7 @@ import java.util.List;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static de.tbressler.waterrower.log.Log.SERIAL;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Decodes and encodes messages received from or sent to the WaterRower S4/S5 monitor.
@@ -24,16 +25,14 @@ public class RxtxMessageParser {
 
 
     /**
-     * Constructor.
+     * Decodes and encodes messages received from or sent to the WaterRower S4/S5 monitor.
      */
     public RxtxMessageParser() {
         createAndAddMessageInterpreters();
     }
 
-    /* Adds message interpreters to this parser. */
+    /* Add all message interpreters to this parser. */
     private void createAndAddMessageInterpreters() {
-
-        // Information poll messages:
         interpreters.add(new InformationRequestMessageInterpreter());
         interpreters.add(new ConfigureWorkoutMessageInterpreter());
         interpreters.add(new PingMessageInterpreter());
@@ -45,6 +44,21 @@ public class RxtxMessageParser {
         interpreters.add(new ExitCommunicationMessageInterpreter());
         interpreters.add(new ResetMessageInterpreter());
         interpreters.add(new StartCommunicationMessageInterpreter());
+    }
+
+    /* For testing purposes only! Returns all interpreters. */
+    List<IMessageInterpreter> getInterpreters() {
+        return interpreters;
+    }
+
+    /**
+     * Decodes and encodes messages received from or sent to the WaterRower S4/S5 monitor.
+     * Mainly used for test purposes!
+     *
+     * @param interpreters The interpreters for the different messages, must not be null.
+     */
+    RxtxMessageParser(List<IMessageInterpreter> interpreters) {
+        this.interpreters = requireNonNull(interpreters);
     }
 
 
@@ -98,7 +112,7 @@ public class RxtxMessageParser {
         for (IMessageInterpreter interpreter : interpreters) {
 
             // Check if message type matches:
-            if (msg.getClass().equals(interpreter.getMessageType()))
+            if (!msg.getClass().equals(interpreter.getMessageType()))
                 continue;
 
             // Encode object to message:

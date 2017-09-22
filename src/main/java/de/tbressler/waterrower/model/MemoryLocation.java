@@ -23,7 +23,7 @@ public enum MemoryLocation {
                                 //   3 = fprognostics fextended; prognostics active.
                                 //   4 = fworkout_dis fextended; workout distance mode
                                 //   5 = fworkout_dur fextended; workout duration mode
-                                //   6 =  fworkout_dis_i fextended; workout distance interval mode
+                                //   6 = fworkout_dis_i fextended; workout distance interval mode
                                 //   7 = fworkout_dur_i fextended; workout duration interval mode
 
     /*
