@@ -1,4 +1,4 @@
-group 'de.tbressler.waterrower.core'
+group 'de.tbressler.waterrower'
 version '1.0.0'
 
 apply plugin: 'java'
