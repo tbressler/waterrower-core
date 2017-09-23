@@ -60,6 +60,10 @@ The following devices were tested:
 
 Currently under development. No releases yet.
 
+## Contribution
+
+Feel free to contribute by forking this repository, making some changes, and submitting pull requests.
+
 ## Links
 
 - [WaterRower website](https://www.waterrower.com/world)
