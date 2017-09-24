@@ -123,6 +123,12 @@ public class TestWorkoutInterval {
     }
 
     @Test
+    public void getRestInterval_whenConstructedWithoutRestInterval_returnsValue0() {
+        interval = new WorkoutInterval(4321, METERS);
+        assertEquals(0, interval.getRestInterval());
+    }
+
+    @Test
     public void getDistance1_returnsValue() {
         interval = new WorkoutInterval(1234, 1, METERS);
         assertEquals(1, interval.getDistance());
