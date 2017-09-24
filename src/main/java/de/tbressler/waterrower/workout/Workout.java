@@ -39,13 +39,18 @@ public class Workout {
 
 
     /**
-     * Adds an interval to the workout.
+     * Adds an interval to the workout. 8 additional intervals can be added.
      *
-     * @param restInterval The rest interval (in seconds).
+     * @param restInterval The rest interval (in seconds). The rest interval must be greater
+     *                     than 0.
      * @param distance The distance/duration of the interval, using the same workout unit from the
      *                 first interval (constructor).
      */
     public void addInterval(int restInterval, int distance) {
+        if (intervals.size() > 8)
+            throw new IllegalStateException("Only 8 additional intervals allowed!");
+        if (restInterval < 1)
+            throw new IllegalArgumentException("Rest interval must be greater than 0!");
         isSingleWorkout = false;
         intervals.add(new WorkoutInterval(restInterval, distance, unit));
     }
