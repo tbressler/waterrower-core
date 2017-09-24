@@ -1,4 +1,7 @@
-package de.tbressler.waterrower.model;
+package de.tbressler.waterrower.workout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -13,6 +16,9 @@ public class Workout {
     /* True if this workout is a single workout. */
     private boolean isSingleWorkout = true;
 
+    /* A list of workout intervals. */
+    private List<WorkoutInterval> intervals = new ArrayList<>();
+
 
     /**
      * A workout configuration.
@@ -25,7 +31,7 @@ public class Workout {
     }
 
 
-    public void addInterval(int distance, int restInterval) {
+    public void addInterval(WorkoutInterval interval) {
         isSingleWorkout = false;
 
     }

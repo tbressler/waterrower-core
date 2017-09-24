@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
-import static de.tbressler.waterrower.model.WorkoutUnit.*;
+import static de.tbressler.waterrower.workout.WorkoutUnit.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 

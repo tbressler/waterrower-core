@@ -1,11 +1,11 @@
 package de.tbressler.waterrower.io.msg.out;
 
 import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType;
-import de.tbressler.waterrower.model.WorkoutUnit;
+import de.tbressler.waterrower.workout.WorkoutUnit;
 import org.junit.Test;
 
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
-import static de.tbressler.waterrower.model.WorkoutUnit.*;
+import static de.tbressler.waterrower.workout.WorkoutUnit.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

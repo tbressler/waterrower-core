@@ -1,4 +1,4 @@
-package de.tbressler.waterrower.model;
+package de.tbressler.waterrower.workout;
 
 /**
  * Different units for distance and duration workouts.

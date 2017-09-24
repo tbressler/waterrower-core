@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io.msg.out;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.model.WorkoutUnit;
+import de.tbressler.waterrower.workout.WorkoutUnit;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.END_INTERVAL_WORKOUT;
@@ -91,7 +91,7 @@ public class ConfigureWorkoutMessage extends AbstractMessage {
      *                 to 0x4650. This value is limited to 5 Hours, which is 18,000 seconds.
      * @param unit The unit of the workout, must not be null.
      * @param restInterval The rest interval (in seconds), which must be set for add or end interval workout messages.
-     *                     Valid values are 0x0001 to 0x4650 (and 0xFFFF for end interval workout).
+     *                     Valid values are 0x0001 to 0x0E10 (and 0xFFFF for end interval workout).
      */
     public ConfigureWorkoutMessage(MessageType messageType, int distance, WorkoutUnit unit, int restInterval) {
         this.messageType = requireNonNull(messageType);
@@ -109,7 +109,7 @@ public class ConfigureWorkoutMessage extends AbstractMessage {
                 break;
             case ADD_INTERVAL_WORKOUT:
                 if ((restInterval < 0x0001) || (restInterval > 0x0E10))
-                    throw new IllegalArgumentException("The rest interval must be between 0x001 and 0x0E10!");
+                    throw new IllegalArgumentException("The rest interval must be between 0x0001 and 0x0E10!");
                 break;
             case END_INTERVAL_WORKOUT:
                 if (restInterval != 0xFFFF)
@@ -185,7 +185,7 @@ public class ConfigureWorkoutMessage extends AbstractMessage {
 
     /**
      * Returns the rest interval (in seconds). The rest interval is only used for add or end interval workout
-     * messages. Valid values are 0x0001 to 0x4650 (and 0xFFFF for end interval workout).
+     * messages. Valid values are 0x0001 to 0x0E10 (and 0xFFFF for end interval workout).
      *
      * @return The rest interval (in seconds).
      */
