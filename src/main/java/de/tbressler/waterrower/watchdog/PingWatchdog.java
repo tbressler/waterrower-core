@@ -1,4 +1,4 @@
-package de.tbressler.waterrower.utils;
+package de.tbressler.waterrower.watchdog;
 
 import de.tbressler.waterrower.log.Log;
 
@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static de.tbressler.waterrower.log.Log.LIBRARY;
+import static de.tbressler.waterrower.watchdog.TimeoutReason.PING_TIMEOUT;
 import static java.lang.System.currentTimeMillis;
 
 /**
@@ -15,7 +16,7 @@ import static java.lang.System.currentTimeMillis;
  * @author Tobias Bressler
  * @version 1.0
  */
-public abstract class PingWatchdog extends Watchdog {
+public class PingWatchdog extends Watchdog {
 
     /* Maximum duration (in ms) between messages. If the duration between messages
      * exceeds, the method onTimeout() is called. */
@@ -50,15 +51,9 @@ public abstract class PingWatchdog extends Watchdog {
         Log.debug(LIBRARY, "Checking if a message (e.g. ping) was received in the last "+maxPingDuration+" ms.");
         if (currentTimeMillis() - lastReceivedPing.get() > maxPingDuration) {
             Log.warn(LIBRARY, "No message (e.g. ping) received in the last "+maxPingDuration+" ms.");
-            onTimeout();
+            fireOnTimeout(PING_TIMEOUT);
         }
     }
-
-
-    /**
-     * Will be called, if a timeout (no message since given duration) is detected.
-     */
-    abstract protected void onTimeout();
 
 
     @Override

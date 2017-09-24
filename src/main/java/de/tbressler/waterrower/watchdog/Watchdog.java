@@ -1,4 +1,4 @@
-package de.tbressler.waterrower.utils;
+package de.tbressler.waterrower.watchdog;
 
 import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,6 +26,9 @@ public abstract class Watchdog {
 
     /* True if watchdog is stopped. */
     private AtomicBoolean isStopped = new AtomicBoolean(true);
+
+    /* The listener that should be notified on timeout. */
+    private ITimeoutListener timeoutListener;
 
 
     /**
@@ -72,9 +75,32 @@ public abstract class Watchdog {
 
 
     /**
-     * The task that should be executed, when the watchdog wakes up.
+     * The task that should be executed, when the watchdog wakes up. Please call
+     * #fireOnTimeout(...) if a timeout was detected.
      */
     protected abstract void wakeUpAndCheck();
+
+
+    /**
+     * Notifies the listener about a timeout.
+     *
+     * @param reason The reason for the timeout, must not be null.
+     */
+    protected void fireOnTimeout(TimeoutReason reason) {
+        if (timeoutListener == null)
+            return;
+        timeoutListener.onTimeout(requireNonNull(reason));
+    }
+
+
+    /**
+     * Sets a timeout listener.
+     *
+     * @param listener The timeout listener or null.
+     */
+    public void setTimeoutListener(ITimeoutListener listener) {
+        this.timeoutListener = listener;
+    }
 
 
     /**

@@ -14,8 +14,8 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.subscriptions.ISubscription;
-import de.tbressler.waterrower.utils.DeviceVerificationWatchdog;
-import de.tbressler.waterrower.utils.PingWatchdog;
+import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
+import de.tbressler.waterrower.watchdog.PingWatchdog;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 
 import java.io.IOException;
@@ -73,21 +73,11 @@ public class WaterRower {
 
     /* Watchdog that checks if the device sends it's model information in order to verify
      * compatibility with the library. */
-    private DeviceVerificationWatchdog deviceVerificationWatchdog = new DeviceVerificationWatchdog(DEVICE_VERIFICATION_INTERVAL, scheduledExecutorService) {
-        @Override
-        public void onDeviceNotConfirmed() {
-            fireOnError(DEVICE_NOT_SUPPORTED);
-        }
-    };
+    private DeviceVerificationWatchdog deviceVerificationWatchdog = new DeviceVerificationWatchdog(DEVICE_VERIFICATION_INTERVAL, scheduledExecutorService);
 
 
     /* Watchdog that checks if a ping is received periodically. */
-    private PingWatchdog pingWatchdog = new PingWatchdog(PING_INTERVAL, scheduledExecutorService) {
-        @Override
-        protected void onTimeout() {
-            fireOnError(TIMEOUT);
-        }
-    };
+    private PingWatchdog pingWatchdog = new PingWatchdog(PING_INTERVAL, scheduledExecutorService);
 
 
     /* The listener for the RXTX connection. */

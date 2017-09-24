@@ -1,5 +1,6 @@
-package de.tbressler.waterrower.utils;
+package de.tbressler.waterrower.watchdog;
 
+import de.tbressler.waterrower.watchdog.Watchdog;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
