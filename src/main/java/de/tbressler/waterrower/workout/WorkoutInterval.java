@@ -41,7 +41,7 @@ public class WorkoutInterval {
      *
      * @param restInterval The rest interval (in seconds) or 0 if no rest interval must be
      *                     set. Usually for single workouts or the first interval of an interval
-     *                     workout. Valid values are 0x0001 to 0x0E10.
+     *                     workout. Valid values are 0x0000 to 0x0E10.
      * @param distance The distance (in meters/strokes) or duration (in seconds) of the workout. When unit = METERS,
      *                 MILES or KMS: this value is in Meters, the display value for miles is a conversion and valid
      *                 values are 0x0001 to 0xFA00. When unit = STROKES this value is the number of strokes and valid
@@ -58,7 +58,7 @@ public class WorkoutInterval {
     /* Checks if the rest interval is in range. */
     private int checkRestInterval(int restInterval) {
         if ((restInterval < 0x0000) || (restInterval > 0x0E10))
-            throw new IllegalArgumentException("The rest interval must be between 0x0001 and 0x0E10!");
+            throw new IllegalArgumentException("The rest interval must be between 0x0000 and 0x0E10!");
         return restInterval;
     }
 

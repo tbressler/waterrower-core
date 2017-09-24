@@ -24,12 +24,14 @@ public class Workout {
     private final WorkoutUnit unit;
 
 
-    // TODO The value ranges must be described here!
     /**
      * A workout configuration.
      *
-     * @param distance The distance/duration of the single workout or the first interval of the
-     *                 interval workout.
+     * @param distance The distance (in meters/strokes) or duration (in seconds) of the workout. When unit = METERS,
+     *                 MILES or KMS: this value is in Meters, the display value for miles is a conversion and valid
+     *                 values are 0x0001 to 0xFA00. When unit = STROKES this value is the number of strokes and valid
+     *                 values are 0x0001 to 0x1388. When unit = SECONDS this value is in seconds. Valid values are 0x0001
+     *                 to 0x4650. This value is limited to 5 Hours, which is 18,000 seconds.
      * @param unit The unit for the distance/duration of the single or interval workout.
      */
     public Workout(int distance, WorkoutUnit unit) {
@@ -41,10 +43,16 @@ public class Workout {
     /**
      * Adds an interval to the workout. 8 additional intervals can be added.
      *
-     * @param restInterval The rest interval (in seconds). The rest interval must be greater
-     *                     than 0.
+     * @param restInterval The rest interval (in seconds) or 0 if no rest interval must be
+     *                     set. Usually for single workouts or the first interval of an interval
+     *                     workout. Valid values are 0x0000 to 0x0E10.
      * @param distance The distance/duration of the interval, using the same workout unit from the
-     *                 first interval (constructor).
+     *                 first interval (constructor). When unit = METERS, MILES or KMS: this value
+     *                 is in Meters, the display value for miles is a conversion and valid values
+     *                 are 0x0001 to 0xFA00. When unit = STROKES this value is the number of
+     *                 strokes and valid values are 0x0001 to 0x1388. When unit = SECONDS this
+     *                 value is in seconds. Valid values are 0x0001 to 0x4650. This value is
+     *                 limited to 5 Hours, which is 18,000 seconds.
      */
     public void addInterval(int restInterval, int distance) {
         if (intervals.size() > 8)
