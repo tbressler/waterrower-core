@@ -40,7 +40,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class WaterRowerV2 {
+public class WaterRower {
 
     /* Handles the connection to the WaterRower. */
     private final WaterRowerConnector connector;
@@ -106,10 +106,10 @@ public class WaterRowerV2 {
      * @param subscriptionPollingService The subscription polling service, which polls and
      *                                   handles the subscriptions. Must not be null.
      */
-    public WaterRowerV2(WaterRowerConnector connector,
-                        PingWatchdog pingWatchdog,
-                        DeviceVerificationWatchdog deviceVerificationWatchdog,
-                        SubscriptionPollingService subscriptionPollingService) {
+    public WaterRower(WaterRowerConnector connector,
+                      PingWatchdog pingWatchdog,
+                      DeviceVerificationWatchdog deviceVerificationWatchdog,
+                      SubscriptionPollingService subscriptionPollingService) {
 
         this.connector = requireNonNull(connector);
         this.connector.addConnectionListener(connectionListener);
