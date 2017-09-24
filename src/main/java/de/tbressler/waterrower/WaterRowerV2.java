@@ -205,6 +205,9 @@ public class WaterRowerV2 {
                 // Start ping watchdog.
                 pingWatchdog.start();
 
+                // Start subscription polling service.
+                subscriptionPollingService.start();
+
                 fireOnConnected(modelInformation);
 
             } else {
@@ -243,8 +246,11 @@ public class WaterRowerV2 {
     public void disconnect() throws IOException {
         checkIfConnected();
 
+        stopInternalServices();
+
         // Be polite and send a goodbye.
         connector.send(new ExitCommunicationMessage());
+
         // Disconnect.
         connector.disconnect();
     }
@@ -255,10 +261,17 @@ public class WaterRowerV2 {
 
         Log.debug(LIBRARY, "RXTX disconnected.");
 
-        deviceVerificationWatchdog.stop();
-        pingWatchdog.stop();
+        stopInternalServices();
 
         fireOnDisconnected();
+    }
+
+
+    /* Stop internal services. */
+    private void stopInternalServices() {
+        subscriptionPollingService.stop();
+        deviceVerificationWatchdog.stop();
+        pingWatchdog.stop();
     }
 
 
