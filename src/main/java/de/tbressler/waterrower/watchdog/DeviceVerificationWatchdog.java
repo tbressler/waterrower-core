@@ -7,7 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static de.tbressler.waterrower.log.Log.LIBRARY;
-import static de.tbressler.waterrower.watchdog.TimeoutReason.DEVICE_NOT_CONFIRMED;
+import static de.tbressler.waterrower.watchdog.TimeoutReason.DEVICE_NOT_CONFIRMED_TIMEOUT;
 
 /**
  * A watchdog which checks after the given amount of time, if the device is confirmed.
@@ -56,7 +56,7 @@ public class DeviceVerificationWatchdog extends Watchdog {
         Log.debug(LIBRARY, "Checking if device type is confirmed.");
         if (!isDeviceConfirmed()) {
             Log.warn(LIBRARY, "The device type was not confirmed yet!");
-            fireOnTimeout(DEVICE_NOT_CONFIRMED);
+            fireOnTimeout(DEVICE_NOT_CONFIRMED_TIMEOUT);
         }
     }
 

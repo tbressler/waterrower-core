@@ -1,20 +1,5 @@
 package de.tbressler.waterrower.watchdog;
 
-import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
-import java.time.Duration;
-import java.util.concurrent.ScheduledExecutorService;
-
-import static java.time.Duration.ofMillis;
-import static java.time.Duration.ofSeconds;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
 /**
  * Tests for class DeviceVerificationWatchdog.
  *

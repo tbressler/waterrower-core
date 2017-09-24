@@ -12,6 +12,6 @@ public enum TimeoutReason {
     PING_TIMEOUT,
 
     /* No confirmation of the device type received. */
-    DEVICE_NOT_CONFIRMED
+    DEVICE_NOT_CONFIRMED_TIMEOUT
 
 }
