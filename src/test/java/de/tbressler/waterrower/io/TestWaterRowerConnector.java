@@ -1,8 +1,5 @@
 package de.tbressler.waterrower.io;
 
-import de.tbressler.waterrower.io.IRxtxConnectionListener;
-import de.tbressler.waterrower.io.RxtxCommunicationService;
-import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 import org.junit.Before;
