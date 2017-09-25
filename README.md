@@ -29,6 +29,8 @@ waterRower.disconnect();
 
 ### Subscribe
 
+```Java
+
 // Subscribe to events:
 waterRower.subscribe(new StrokeSubscription() {
     public void onStroke(StrokeType strokeType) {
