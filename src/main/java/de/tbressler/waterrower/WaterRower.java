@@ -6,10 +6,7 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
-import de.tbressler.waterrower.io.msg.out.ExitCommunicationMessage;
-import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
-import de.tbressler.waterrower.io.msg.out.ResetMessage;
-import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
+import de.tbressler.waterrower.io.msg.out.*;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
@@ -19,12 +16,15 @@ import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
 import de.tbressler.waterrower.watchdog.ITimeoutListener;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
 import de.tbressler.waterrower.workout.Workout;
+import de.tbressler.waterrower.workout.WorkoutInterval;
+import de.tbressler.waterrower.workout.WorkoutUnit;
 import io.netty.channel.rxtx.RxtxDeviceAddress;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
 import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static de.tbressler.waterrower.model.ErrorCode.*;
 import static de.tbressler.waterrower.utils.WaterRowerCompatibility.isSupportedWaterRower;
@@ -97,19 +97,34 @@ public class WaterRower {
      * This class connects with the WaterRower and exchanges the information between PC and
      * WaterRower monitor.
      *
+     * @param configurator
+     */
+    public WaterRower(WaterRowerInitializer configurator) {
+        this(configurator.getWaterRowerConnector(),
+                configurator.getPingWatchdog(),
+                configurator.getDeviceVerificationWatchdog(),
+                configurator.getSubscriptionPollingService());
+    }
+
+    /**
+     * The entry point of the WaterRower library.
+     *
+     * This class connects with the WaterRower and exchanges the information between PC and
+     * WaterRower monitor.
+     *
      * @param connector The connector to the WaterRower, must not be null.
-     * @param pingWatchdog The Watchdog that checks if a ping is received periodically, must not
+     * @param pingWatchdog The watchdog that checks if a ping is received periodically, must not
      *                     be null.
-     * @param deviceVerificationWatchdog Watchdog that checks if the device sends it's model
+     * @param deviceVerificationWatchdog The watchdog that checks if the device sends it's model
      *                                   information in order to verify compatibility with the
      *                                   library. Must not be null.
      * @param subscriptionPollingService The subscription polling service, which polls and
      *                                   handles the subscriptions. Must not be null.
      */
-    public WaterRower(WaterRowerConnector connector,
-                      PingWatchdog pingWatchdog,
-                      DeviceVerificationWatchdog deviceVerificationWatchdog,
-                      SubscriptionPollingService subscriptionPollingService) {
+    WaterRower(WaterRowerConnector connector,
+                  PingWatchdog pingWatchdog,
+                  DeviceVerificationWatchdog deviceVerificationWatchdog,
+                  SubscriptionPollingService subscriptionPollingService) {
 
         this.connector = requireNonNull(connector);
         this.connector.addConnectionListener(connectionListener);
@@ -214,6 +229,9 @@ public class WaterRower {
 
                 Log.warn(LIBRARY, "The monitor type and/or firmware of the connected WaterRower are not supported by this library!");
 
+                deviceVerificationWatchdog.setDeviceConfirmed(false);
+                deviceVerificationWatchdog.stop();
+
                 fireOnError(DEVICE_NOT_SUPPORTED);
             }
 
@@ -244,7 +262,8 @@ public class WaterRower {
      * @throws IOException If disconnect fails.
      */
     public void disconnect() throws IOException {
-        checkIfConnected();
+        if (!connector.isConnected())
+            throw new IOException("Not connected! Can not disconnect.");
 
         stopInternalServices();
 
@@ -289,8 +308,76 @@ public class WaterRower {
 
 
     public void startWorkout(Workout workout) throws IOException {
+        requireNonNull(workout);
         checkIfConnected();
-        // TODO Start workout
+
+        if (workout.isSingleWorkout()) {
+            sendSingleWorkout(workout);
+        } else {
+            sendIntervalWorkout(workout);
+        }
+    }
+
+    /* Sends a single workout to the WaterRower. */
+    private void sendSingleWorkout(Workout workout) throws IOException {
+
+        List<WorkoutInterval> workoutIntervals = workout.getWorkoutIntervals();
+        if (workoutIntervals.size() != 1)
+            throw new IllegalStateException("A single workout must have one workout interval!");
+
+        WorkoutInterval interval = workoutIntervals.get(0);
+
+        int distance = interval.getDistance();
+        WorkoutUnit unit = interval.getUnit();
+
+        Log.debug(LIBRARY, "Sending single workout with " + distance + " " + unit + ".");
+
+        ConfigureWorkoutMessage msg = new ConfigureWorkoutMessage(SINGLE_WORKOUT, distance, unit);
+        connector.send(msg);
+    }
+
+    /* Sends an interval workout to the WaterRower. */
+    private void sendIntervalWorkout(Workout workout) throws IOException {
+
+        List<WorkoutInterval> workoutIntervals = workout.getWorkoutIntervals();
+
+        int numberOfIntervals = workoutIntervals.size();
+
+        if (numberOfIntervals < 2)
+            throw new IllegalStateException("An interval workout must have at least two workout interval!");
+
+        Log.debug(LIBRARY, "Sending interval workout with "+ numberOfIntervals +" intervals...");
+
+        WorkoutInterval interval;
+        int distance;
+        int restInterval;
+        WorkoutUnit unit;
+        ConfigureWorkoutMessage msg;
+
+        for(int i = 0; i < numberOfIntervals; i++) {
+
+            interval = workoutIntervals.get(i);
+
+            distance = interval.getDistance();
+            restInterval = (i == 0) ? -1 : interval.getRestInterval();
+            unit = interval.getUnit();
+
+            Log.debug(LIBRARY, "Sending interval: " + interval);
+
+            msg = new ConfigureWorkoutMessage((i == 0) ? START_INTERVAL_WORKOUT : ADD_INTERVAL_WORKOUT, distance, unit, restInterval);
+            connector.send(msg);
+
+            // If this is the last interval, send the end interval message.
+            if (i == (numberOfIntervals - 1)) {
+
+                Log.debug(LIBRARY, "Sending the end message for interval workout.");
+
+                msg = new ConfigureWorkoutMessage(END_INTERVAL_WORKOUT, 0xFFFF, unit, 0xFFFF);
+                connector.send(msg);
+            }
+        }
+
+        Log.debug(LIBRARY, "Sending of interval workout finished.");
     }
 
 

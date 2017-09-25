@@ -8,14 +8,26 @@ A Java library which connects the WaterRower S4/S5 Performance Monitor with your
 
 The library requires JDK 1.8 or higher.
 
-The usage of the library is very simple. Just start with the following example:
+The usage of the library is very simple. Just start with the following examples:
+
+### Connect / disconnect
 
 ```Java
 
 // Establish a connection:
-WaterRower waterRower = new WaterRower();
+WaterRowerInitializer initializer = new WaterRowerInitializer(ofSeconds(2), ofSeconds(2), 5);
+WaterRower waterRower = new WaterRower(initializer);
 waterRower.addConnectionListener(...);
 waterRower.connect(...);
+
+...
+
+// Disconnect:
+waterRower.disconnect();
+
+```
+
+### Subscribe
 
 // Subscribe to events:
 waterRower.subscribe(new StrokeSubscription() {
@@ -26,8 +38,23 @@ waterRower.subscribe(new StrokeSubscription() {
 
 ...
 
-// Disconnect:
-waterRower.disconnect();
+```
+
+### Configure workouts
+
+```Java
+
+// Send a single workout:
+Workout workout = new Workout(2000, METERS);
+waterRower.startWorkout(workout);
+
+// Send an interval workout:
+Workout workout = new Workout(1000, METERS);
+workout.addInterval(30, 2000);
+workout.addInterval(30, 2000);
+waterRower.startWorkout(workout);
+
+...
 
 ```
 
