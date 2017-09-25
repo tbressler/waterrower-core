@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.subscriptions;
 
-import de.tbressler.waterrower.WaterRowerConnector;
+import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import org.junit.Before;

@@ -1,6 +1,7 @@
 package de.tbressler.waterrower;
 
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
+import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;

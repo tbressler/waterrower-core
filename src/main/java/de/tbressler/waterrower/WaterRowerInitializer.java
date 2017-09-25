@@ -2,13 +2,13 @@ package de.tbressler.waterrower;
 
 import de.tbressler.waterrower.io.RxtxChannelInitializer;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
+import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
 import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
 import io.netty.bootstrap.Bootstrap;
 
 import java.time.Duration;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 

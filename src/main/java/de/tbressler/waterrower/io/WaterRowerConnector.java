@@ -1,4 +1,4 @@
-package de.tbressler.waterrower;
+package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.IRxtxConnectionListener;
 import de.tbressler.waterrower.io.RxtxCommunicationService;
