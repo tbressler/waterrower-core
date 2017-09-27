@@ -55,6 +55,7 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
         this.distanceMode = distanceMode;
     }
 
+    /* Returns the memory location for the given distance mode. */
     private static MemoryLocation getMemoryLocation(DistanceMode distanceMode) {
         switch (requireNonNull(distanceMode)) {
             case DISTANCE:
