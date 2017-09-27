@@ -107,4 +107,18 @@ public class MessageUtils {
         return ((mask & value) > 0);
     }
 
+
+    /**
+     * Returns the integer from the two byte values.
+     *
+     * @param high The high byte.
+     * @param low The low byte.
+     * @return The integer as combination of high and low bytes.
+     */
+    public static int intFromHighAndLow(int high, int low) {
+        if ((high < 0x00) || (high > 0xFF) || (low < 0x00) || (low > 0xFF))
+            throw new IllegalArgumentException("The low or high value is out of range!");
+        return (high << 8) + low;
+    }
+
 }

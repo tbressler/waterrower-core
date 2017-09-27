@@ -86,7 +86,7 @@ public class TestWorkoutModeSubscription {
     private WorkoutModeSubscription newWorkoutModeSubscription() {
         return new WorkoutModeSubscription() {
             @Override
-            void onWorkoutModeUpdated(WorkoutFlags flags) {
+            protected void onWorkoutModeUpdated(WorkoutFlags flags) {
                 internalSubscription.onWorkoutModeUpdated(flags);
             }
         };

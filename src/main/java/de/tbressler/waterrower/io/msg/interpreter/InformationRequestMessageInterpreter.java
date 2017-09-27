@@ -112,21 +112,21 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
             // Parse values from double memory locations:
 
             int location = achToInt(msg.substring(3, 6));
-            int value1 = achToInt(msg.substring(6, 8));
-            int value2 = achToInt(msg.substring(8, 10));
+            int value2 = achToInt(msg.substring(6, 8));
+            int value1 = achToInt(msg.substring(8, 10));
 
-            return new DataMemoryMessage(location, value1, value2);
+            return new DataMemoryMessage(location, value2, value1);
 
         } else if (msg.startsWith("IDT")) {
 
             // Parse values from triple memory locations:
 
             int location = achToInt(msg.substring(3, 6));
-            int value1 = achToInt(msg.substring(6, 8));
+            int value3 = achToInt(msg.substring(6, 8));
             int value2 = achToInt(msg.substring(8, 10));
-            int value3 = achToInt(msg.substring(10, 12));
+            int value1 = achToInt(msg.substring(10, 12));
 
-            return new DataMemoryMessage(location, value1, value2, value3);
+            return new DataMemoryMessage(location, value3, value2, value1);
         }
 
         Log.warn(SERIAL, "Message couldn't be decoded!\n" +

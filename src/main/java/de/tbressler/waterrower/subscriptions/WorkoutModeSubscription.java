@@ -57,6 +57,6 @@ public abstract class WorkoutModeSubscription extends AbstractMemorySubscription
      *
      * @param flags The flags of the workout mode, never null.
      */
-    abstract void onWorkoutModeUpdated(WorkoutFlags flags);
+    protected abstract void onWorkoutModeUpdated(WorkoutFlags flags);
 
 }

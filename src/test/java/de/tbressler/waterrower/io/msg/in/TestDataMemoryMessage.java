@@ -72,6 +72,9 @@ public class TestDataMemoryMessage {
     }
 
 
+    // TODO Test other constructors!
+
+
     @Test
     public void toString_returnsObjectInfo() {
         DataMemoryMessage msg = new DataMemoryMessage(1, 1);

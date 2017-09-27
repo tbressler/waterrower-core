@@ -61,9 +61,9 @@ public class DataMemoryMessage extends ReadMemoryMessage {
      */
     public DataMemoryMessage(int location, int value1) {
         super(SINGLE_MEMORY, location);
-        this.value1 = assertValueRange(value1);
-        this.value2 = -1;
         this.value3 = -1;
+        this.value2 = -1;
+        this.value1 = assertValueRange(value1);
     }
 
     /**
@@ -72,14 +72,14 @@ public class DataMemoryMessage extends ReadMemoryMessage {
      *
      * @param location The memory location (0 .. 4095), please refer to memory map of the Water
      *                 Rower monitor.
-     * @param value1 The single byte of data Y1 (0 .. 255) from memory location.
      * @param value2 The single byte of data Y2 (0 .. 255) from memory location.
+     * @param value1 The single byte of data Y1 (0 .. 255) from memory location.
      */
-    public DataMemoryMessage(int location, int value1, int value2) {
+    public DataMemoryMessage(int location, int value2, int value1) {
         super(DOUBLE_MEMORY, location);
-        this.value1 = assertValueRange(value1);
-        this.value2 = assertValueRange(value2);
         this.value3 = -1;
+        this.value2 = assertValueRange(value2);
+        this.value1 = assertValueRange(value1);
     }
 
     /**
@@ -88,15 +88,15 @@ public class DataMemoryMessage extends ReadMemoryMessage {
      *
      * @param location The memory location (0 .. 4095), please refer to memory map of the Water
      *                 Rower monitor.
-     * @param value1 The single byte of data Y1 (0 .. 255) from memory location.
-     * @param value2 The single byte of data Y2 (0 .. 255) from memory location.
      * @param value3 The single byte of data Y3 (0 .. 255) from memory location.
+     * @param value2 The single byte of data Y2 (0 .. 255) from memory location.
+     * @param value1 The single byte of data Y1 (0 .. 255) from memory location.
      */
-    public DataMemoryMessage(int location, int value1, int value2, int value3) {
+    public DataMemoryMessage(int location, int value3, int value2, int value1) {
         super(TRIPLE_MEMORY, location);
-        this.value1 = assertValueRange(value1);
-        this.value2 = assertValueRange(value2);
         this.value3 = assertValueRange(value3);
+        this.value2 = assertValueRange(value2);
+        this.value1 = assertValueRange(value1);
     }
 
     /* Throws IllegalArgumentException if value is out of range. */
@@ -108,12 +108,13 @@ public class DataMemoryMessage extends ReadMemoryMessage {
 
 
     /**
-     * Returns the single byte of data Y1 from the memory location.
+     * Returns the single byte of data Y3 from the memory location.
      *
-     * @return The single byte of data (0 .. 255) from memory location.
+     * @return The single byte of data (0 .. 255) from memory location. The value is -1 for
+     * SINGLE_MEMORY or DOUBLE_MEMORY messages.
      */
-    public int getValue1() {
-        return value1;
+    public int getValue3() {
+        return value3;
     }
 
 
@@ -129,13 +130,12 @@ public class DataMemoryMessage extends ReadMemoryMessage {
 
 
     /**
-     * Returns the single byte of data Y3 from the memory location.
+     * Returns the single byte of data Y1 from the memory location.
      *
-     * @return The single byte of data (0 .. 255) from memory location. The value is -1 for
-     * SINGLE_MEMORY or DOUBLE_MEMORY messages.
+     * @return The single byte of data (0 .. 255) from memory location.
      */
-    public int getValue3() {
-        return value3;
+    public int getValue1() {
+        return value1;
     }
 
 
@@ -144,9 +144,9 @@ public class DataMemoryMessage extends ReadMemoryMessage {
         return toStringHelper(this)
                 .add("memory", getMemory())
                 .add("location", getLocation())
-                .add("value1", value1)
-                .add("value2", value2)
                 .add("value3", value3)
+                .add("value2", value2)
+                .add("value1", value1)
                 .toString();
     }
 

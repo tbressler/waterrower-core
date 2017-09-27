@@ -85,7 +85,7 @@ public class TestInformationRequestMessageInterpreter {
         InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDS00101");
 
         assertNotNull(msg);
-        assertDataMemoryMessage(msg, SINGLE_MEMORY, 1, 1, -1, -1);
+        assertDataMemoryMessage(msg, SINGLE_MEMORY, 1, -1, -1, 1);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class TestInformationRequestMessageInterpreter {
         InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDSFFF00");
 
         assertNotNull(msg);
-        assertDataMemoryMessage(msg, SINGLE_MEMORY, 4095, 0, -1, -1);
+        assertDataMemoryMessage(msg, SINGLE_MEMORY, 4095, -1, -1, 0);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class TestInformationRequestMessageInterpreter {
         InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDS000FF");
 
         assertNotNull(msg);
-        assertDataMemoryMessage(msg, SINGLE_MEMORY, 0, 255, -1, -1);
+        assertDataMemoryMessage(msg, SINGLE_MEMORY, 0, -1, -1, 255);
     }
 
     // Decode double memory locations:
@@ -111,7 +111,7 @@ public class TestInformationRequestMessageInterpreter {
         InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDD0010101");
 
         assertNotNull(msg);
-        assertDataMemoryMessage(msg, DOUBLE_MEMORY, 1, 1, 1, -1);
+        assertDataMemoryMessage(msg, DOUBLE_MEMORY, 1, -1, 1, 1);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class TestInformationRequestMessageInterpreter {
         InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDDFFF0000");
 
         assertNotNull(msg);
-        assertDataMemoryMessage(msg, DOUBLE_MEMORY, 4095, 0, 0, -1);
+        assertDataMemoryMessage(msg, DOUBLE_MEMORY, 4095, -1, 0, 0);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class TestInformationRequestMessageInterpreter {
         InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDD000FFFF");
 
         assertNotNull(msg);
-        assertDataMemoryMessage(msg, DOUBLE_MEMORY, 0, 255, 255, -1);
+        assertDataMemoryMessage(msg, DOUBLE_MEMORY, 0, -1, 255, 255);
     }
 
     @Test
@@ -135,7 +135,7 @@ public class TestInformationRequestMessageInterpreter {
         InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDD0000102");
 
         assertNotNull(msg);
-        assertDataMemoryMessage(msg, DOUBLE_MEMORY, 0, 1, 2, -1);
+        assertDataMemoryMessage(msg, DOUBLE_MEMORY, 0, -1, 1, 2);
     }
 
     // Decode triple memory locations:
@@ -270,14 +270,14 @@ public class TestInformationRequestMessageInterpreter {
     }
 
     /* Assert the content of the DataMemoryMessage. */
-    private void assertDataMemoryMessage(InformationRequestMessage msg, Memory expectedMemory, int expectedLocation, int expectedValue1, int expectedValue2, int expectedValue3) {
+    private void assertDataMemoryMessage(InformationRequestMessage msg, Memory expectedMemory, int expectedLocation, int expectedValue3, int expectedValue2, int expectedValue1) {
         assertEquals(DataMemoryMessage.class, msg.getClass());
         DataMemoryMessage dataMemoryMessage = (DataMemoryMessage) msg;
         assertEquals(expectedLocation, dataMemoryMessage.getLocation());
         assertEquals(expectedMemory, dataMemoryMessage.getMemory() );
-        assertEquals(expectedValue1, dataMemoryMessage.getValue1());
-        assertEquals(expectedValue2, dataMemoryMessage.getValue2());
         assertEquals(expectedValue3, dataMemoryMessage.getValue3());
+        assertEquals(expectedValue2, dataMemoryMessage.getValue2());
+        assertEquals(expectedValue1, dataMemoryMessage.getValue1());
     }
 
     /* Assert the content of the ModelInformationMessage. */
