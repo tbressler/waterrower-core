@@ -11,10 +11,10 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class WaterRowerCompatibility {
+public class Compatibility {
 
     /* Private constructor. */
-    private WaterRowerCompatibility() {}
+    private Compatibility() {}
 
 
     /**

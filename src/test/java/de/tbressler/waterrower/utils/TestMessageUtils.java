@@ -2,16 +2,16 @@ package de.tbressler.waterrower.utils;
 
 import org.junit.Test;
 
-import static de.tbressler.waterrower.utils.ASCIIUtils.*;
-import static org.junit.Assert.assertEquals;
+import static de.tbressler.waterrower.utils.MessageUtils.*;
+import static org.junit.Assert.*;
 
 /**
- * Tests for class ASCIIUtils.
+ * Tests for class MessageUtils.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestASCIIUtils {
+public class TestMessageUtils {
 
     // ACD to int:
 
@@ -169,6 +169,86 @@ public class TestASCIIUtils {
     @Test
     public void intToAch_with16ValueAnd3Chars_returns010() {
         assertEquals("010", intToAch(16, 3));
+    }
+
+    // Boolean from Byte:
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getBooleanFromByte_withValueGreaterThan0xFF_throwsIAE() throws Exception {
+        getBooleanFromByte(0x100, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getBooleanFromByte_withValueLowerThan0x00_throwsIAE() throws Exception {
+        getBooleanFromByte(-1, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getBooleanFromByte_withIndexLowerThan0_throwsIAE() throws Exception {
+        getBooleanFromByte(0x00, -1);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getBooleanFromByte_withIndexGreaterThan7_throwsIAE() throws Exception {
+        getBooleanFromByte(0x00, 8);
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x00AndIndex0to7_returnsFalse() throws Exception {
+        for (int i=0; i<=7; i++)
+            assertFalse(getBooleanFromByte(0x00, i));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0xFFAndIndex0to7_returnsTrue() throws Exception {
+        for (int i=0; i<=7; i++)
+            assertTrue(getBooleanFromByte(0xFF, i));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x01AndIndex0_returnsTrue() throws Exception {
+        assertTrue(getBooleanFromByte(0x01, 0));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x02AndIndex0_returnsFalse() throws Exception {
+        assertFalse(getBooleanFromByte(0x02, 0));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x02AndIndex1_returnsTrue() throws Exception {
+        assertTrue(getBooleanFromByte(0x02, 1));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x04AndIndex2_returnsTrue() throws Exception {
+        assertTrue(getBooleanFromByte(0x04, 2));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x08AndIndex3_returnsTrue() throws Exception {
+        assertTrue(getBooleanFromByte(0x08, 3));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x10AndIndex4_returnsTrue() throws Exception {
+        assertTrue(getBooleanFromByte(0x10, 4));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x20AndIndex5_returnsTrue() throws Exception {
+        assertTrue(getBooleanFromByte(0x20, 5));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x40AndIndex6_returnsTrue() throws Exception {
+        assertTrue(getBooleanFromByte(0x40, 6));
+    }
+
+    @Test
+    public void getBooleanFromByte_withValue0x80AndIndex7_returnsTrue() throws Exception {
+        assertTrue(getBooleanFromByte(0x80, 7));
     }
 
 }

@@ -3,7 +3,7 @@ package de.tbressler.waterrower.model;
 import org.junit.Test;
 
 import static de.tbressler.waterrower.model.MemoryLocation.*;
-import static de.tbressler.waterrower.utils.ASCIIUtils.intToAch;
+import static de.tbressler.waterrower.utils.MessageUtils.intToAch;
 import static org.junit.Assert.assertEquals;
 
 /**

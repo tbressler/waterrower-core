@@ -14,10 +14,10 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ASCIIUtils {
+public class MessageUtils {
 
     /* Private constructor. */
-    private ASCIIUtils() {}
+    private MessageUtils() {}
 
 
     /**
@@ -84,6 +84,27 @@ public class ASCIIUtils {
         for(int i=0; i<numberOfLeadingZeros; i++)
             ascii = "0"+ascii;
         return ascii;
+    }
+
+
+    /**
+     * Returns true if the bit at the given index is 1.
+     *
+     * @param value The value, must be in range 0x00 to 0xFF.
+     * @param index The index, must be in range 0 to 7.
+     * @return True if the bit at the index is 1.
+     */
+    public static boolean getBooleanFromByte(int value, int index) {
+        if ((index > 7) || (index < 0))
+            throw new IllegalArgumentException("The index is out of range! Only values between 0 and 7 allowed.");
+        if ((value < 0) || (value > 0xFF))
+            throw new IllegalArgumentException("The value is is out of range! Only values between 0x00 and 0xFF allowed.!");
+
+        int mask = 0x01;
+        for (int i=0; i < index; i++)
+            mask = mask << 1;
+
+        return ((mask & value) > 0);
     }
 
 }

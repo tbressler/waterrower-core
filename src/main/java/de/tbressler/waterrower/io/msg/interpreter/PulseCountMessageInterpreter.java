@@ -4,7 +4,7 @@ import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
 import de.tbressler.waterrower.log.Log;
 
-import static de.tbressler.waterrower.utils.ASCIIUtils.achToInt;
+import static de.tbressler.waterrower.utils.MessageUtils.achToInt;
 
 /**
  * Interpreter for:

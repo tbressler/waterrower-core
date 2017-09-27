@@ -4,17 +4,17 @@ import de.tbressler.waterrower.model.ModelInformation;
 import org.junit.Test;
 
 import static de.tbressler.waterrower.model.MonitorType.*;
-import static de.tbressler.waterrower.utils.WaterRowerCompatibility.isSupportedWaterRower;
+import static de.tbressler.waterrower.utils.Compatibility.isSupportedWaterRower;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for class WaterRowerCompatibility.
+ * Tests for class Compatibility.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestWaterRowerCompatibility {
+public class TestCompatibility {
 
     @Test(expected = NullPointerException.class)
     public void isSupportedWaterRower_withNullModelInformation_throwsException() {

@@ -40,10 +40,13 @@ public class WaterRowerInitializer {
      * Initializes the dependencies of the WaterRower class based on the given parameters.
      *
      * @param pollingInterval The polling interval for the subscriptions, must not be null.
+     *                        Recommended = 1 second.
      * @param timeoutInterval The timeout interval for messages, if a message was not received from the WaterRower
      *                        during this interval a timeout error will get fired, must not be null.
+     *                        Recommended = 1 second.
      * @param threadPoolSize The number of threads to keep in the pool, which should be used by the WaterRower
-     *                       service even if they are idle .
+     *                       service even if they are idle.
+     *                       Recommended = 5.
      */
     public WaterRowerInitializer(Duration pollingInterval, Duration timeoutInterval, int threadPoolSize) {
         requireNonNull(pollingInterval);
@@ -70,16 +73,16 @@ public class WaterRowerInitializer {
     /**
      * Returns the connector, which handles the connection to the WaterRower.
      *
-     * @return The connector.
+     * @return The connector, never null.
      */
     WaterRowerConnector getWaterRowerConnector() {
         return connector;
     }
 
     /**
-     * Returns the watchdog that checks if a ping is received periodically.
+     * Returns the watchdog that checks if a ping was received periodically.
      *
-     * @return The watchdog.
+     * @return The watchdog, never null.
      */
     PingWatchdog getPingWatchdog() {
         return pingWatchdog;
@@ -89,7 +92,7 @@ public class WaterRowerInitializer {
      * Returns the watchdog that checks if the device sends it's model information in order to verify
      * compatibility with the library.
      *
-     * @return The watchdog.
+     * @return The watchdog, never null.
      */
     DeviceVerificationWatchdog getDeviceVerificationWatchdog() {
         return deviceVerificationWatchdog;
@@ -98,7 +101,7 @@ public class WaterRowerInitializer {
     /**
      * Returns the subscription polling service, which polls and handles the subscriptions.
      *
-     * @return The subscription polling service.
+     * @return The subscription polling service, never null.
      */
     SubscriptionPollingService getSubscriptionPollingService() {
         return subscriptionPollingService;

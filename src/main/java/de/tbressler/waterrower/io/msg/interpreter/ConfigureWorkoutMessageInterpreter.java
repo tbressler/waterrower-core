@@ -5,7 +5,7 @@ import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage;
 import de.tbressler.waterrower.log.Log;
 
 import static de.tbressler.waterrower.log.Log.SERIAL;
-import static de.tbressler.waterrower.utils.ASCIIUtils.intToAch;
+import static de.tbressler.waterrower.utils.MessageUtils.intToAch;
 
 /**
  * Interpreter for: ConfigureWorkoutMessage

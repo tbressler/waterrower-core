@@ -28,7 +28,7 @@ import java.util.List;
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
 import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static de.tbressler.waterrower.model.ErrorCode.*;
-import static de.tbressler.waterrower.utils.WaterRowerCompatibility.isSupportedWaterRower;
+import static de.tbressler.waterrower.utils.Compatibility.isSupportedWaterRower;
 import static de.tbressler.waterrower.watchdog.TimeoutReason.DEVICE_NOT_CONFIRMED_TIMEOUT;
 import static java.util.Objects.requireNonNull;
 
@@ -248,7 +248,7 @@ public class WaterRower {
     /**
      * Returns true if connected to a supported WaterRower monitor.
      *
-     * @return True if connected to WaterRower monitor.
+     * @return True if connected to a WaterRower monitor.
      */
     public boolean isConnected() {
         if (!connector.isConnected())
@@ -297,10 +297,9 @@ public class WaterRower {
 
     /**
      * Request the rowing computer to perform a reset; this will be identical to the user performing this with the
-     * power button. Used prior to configuring the rowing computer from a PC. Interactive mode will be disabled on a
-     * reset.
+     * power button.
      *
-     * @throws IOException If the message couldn't be send.
+     * @throws IOException If the reset couldn't be send.
      */
     public void performReset() throws IOException {
         checkIfConnected();
@@ -308,6 +307,13 @@ public class WaterRower {
     }
 
 
+    /**
+     * Sends a workout configuration to the WaterRower. A configuration can be a single or an interval workout.
+     *
+     * @param workout The workout configuration for single or interval workouts, must not be null.
+     *
+     * @throws IOException If the workout couldn't be send.
+     */
     public void startWorkout(Workout workout) throws IOException {
         requireNonNull(workout);
         checkIfConnected();

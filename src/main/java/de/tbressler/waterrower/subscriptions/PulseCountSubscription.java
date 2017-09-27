@@ -12,16 +12,16 @@ import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
 public abstract class PulseCountSubscription implements ISubscription {
 
     @Override
-    public AbstractMessage poll() {
+    public final AbstractMessage poll() {
         // No poll necessary! Pulse count will be send automatically by WaterRower monitor.
         return null;
     }
 
     @Override
-    public void handle(AbstractMessage msg) {
-        if (msg instanceof PulseCountMessage) {
-            onPulseCount(((PulseCountMessage) msg).getPulsesCounted());
-        }
+    public final void handle(AbstractMessage msg) {
+        if (!(msg instanceof PulseCountMessage))
+            return;
+        onPulseCount(((PulseCountMessage) msg).getPulsesCounted());
     }
 
 

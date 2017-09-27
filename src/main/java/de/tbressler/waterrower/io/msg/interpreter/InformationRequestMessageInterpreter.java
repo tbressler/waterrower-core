@@ -12,8 +12,8 @@ import de.tbressler.waterrower.model.MonitorType;
 
 import static de.tbressler.waterrower.log.Log.SERIAL;
 import static de.tbressler.waterrower.model.MonitorType.*;
-import static de.tbressler.waterrower.utils.ASCIIUtils.achToInt;
-import static de.tbressler.waterrower.utils.ASCIIUtils.intToAch;
+import static de.tbressler.waterrower.utils.MessageUtils.achToInt;
+import static de.tbressler.waterrower.utils.MessageUtils.intToAch;
 
 /**
  * Interpreter for:
