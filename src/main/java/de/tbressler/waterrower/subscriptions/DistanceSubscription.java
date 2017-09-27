@@ -9,7 +9,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Subscription for the distance value.
+ * Subscription for the distance values.
  *
  * This subscription can be used for the different types of distances at the WaterRower:
  * - distance
@@ -45,7 +45,7 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
 
 
     /**
-     * Subscription to the displayed distance value.
+     * Subscription to the displayed distance values.
      *
      * @param distanceMode The distance mode (e.g. total distance or displayed distance), must
      *                 not be null.
@@ -64,7 +64,7 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
             case TOTAL_DISTANCE:
                 return TOTAL_DIS_LOW;
             default:
-                throw new IllegalArgumentException("Unhandled value for distance!");
+                throw new IllegalArgumentException("Unhandled distance mode!");
         }
     }
 
@@ -73,7 +73,7 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
     protected final void handle(DataMemoryMessage msg) {
         int distance = intFromHighAndLow(msg.getValue2(), msg.getValue1());
 
-        // If the received workout flags are the same as before,
+        // If the received distance is the same as before,
         // don't send an update.
         if (lastDistance == distance)
             return;
