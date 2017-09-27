@@ -13,18 +13,18 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for class WorkoutModeSubscription.
+ * Tests for class WorkoutFlagsSubscription.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestWorkoutModeSubscription {
+public class TestWorkoutFlagsSubscription {
 
     // Class under test.
-    private WorkoutModeSubscription subscription;
+    private WorkoutFlagsSubscription subscription;
 
     // Mocks:
-    private WorkoutModeSubscription internalSubscription = mock(WorkoutModeSubscription.class, "internalSubscription");
+    private WorkoutFlagsSubscription internalSubscription = mock(WorkoutFlagsSubscription.class, "internalSubscription");
 
 
     // Polling:
@@ -83,8 +83,8 @@ public class TestWorkoutModeSubscription {
 
     // Helper methods:
 
-    private WorkoutModeSubscription newWorkoutModeSubscription() {
-        return new WorkoutModeSubscription() {
+    private WorkoutFlagsSubscription newWorkoutModeSubscription() {
+        return new WorkoutFlagsSubscription() {
             @Override
             protected void onWorkoutModeUpdated(WorkoutFlags flags) {
                 internalSubscription.onWorkoutModeUpdated(flags);
