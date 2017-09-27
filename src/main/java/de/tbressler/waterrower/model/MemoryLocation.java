@@ -45,11 +45,19 @@ public enum MemoryLocation {
     DISTANCE_LOW(0x057),        // low byte of meters
     DISTANCE_HI(0x058),         // hi byte of meters and km (65535meters max)
 
+    /* Clock count down, this is 16bit value: */
+
+    CLOCK_DOWN_DEC(0x05a),      // seconds 0.9-0.0
+    CLOCK_DOWN_LOW(0x05b),      // low byte clock count down
+    CLOCK_DOWN_HI(0x05c),       // hi byte clock count down
+
+
     KCAL_WATTS_LOW(0x088),
     KCAL_WATTS_HI(0x089),
     TOTAL_KCAL_LOW(0x08a),
     TOTAL_KCAL_HI(0x08b),
     TOTAL_KCAL_UP(0x08c),
+
 
     /* Total distance meter counter - this is stored at switch off: */
 
@@ -97,8 +105,58 @@ public enum MemoryLocation {
     WORKOUT_STROKEL(0x1ec),     // total workout strokes
     WORKOUT_STROKEH(0x1ed),
     WORKOUT_LIMIT_H(0x1ee),     // this is the limit value for workouts
-    WORKOUT_LIMIT_L(0x1ef);
+    WORKOUT_LIMIT_L(0x1ef),
 
+    /*
+     * Interval's:
+     *
+     * These are the interval timing's in use or being programmed.
+     */
+
+    WORKOUT_WORK1_L(0x1b0),
+    WORKOUT_WORK1_H(0x1b1),
+    WORKOUT_REST1_L(0x1b2),
+    WORKOUT_REST1_H(0x1b3),
+
+    WORKOUT_WORK2_L(0x1b4),
+    WORKOUT_WORK2_H(0x1b5),
+    WORKOUT_REST2_L(0x1b6),
+    WORKOUT_REST2_H(0x1b7),
+
+    WORKOUT_WORK3_L(0x1b8),
+    WORKOUT_WORK3_H(0x1b9),
+    WORKOUT_REST3_L(0x1ba),
+    WORKOUT_REST3_H(0x1bb),
+
+    WORKOUT_WORK4_L(0x1bc),
+    WORKOUT_WORK4_H(0x1bd),
+    WORKOUT_REST4_L(0x1be),
+    WORKOUT_REST4_H(0x1bf),
+
+    WORKOUT_WORK5_L(0x1c0),
+    WORKOUT_WORK5_H(0x1c1),
+    WORKOUT_REST5_L(0x1c2),
+    WORKOUT_REST5_H(0x1c3),
+
+    WORKOUT_WORK6_L(0x1c4),
+    WORKOUT_WORK6_H(0x1c5),
+    WORKOUT_REST6_L(0x1c6),
+    WORKOUT_REST6_H(0x1c7),
+
+    WORKOUT_WORK7_L(0x1c8),
+    WORKOUT_WORK7_H(0x1c9),
+    WORKOUT_REST7_L(0x1ca),
+    WORKOUT_REST7_H(0x1cb),
+
+    WORKOUT_WORK8_L(0x1cc),
+    WORKOUT_WORK8_H(0x1cd),
+    WORKOUT_REST8_L(0x1ce),
+    WORKOUT_REST8_H(0x1cf),
+
+    WORKOUT_WORK9_L(0x1d0),
+    WORKOUT_WORK9_H(0x1d1),
+
+    WORKOUT_INTER(0x1d9);       // No work workout intervals
 
 
     /* The memory location as decimal. */

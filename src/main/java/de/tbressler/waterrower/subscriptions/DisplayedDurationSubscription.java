@@ -9,7 +9,7 @@ import static de.tbressler.waterrower.model.MemoryLocation.DISPLAY_SEC;
 import static java.time.Duration.ofSeconds;
 
 /**
- * Subscription for the duration values.
+ * Subscription for the displayed duration values.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -21,7 +21,7 @@ public abstract class DisplayedDurationSubscription extends AbstractMemorySubscr
 
 
     /**
-     * Subscription to the distance value.
+     * Subscription to the displayed duration value.
      */
     public DisplayedDurationSubscription() {
         super(TRIPLE_MEMORY, DISPLAY_SEC);
@@ -47,7 +47,7 @@ public abstract class DisplayedDurationSubscription extends AbstractMemorySubscr
 
 
     /**
-     * Is called if the value for the duration was updated.
+     * Is called if the value for the displayed duration was updated.
      *
      * @param duration The new duration, never null.
      */
