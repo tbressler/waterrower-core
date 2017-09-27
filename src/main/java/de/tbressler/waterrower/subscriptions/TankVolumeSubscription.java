@@ -20,6 +20,7 @@ public abstract class TankVolumeSubscription extends AbstractMemorySubscription 
         super(SINGLE_MEMORY, TANK_VOLUME);
     }
 
+
     @Override
     protected final void handle(DataMemoryMessage msg) {
         int tankVolume = msg.getValue1();

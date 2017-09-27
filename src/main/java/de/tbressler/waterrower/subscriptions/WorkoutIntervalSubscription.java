@@ -22,10 +22,10 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
     public enum IntervalType {
 
         /* Rest interval. */
-        REST,
+        REST_INTERVAL,
 
         /* Row interval. */
-        ROW
+        ROW_INTERVAL
     }
 
 
@@ -45,7 +45,8 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
      *
      * @param intervalType The interval type (e.g. row or rest), must not be null.
      * @param intervalIndex The index of the workout interval. Must be between 0 and 8 for
-     *                      interval type ROW and between 0 and 7 for interval type REST.
+     *                      interval type REST_INTERVAL and between 0 and 7 for interval type
+     *                      ROW_INTERVAL.
      */
     public WorkoutIntervalSubscription(IntervalType intervalType, int intervalIndex) {
         super(DOUBLE_MEMORY, getMemoryLocation(intervalType, intervalIndex));
@@ -56,7 +57,7 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
     /* Returns the memory location for the given interval type and interval index. */
     private static MemoryLocation getMemoryLocation(IntervalType intervalType, int intervalIndex) {
         switch (requireNonNull(intervalType)) {
-            case ROW:
+            case ROW_INTERVAL:
                 if (intervalIndex == 0)  return WORKOUT_WORK1_L;
                 else if (intervalIndex == 1)  return WORKOUT_WORK2_L;
                 else if (intervalIndex == 2)  return WORKOUT_WORK3_L;
@@ -67,7 +68,7 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
                 else if (intervalIndex == 7)  return WORKOUT_WORK8_L;
                 else if (intervalIndex == 8)  return WORKOUT_WORK9_L;
                 else throw new IllegalArgumentException("Interval index is out of range! Index must be between 0 and 8.");
-            case REST:
+            case REST_INTERVAL:
                 if (intervalIndex == 0)  return WORKOUT_REST1_L;
                 else if (intervalIndex == 1)  return WORKOUT_REST2_L;
                 else if (intervalIndex == 2)  return WORKOUT_REST3_L;
