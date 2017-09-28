@@ -93,7 +93,7 @@ public class SubscriptionPollingService {
     /* Execute the task. */
     private void executeTask() {
 
-        Log.debug(LIBRARY, "Start polling for subscriptions...");
+        Log.debug(LIBRARY, "Start polling for "+subscriptions.size()+" subscription(s)...");
 
         for (ISubscription subscription : subscriptions) {
 
@@ -128,21 +128,23 @@ public class SubscriptionPollingService {
 
 
     /**
-     * Subscribe to events. This will start the polling for the given data.
+     * Subscribe to data/events. This will start the polling for the given data.
      *
      * @param subscription The subscription and callback, must not be null.
      */
     public void subscribe(ISubscription subscription) {
         subscriptions.add(requireNonNull(subscription));
+        Log.debug(LIBRARY, "Added subscription: " + subscription.getClass().getSimpleName());
     }
 
     /**
-     * Unsubscribe from events. This will stop the polling for the given data.
+     * Unsubscribe from data/events. This will stop the polling for the given data.
      *
      * @param subscription The subscription, must not be null.
      */
     public void unsubscribe(ISubscription subscription) {
         subscriptions.remove(requireNonNull(subscription));
+        Log.debug(LIBRARY, "Removed subscription: " + subscription.getClass().getSimpleName());
     }
 
 }

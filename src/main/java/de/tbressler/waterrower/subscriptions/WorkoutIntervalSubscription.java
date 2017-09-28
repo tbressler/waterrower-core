@@ -79,7 +79,7 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
                 else if (intervalIndex == 7)  return WORKOUT_REST8_L;
                 else throw new IllegalArgumentException("Interval index is out of range! Index must be between 0 and 7.");
             default:
-                throw new IllegalArgumentException("Unhandled interval type!");
+                throw new IllegalStateException("Unhandled interval type!");
         }
     }
 

@@ -65,7 +65,7 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
             case TOTAL_DISTANCE:
                 return TOTAL_DIS_LOW;
             default:
-                throw new IllegalArgumentException("Unhandled distance mode!");
+                throw new IllegalStateException("Unhandled distance mode!");
         }
     }
 
