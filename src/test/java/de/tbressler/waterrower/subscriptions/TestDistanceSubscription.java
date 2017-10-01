@@ -18,7 +18,6 @@ import static org.mockito.Mockito.*;
  */
 public class TestDistanceSubscription {
 
-
     // Class under test.
     private DistanceSubscription subscription;
 
