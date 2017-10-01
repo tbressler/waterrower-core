@@ -5,10 +5,10 @@ import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import de.tbressler.waterrower.subscriptions.IntensitySubscription.IntensityType;
 import org.junit.Test;
 
-import static de.tbressler.waterrower.model.MemoryLocation.*;
+import static de.tbressler.waterrower.model.MemoryLocation.M_S_LOW_AVERAGE;
+import static de.tbressler.waterrower.model.MemoryLocation.M_S_LOW_TOTAL;
 import static de.tbressler.waterrower.subscriptions.IntensitySubscription.IntensityType.INSTANT_AVERAGE_DISTANCE;
 import static de.tbressler.waterrower.subscriptions.IntensitySubscription.IntensityType.TOTAL_DISTANCE;
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;

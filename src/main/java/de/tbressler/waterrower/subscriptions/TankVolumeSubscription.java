@@ -13,6 +13,10 @@ import static de.tbressler.waterrower.model.MemoryLocation.TANK_VOLUME;
  */
 public abstract class TankVolumeSubscription extends AbstractMemorySubscription {
 
+    /* The last tank volume received. */
+    int lastTankVolume = -1;
+
+
     /**
      * Subscription for the tank volume value.
      */
@@ -24,6 +28,12 @@ public abstract class TankVolumeSubscription extends AbstractMemorySubscription 
     @Override
     protected final void handle(DataMemoryMessage msg) {
         int tankVolume = msg.getValue1();
+
+        if (lastTankVolume == tankVolume)
+            return;
+
+        lastTankVolume = tankVolume;
+
         onTankVolumeUpdated(tankVolume);
     }
 
