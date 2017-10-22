@@ -62,6 +62,7 @@ public class RxtxCommunicationService {
 
         @Override
         protected void onError() {
+            closeInternal();
             fireOnError();
         }
 
@@ -212,7 +213,7 @@ public class RxtxCommunicationService {
 
             Log.debug(SERIAL, "Closing serial channel.");
 
-            ChannelFuture future = currentChannel.disconnect().syncUninterruptibly();
+            ChannelFuture future = currentChannel.close().syncUninterruptibly();
             if (!future.isSuccess())
                 throw new IOException("Serial channel couldn't be closed!");
 

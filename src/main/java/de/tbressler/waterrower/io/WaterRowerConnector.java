@@ -169,6 +169,11 @@ public class WaterRowerConnector {
         listeners.forEach(IRxtxConnectionListener::onError);
     }
 
+    /* Notifies the listeners about a disconnection. */
+    private void fireOnDisconnected() {
+        listeners.forEach(IRxtxConnectionListener::onDisconnected);
+    }
+
     /**
      * Removes the connection listener.
      *

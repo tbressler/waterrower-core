@@ -124,7 +124,7 @@ public class TestRxtxCommunicationService {
 
         when(channelFuture.syncUninterruptibly()).thenReturn(channelFuture);
         when(channelFuture.channel()).thenReturn(channel);
-        when(channel.disconnect()).thenReturn(channelFuture);
+        when(channel.close()).thenReturn(channelFuture);
         when(channelFuture.isSuccess()).thenReturn(true);
         when(channel.isOpen()).thenReturn(true);
 
