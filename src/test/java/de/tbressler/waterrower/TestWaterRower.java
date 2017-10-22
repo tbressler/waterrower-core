@@ -276,6 +276,7 @@ public class TestWaterRower {
     @Test
     public void disconnect_whenConnected_disconnects() throws Exception {
         when(connector.isConnected()).thenReturn(true);
+        when(deviceVerificationWatchdog.isDeviceConfirmed()).thenReturn(true);
 
         waterRower.disconnect();
 
@@ -286,10 +287,14 @@ public class TestWaterRower {
         verify(connector, times(1)).disconnect();
     }
 
-    @Test(expected = IOException.class)
-    public void disconnect_whenNotConnected_throwsIOException() throws Exception {
+    @Test
+    public void disconnect_whenNotConnected_disconnectsConnector() throws Exception {
         when(connector.isConnected()).thenReturn(false);
+
         waterRower.disconnect();
+
+        verify(connector, never()).send(any(ExitCommunicationMessage.class));
+        verify(connector, times(1)).disconnect();
     }
 
 

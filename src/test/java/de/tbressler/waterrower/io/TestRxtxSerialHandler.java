@@ -41,6 +41,11 @@ public class TestRxtxSerialHandler {
             protected void onDisconnected() {
                 internalHandler.onDisconnected();
             }
+
+            @Override
+            protected void onError() {
+                internalHandler.onError();
+            }
         };
     }
 

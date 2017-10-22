@@ -124,8 +124,9 @@ public class TestRxtxCommunicationService {
 
         when(channelFuture.syncUninterruptibly()).thenReturn(channelFuture);
         when(channelFuture.channel()).thenReturn(channel);
-        when(channel.close()).thenReturn(channelFuture);
+        when(channel.disconnect()).thenReturn(channelFuture);
         when(channelFuture.isSuccess()).thenReturn(true);
+        when(channel.isOpen()).thenReturn(true);
 
         rxTxCommunicationService.close();
         callback.getValue().onDisconnected();
@@ -140,7 +141,7 @@ public class TestRxtxCommunicationService {
 
         when(channelFuture.syncUninterruptibly()).thenReturn(channelFuture);
         when(channelFuture.channel()).thenReturn(channel);
-        when(channel.close()).thenReturn(channelFuture);
+        when(channel.disconnect()).thenReturn(channelFuture);
         when(channelFuture.isSuccess()).thenReturn(false);
 
         rxTxCommunicationService.close();
@@ -152,6 +153,7 @@ public class TestRxtxCommunicationService {
     public void send_whenConnected_sendsMessage() throws IOException {
 
         mockSuccessfulConnect();
+        when(channel.isOpen()).thenReturn(true);
 
         rxTxCommunicationService.send(message);
 

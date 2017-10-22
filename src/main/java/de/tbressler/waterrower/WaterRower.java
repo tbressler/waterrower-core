@@ -148,6 +148,8 @@ public class WaterRower {
      * @throws IOException If connect fails.
      */
     public void connect(RxtxDeviceAddress address) throws IOException {
+        Log.debug(LIBRARY, "Connecting...");
+
         if (connector.isConnected())
             throw new IOException("Already connected! Can not connect again.");
         connector.connect(requireNonNull(address));
@@ -263,13 +265,14 @@ public class WaterRower {
      * @throws IOException If disconnect fails.
      */
     public void disconnect() throws IOException {
-        if (!connector.isConnected())
-            throw new IOException("Not connected! Can not disconnect.");
+
+        Log.debug(LIBRARY, "Disconnecting...");
 
         stopInternalServices();
 
         // Be polite and send a goodbye.
-        connector.send(new ExitCommunicationMessage());
+        if (isConnected())
+            connector.send(new ExitCommunicationMessage());
 
         // Disconnect.
         connector.disconnect();

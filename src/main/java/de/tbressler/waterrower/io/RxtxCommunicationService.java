@@ -60,6 +60,11 @@ public class RxtxCommunicationService {
             fireOnDisconnected();
         }
 
+        @Override
+        protected void onError() {
+            fireOnError();
+        }
+
     };
 
 
@@ -207,7 +212,7 @@ public class RxtxCommunicationService {
 
             Log.debug(SERIAL, "Closing serial channel.");
 
-            ChannelFuture future = currentChannel.close().syncUninterruptibly();
+            ChannelFuture future = currentChannel.disconnect().syncUninterruptibly();
             if (!future.isSuccess())
                 throw new IOException("Serial channel couldn't be closed!");
 
@@ -222,8 +227,18 @@ public class RxtxCommunicationService {
 
     /* Throws IOException if channel is already closed. */
     private void checkIfChannelIsOpen() throws IOException {
-        if (currentChannel == null)
+        if ((currentChannel == null) || (!currentChannel.isOpen()))
             throw new IOException("Serial channel is not open!");
+    }
+
+
+    private void closeInternal() {
+        try {
+            Log.debug(SERIAL, "Try to close channel.");
+            close();
+        } catch (IOException e) {
+            Log.warn(SERIAL, "Channel can not be closed!");
+        }
     }
 
 

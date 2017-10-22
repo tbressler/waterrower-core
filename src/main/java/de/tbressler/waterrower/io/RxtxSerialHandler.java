@@ -73,6 +73,12 @@ public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Log.error("Unexpected exception caught in "+this.getClass().getSimpleName() + "!", cause);
         ctx.close();
+        onError();
     }
+
+    /**
+     * Is called if an connection error occurred.
+     */
+    protected abstract void onError();
 
 }
