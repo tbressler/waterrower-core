@@ -105,7 +105,6 @@ public class RxtxCommunicationService {
             Log.debug(SERIAL, "Opening channel at serial port '" + address.value() + "'.");
 
             ChannelFuture future = bootstrap.connect(address).syncUninterruptibly();
-
             if (!future.isSuccess()) {
                 fireOnError();
                 throw new IOException("Serial channel couldn't be opened!");
@@ -115,6 +114,8 @@ public class RxtxCommunicationService {
 
             currentChannel = future.channel();
 
+        } catch (Exception e) {
+            throw new IOException("Can not connect to '"+address.value()+"'!", e);
         } finally {
             lock.unlock();
         }
@@ -164,6 +165,8 @@ public class RxtxCommunicationService {
 
             currentChannel.write(msg);
 
+        } catch (Exception e) {
+            throw new IOException("Can not send message '"+msg+"'!", e);
         } finally {
             lock.unlock();
         }
@@ -193,6 +196,8 @@ public class RxtxCommunicationService {
 
             currentChannel = null;
 
+        } catch (Exception e) {
+            throw new IOException("Can not disconnect!", e);
         } finally {
             lock.unlock();
         }
