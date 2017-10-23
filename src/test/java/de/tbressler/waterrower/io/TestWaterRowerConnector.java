@@ -22,9 +22,6 @@ public class TestWaterRowerConnector {
     /* Class under test. */
     private WaterRowerConnector connector;
 
-    /* Direct executor service, so that the test can be executed in one thread only. */
-    private ExecutorService executorService = newDirectExecutorService();
-
     // Mocks:
     private RxtxCommunicationService communicationService = mock(RxtxCommunicationService.class, "communicationService");
     private RxtxDeviceAddress address = mock(RxtxDeviceAddress.class, "address");
@@ -34,7 +31,7 @@ public class TestWaterRowerConnector {
 
     @Before
     public void setUp() {
-        connector = new WaterRowerConnector(communicationService, executorService);
+        connector = new WaterRowerConnector(communicationService);
         connector.addConnectionListener(connectionListener);
     }
 
@@ -42,12 +39,7 @@ public class TestWaterRowerConnector {
 
     @Test(expected = NullPointerException.class)
     public void new_withNullCommunicationService_throwsNPE() {
-        new WaterRowerConnector(null, executorService);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void new_withNullExecutorService_throwsNPE() {
-        new WaterRowerConnector(communicationService, null);
+        new WaterRowerConnector(null);
     }
 
     // Connect:
@@ -72,16 +64,6 @@ public class TestWaterRowerConnector {
         verify(communicationService, times(1)).open(address);
     }
 
-    @Test
-    public void connect_whenConnectionFails_notifiesListeners() throws IOException {
-        when(communicationService.isConnected()).thenReturn(false);
-        doThrow(new IOException("a mocked exception!")).when(communicationService).open(address);
-
-        connector.connect(address);
-
-        verify(communicationService, times(1)).open(address);
-        verify(connectionListener, times(1)).onError();
-    }
 
     // Send:
 
@@ -105,17 +87,6 @@ public class TestWaterRowerConnector {
         verify(communicationService, times(1)).send(message);
     }
 
-    @Test
-    public void send_whenSendFails_notifiesListeners() throws IOException {
-        when(communicationService.isConnected()).thenReturn(true);
-        doThrow(new IOException("a mocked exception!")).when(communicationService).send(message);
-
-        connector.send(message);
-
-        verify(communicationService, times(1)).send(message);
-        verify(connectionListener, times(1)).onError();
-    }
-
     // Disconnect:
 
     @Test(expected = IOException.class)
@@ -131,17 +102,6 @@ public class TestWaterRowerConnector {
         connector.disconnect();
 
         verify(communicationService, times(1)).close();
-    }
-
-    @Test
-    public void disconnect_whenDisconnectionFails_notifiesListeners() throws IOException {
-        when(communicationService.isConnected()).thenReturn(true);
-        doThrow(new IOException("a mocked exception!")).when(communicationService).close();
-
-        connector.disconnect();
-
-        verify(communicationService, times(1)).close();
-        verify(connectionListener, times(1)).onError();
     }
 
     // Listener:

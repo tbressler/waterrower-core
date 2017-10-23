@@ -7,7 +7,6 @@ import io.netty.channel.rxtx.RxtxDeviceAddress;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static de.tbressler.waterrower.log.Log.LIBRARY;
@@ -24,9 +23,6 @@ public class WaterRowerConnector {
     /* The RXTX communication service. */
     private final RxtxCommunicationService communicationService;
 
-    /* The executor service for connection and sending. */
-    private final ExecutorService connectionExecutorService;
-
     /* The lock to synchronize connect and disconnect. */
     private ReentrantLock lock = new ReentrantLock(true);
 
@@ -38,11 +34,9 @@ public class WaterRowerConnector {
      * Handles the connection to the WaterRower.
      *
      * @param communicationService The RXTX communication service, must not be null.
-     * @param connectionExecutorService The executor service, must not be null.
      */
-    public WaterRowerConnector(RxtxCommunicationService communicationService, ExecutorService connectionExecutorService) {
+    public WaterRowerConnector(RxtxCommunicationService communicationService) {
         this.communicationService = requireNonNull(communicationService);
-        this.connectionExecutorService = requireNonNull(connectionExecutorService);
     }
 
 
@@ -63,17 +57,8 @@ public class WaterRowerConnector {
             if (isConnected())
                 throw new IOException("Service is already connected! Can not connect.");
 
-            connectionExecutorService.submit(() -> {
-                try {
-
-                    Log.debug(LIBRARY, "Opening RXTX channel at '" + address.value() + "' connection.");
-                    communicationService.open(address);
-
-                } catch (IOException e) {
-                    Log.warn(LIBRARY, "Couldn't connect to serial port! " + e.getMessage());
-                    fireOnError();
-                }
-            });
+            Log.debug(LIBRARY, "Opening RXTX channel at '" + address.value() + "' connection.");
+            communicationService.open(address);
 
         } finally {
             lock.unlock();
@@ -102,18 +87,7 @@ public class WaterRowerConnector {
                 throw new IOException("Service is not connected! Can not disconnect.");
 
             Log.debug(LIBRARY, "Closing RXTX channel.");
-
-            connectionExecutorService.submit(() -> {
-                try {
-
-                    // Close channel.
-                    communicationService.close();
-
-                } catch (IOException e) {
-                    Log.error("Couldn't disconnect from serial port!", e);
-                    fireOnError();
-                }
-            });
+            communicationService.close();
 
         } finally {
             lock.unlock();
@@ -136,17 +110,8 @@ public class WaterRowerConnector {
             if (!isConnected())
                 throw new IOException("Not connected! Can not send message to WaterRower.");
 
-            connectionExecutorService.submit(() -> {
-                try {
-
-                    Log.debug(LIBRARY, "Sending message '" + msg.toString() + "'.");
-                    communicationService.send(msg);
-
-                } catch (IOException e) {
-                    Log.error("Message couldn't be send to WaterRower!", e);
-                    fireOnError();
-                }
-            });
+            Log.debug(LIBRARY, "Sending message '" + msg.toString() + "'.");
+            communicationService.send(msg);
 
         } finally {
             lock.unlock();
@@ -162,16 +127,6 @@ public class WaterRowerConnector {
     public void addConnectionListener(IRxtxConnectionListener listener) {
         listeners.add(requireNonNull(listener));
         communicationService.addRxtxConnectionListener(listener);
-    }
-
-    /* Notifies the listeners about an error. */
-    private void fireOnError() {
-        listeners.forEach(IRxtxConnectionListener::onError);
-    }
-
-    /* Notifies the listeners about a disconnection. */
-    private void fireOnDisconnected() {
-        listeners.forEach(IRxtxConnectionListener::onDisconnected);
     }
 
     /**

@@ -68,15 +68,6 @@ public class TestRxtxCommunicationService {
         assertNotNull(rxTxCommunicationService);
     }
 
-
-    // Get serial ports:
-
-    @Test
-    public void getSerialPorts_returnsNonNull() {
-        assertNotNull(rxTxCommunicationService.getSerialPorts());
-    }
-
-
     // Open / close:
 
     @Test(expected = NullPointerException.class)

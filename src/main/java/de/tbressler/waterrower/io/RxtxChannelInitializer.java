@@ -105,7 +105,7 @@ public class RxtxChannelInitializer extends ChannelInitializer<RxtxChannel> {
 
         // Handle messages and exceptions:
         pipeline.addLast("handler", serialHandler);
-        pipeline.addLast("exceptions", new RxtxExceptionHandler(serialHandler));
+        // pipeline.addLast("exceptions", new RxtxExceptionHandler(serialHandler));
 
         Log.debug(SERIAL, "Pipeline configured and handler added.");
     }

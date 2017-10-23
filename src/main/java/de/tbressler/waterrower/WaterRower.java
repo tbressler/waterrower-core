@@ -88,7 +88,13 @@ public class WaterRower {
 
     /* Listener for watchdog timeouts. */
     private ITimeoutListener timeoutListener = reason -> {
-        fireOnError((reason == DEVICE_NOT_CONFIRMED_TIMEOUT) ? DEVICE_NOT_SUPPORTED : TIMEOUT);
+        try {
+            disconnect();
+        } catch (IOException e) {
+            Log.error("Couldn't disconnect, due to errors!", e);
+        } finally {
+            fireOnError((reason == DEVICE_NOT_CONFIRMED_TIMEOUT) ? DEVICE_NOT_SUPPORTED : TIMEOUT);
+        }
     };
 
 

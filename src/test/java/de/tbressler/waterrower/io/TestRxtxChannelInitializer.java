@@ -71,7 +71,7 @@ public class TestRxtxChannelInitializer {
         verify(pipeline, times(1)).addLast(eq("decoder"), any(RxtxMessageFrameDecoder.class));
         verify(pipeline, times(1)).addLast(eq("encoder"), any(RxtxMessageFrameEncoder.class));
         verify(pipeline, times(1)).addLast(eq("handler"), eq(handler));
-        verify(pipeline, times(1)).addLast(eq("exceptions"), any(RxtxExceptionHandler.class));
+        verify(pipeline, never()).addLast(eq("exceptions"), any(RxtxExceptionHandler.class));
     }
 
 }

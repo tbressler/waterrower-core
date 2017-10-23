@@ -60,7 +60,7 @@ public class WaterRowerInitializer {
 
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(threadPoolSize);
 
-        connector = new WaterRowerConnector(communicationService, executorService);
+        connector = new WaterRowerConnector(communicationService);
 
         subscriptionPollingService = new SubscriptionPollingService(pollingInterval, connector, executorService);
 

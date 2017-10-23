@@ -2,7 +2,6 @@ package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
-import gnu.io.CommPortIdentifier;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -12,12 +11,10 @@ import io.netty.channel.rxtx.RxtxDeviceAddress;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static de.tbressler.waterrower.log.Log.SERIAL;
-import static gnu.io.CommPortIdentifier.getPortIdentifiers;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -87,31 +84,6 @@ public class RxtxCommunicationService {
         channelInitializer.setRxTxSerialHandler(serialHandler);
 
         this.bootstrap.handler(channelInitializer);
-    }
-
-
-    /**
-     * Returns a list of serial port addresses from the operating system.
-     *
-     * @return List of serial port addresses or an empty list.
-     */
-    public List<RxtxDeviceAddress> getSerialPorts() {
-
-        List<RxtxDeviceAddress> result = new ArrayList<>();
-
-        Log.debug(SERIAL, "Searching for serial ports...");
-
-        Enumeration<CommPortIdentifier> ports = getPortIdentifiers();
-        while (ports.hasMoreElements()) {
-            CommPortIdentifier portIdentifier = ports.nextElement();
-            result.add(new RxtxDeviceAddress(portIdentifier.getName()));
-            Log.debug(SERIAL, "Serial port found: " + portIdentifier.getName());
-        }
-
-        if (result.isEmpty())
-            Log.warn(SERIAL, "No serial ports found!");
-
-        return result;
     }
 
 

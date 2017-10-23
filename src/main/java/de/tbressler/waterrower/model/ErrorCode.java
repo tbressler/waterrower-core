@@ -18,6 +18,6 @@ public enum ErrorCode {
     TIMEOUT,
 
     /* The WaterRower monitor sent a error message. */
-    ERROR_MESSAGE_RECEIVED
+    ERROR_MESSAGE_RECEIVED,
 
 }
