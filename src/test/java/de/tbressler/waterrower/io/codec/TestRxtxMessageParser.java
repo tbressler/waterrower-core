@@ -156,6 +156,7 @@ public class TestRxtxMessageParser {
         when(interpreter.decode(decodeMsg)).thenReturn(msg);
     }
 
+    @SuppressWarnings("unchecked")
     private void mockInterpreter(IMessageInterpreter interpreter, Class messageType, AbstractMessage encodeMsg, String msg) {
         when(interpreter.getMessageType()).thenReturn(messageType);
         when(interpreter.encode(encodeMsg)).thenReturn(msg);

@@ -105,6 +105,7 @@ public class RxtxMessageParser {
      * @param msg The message.
      * @return The byte array or null.
      */
+    @SuppressWarnings("unchecked")
     public byte[] encode(AbstractMessage msg) {
 
         Log.debug(SERIAL, "Parsing message '"+msg.toString()+"' to bytes.");

@@ -59,7 +59,7 @@ public class RxtxCommunicationService {
 
         @Override
         protected void onError() {
-            closeInternal();
+            closeWithoutExceptions();
             fireOnError();
         }
 
@@ -209,8 +209,8 @@ public class RxtxCommunicationService {
             throw new IOException("Serial channel is not open!");
     }
 
-
-    private void closeInternal() {
+    /* Close the channel and suppress exceptions. */
+    private void closeWithoutExceptions() {
         try {
             Log.debug(SERIAL, "Try to close channel.");
             close();
