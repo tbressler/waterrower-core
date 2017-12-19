@@ -56,7 +56,7 @@ public class RxtxMessageFrameEncoder extends MessageToByteEncoder {
         Log.debug(MESSAGES, "Message buffer encoded and written:\n" +
                 " As String: >" + new String(byteArray, US_ASCII) + "<");
 
-        ctx.flush();
+        ctx.writeAndFlush(out);
     }
 
 }
