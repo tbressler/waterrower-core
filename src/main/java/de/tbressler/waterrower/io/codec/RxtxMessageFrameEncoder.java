@@ -6,9 +6,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static de.tbressler.waterrower.log.Log.MESSAGES;
 import static de.tbressler.waterrower.log.Log.SERIAL;
+import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -54,7 +54,7 @@ public class RxtxMessageFrameEncoder extends MessageToByteEncoder {
         out.writeByte(0x0A);
 
         Log.debug(MESSAGES, "Message buffer encoded and written:\n" +
-                " As String: >" + new String(byteArray, UTF_8) + "<");
+                " As String: >" + new String(byteArray, US_ASCII) + "<");
 
         ctx.flush();
     }

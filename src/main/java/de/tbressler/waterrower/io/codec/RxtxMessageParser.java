@@ -8,8 +8,8 @@ import de.tbressler.waterrower.log.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static de.tbressler.waterrower.log.Log.SERIAL;
+import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -73,7 +73,7 @@ public class RxtxMessageParser {
 
         Log.debug(SERIAL, "Parsing message to object.");
 
-        String msg = new String(bytes, UTF_8);
+        String msg = new String(bytes, US_ASCII);
 
         String msgIdentifier;
         for (IMessageInterpreter interpreter : interpreters) {
@@ -120,7 +120,7 @@ public class RxtxMessageParser {
             String encodedMsg = interpreter.encode(msg);
 
             if (encodedMsg != null)
-                return encodedMsg.getBytes(UTF_8);
+                return encodedMsg.getBytes(US_ASCII);
         }
 
         Log.warn(SERIAL, "Message couldn't be encoded! Unknown message type '"+msg.getClass().getName()+"'.");

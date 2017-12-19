@@ -8,10 +8,10 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static de.tbressler.waterrower.io.utils.ByteUtils.bufferToString;
 import static de.tbressler.waterrower.log.Log.MESSAGES;
 import static de.tbressler.waterrower.log.Log.SERIAL;
+import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -53,7 +53,7 @@ public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
 
         in.readBytes(byteArray, 0, numberOfBytes);
 
-        Log.debug(SERIAL, "Message buffer decoded to: >" + new String(byteArray, UTF_8) + "<");
+        Log.debug(SERIAL, "Message buffer decoded to: >" + new String(byteArray, US_ASCII) + "<");
 
         // Decode the message.
          AbstractMessage decodedMessage = parser.decode(byteArray);
