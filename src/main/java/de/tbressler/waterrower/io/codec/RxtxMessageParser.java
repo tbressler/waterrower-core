@@ -113,7 +113,7 @@ public class RxtxMessageParser {
         for (IMessageInterpreter interpreter : interpreters) {
 
             // Check if message type matches:
-            if (!interpreter.getMessageType().getClass().isInstance(msg.getClass()))
+            if (!interpreter.isSupported(msg))
                 continue;
 
             // Encode object to message:

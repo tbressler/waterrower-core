@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import static org.mockito.Mockito.mock;
 public class TestHardwareTypeMessageInterpreter {
 
     /* Class under test. */
-    private HardwareTypeMessageInterpreter hardwareTypeMessageInterpreter;
+    private HardwareTypeMessageInterpreter interpreter;
 
     // Mocks:
     private HardwareTypeMessage hardwareTypeMessage = mock(HardwareTypeMessage.class, "hardwareTypeMessage");
@@ -24,25 +25,33 @@ public class TestHardwareTypeMessageInterpreter {
 
     @Before
     public void setUp() {
-        hardwareTypeMessageInterpreter = new HardwareTypeMessageInterpreter();
+        interpreter = new HardwareTypeMessageInterpreter();
     }
 
 
     @Test
     public void getMessageTypeChar_returns_() {
-        assertEquals("_", hardwareTypeMessageInterpreter.getMessageIdentifier());
+        assertEquals("_", interpreter.getMessageIdentifier());
     }
 
 
+
     @Test
-    public void getMessageType_returnsHardwareTypeMessageClass() {
-        assertEquals(HardwareTypeMessage.class, hardwareTypeMessageInterpreter.getMessageType());
+    public void isSupported_withSupportedMessage_returnsTrue() {
+        HardwareTypeMessage msg = mock(HardwareTypeMessage.class, "message");
+        assertTrue(interpreter.isSupported(msg));
+    }
+
+    @Test
+    public void isSupported_withUnsupportedMessage_returnsTrue() {
+        AbstractMessage msg = mock(AbstractMessage.class, "message");
+        assertFalse(interpreter.isSupported(msg));
     }
 
 
     @Test
     public void decode_withValidWaterRowerMessage_returnsHardwareTypeMessage() {
-        HardwareTypeMessage msg = hardwareTypeMessageInterpreter.decode("_WR_");
+        HardwareTypeMessage msg = interpreter.decode("_WR_");
 
         assertNotNull(msg);
         assertTrue(msg.isWaterRower());
@@ -50,7 +59,7 @@ public class TestHardwareTypeMessageInterpreter {
 
     @Test
     public void decode_withValidMessageButNotWaterRower_returnsHardwareTypeMessage() {
-        HardwareTypeMessage msg = hardwareTypeMessageInterpreter.decode("_SOME_");
+        HardwareTypeMessage msg = interpreter.decode("_SOME_");
 
         assertNotNull(msg);
         assertFalse(msg.isWaterRower());
@@ -59,7 +68,7 @@ public class TestHardwareTypeMessageInterpreter {
 
     @Test(expected = IllegalStateException.class)
     public void encode_throwsIllegalStateException() {
-        hardwareTypeMessageInterpreter.encode(hardwareTypeMessage);
+        interpreter.encode(hardwareTypeMessage);
     }
 
 }

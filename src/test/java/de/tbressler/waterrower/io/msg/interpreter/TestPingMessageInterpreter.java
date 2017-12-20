@@ -1,11 +1,11 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.PingMessage;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 public class TestPingMessageInterpreter {
 
     /* Class under test. */
-    private PingMessageInterpreter pingMessageInterpreter;
+    private PingMessageInterpreter interpreter;
 
     // Mocks:
     private PingMessage pingMessage = mock(PingMessage.class, "pingMessage");
@@ -25,31 +25,38 @@ public class TestPingMessageInterpreter {
 
     @Before
     public void setUp() {
-        pingMessageInterpreter = new PingMessageInterpreter();
+        interpreter = new PingMessageInterpreter();
     }
 
 
     @Test
     public void getMessageTypeChar_returnsO() {
-        assertEquals("PING", pingMessageInterpreter.getMessageIdentifier());
+        assertEquals("PING", interpreter.getMessageIdentifier());
     }
 
 
     @Test
-    public void getMessageType_returnsPingMessageClass() {
-        assertEquals(PingMessage.class, pingMessageInterpreter.getMessageType());
+    public void isSupported_withSupportedMessage_returnsTrue() {
+        PingMessage msg = mock(PingMessage.class, "message");
+        assertTrue(interpreter.isSupported(msg));
+    }
+
+    @Test
+    public void isSupported_withUnsupportedMessage_returnsTrue() {
+        AbstractMessage msg = mock(AbstractMessage.class, "message");
+        assertFalse(interpreter.isSupported(msg));
     }
 
 
     @Test
     public void decode_withValidMessage_returnsPingMessage() {
-        assertNotNull(pingMessageInterpreter.decode("PING"));
+        assertNotNull(interpreter.decode("PING"));
     }
 
 
     @Test(expected = IllegalStateException.class)
     public void encode_throwsIllegalStateException() {
-        pingMessageInterpreter.encode(pingMessage);
+        interpreter.encode(pingMessage);
     }
 
 }

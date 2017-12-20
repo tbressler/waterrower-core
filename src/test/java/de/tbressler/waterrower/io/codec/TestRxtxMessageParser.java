@@ -3,7 +3,6 @@ package de.tbressler.waterrower.io.codec;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.IMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.AcknowledgeMessage;
-import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -108,8 +107,8 @@ public class TestRxtxMessageParser {
 
     @Test
     public void encode_withSupportedMessageType1_returnsMessage() {
-        mockInterpreter(interpreter1, message.getClass(), message, "TEST");
-        mockInterpreter(interpreter2, ErrorMessage.class, message, null);
+        mockInterpreter(interpreter1, true, message, "TEST");
+        mockInterpreter(interpreter2, false, message, null);
 
         byte[] result = parser.encode(message);
 
@@ -118,8 +117,8 @@ public class TestRxtxMessageParser {
 
     @Test
     public void encode_withSupportedMessageType2_returnsMessage() {
-        mockInterpreter(interpreter1, ErrorMessage.class, message, null);
-        mockInterpreter(interpreter2, message.getClass(), message, "TEST");
+        mockInterpreter(interpreter1, false, message, null);
+        mockInterpreter(interpreter2, true, message, "TEST");
 
         byte[] result = parser.encode(message);
 
@@ -128,18 +127,8 @@ public class TestRxtxMessageParser {
 
     @Test
     public void encode_withUnsupportedMessageType1_returnsMessage() {
-        mockInterpreter(interpreter1, AbstractMessage.class, message, null);
-        mockInterpreter(interpreter2, AbstractMessage.class, message, null);
-
-        byte[] result = parser.encode(message);
-
-        assertNull(result);
-    }
-
-    @Test
-    public void encode_withUnsupportedMessageType2_returnsMessage() {
-        mockInterpreter(interpreter1, message.getClass(), message, null);
-        mockInterpreter(interpreter2, AbstractMessage.class, message, null);
+        mockInterpreter(interpreter1, false, message, null);
+        mockInterpreter(interpreter2, false, message, null);
 
         byte[] result = parser.encode(message);
 
@@ -158,8 +147,8 @@ public class TestRxtxMessageParser {
     }
 
     @SuppressWarnings("unchecked")
-    private void mockInterpreter(IMessageInterpreter interpreter, Class messageType, AbstractMessage encodeMsg, String msg) {
-        when(interpreter.getMessageType()).thenReturn(messageType);
+    private void mockInterpreter(IMessageInterpreter interpreter, boolean isSupported, AbstractMessage encodeMsg, String msg) {
+        when(interpreter.isSupported(encodeMsg)).thenReturn(isSupported);
         when(interpreter.encode(encodeMsg)).thenReturn(msg);
     }
 

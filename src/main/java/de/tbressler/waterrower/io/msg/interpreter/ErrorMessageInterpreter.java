@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 
@@ -28,8 +29,8 @@ public class ErrorMessageInterpreter extends AbstractMessageInterpreter<ErrorMes
     }
 
     @Override
-    public Class<ErrorMessage> getMessageType() {
-        return ErrorMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof ErrorMessage);
     }
 
     @Override

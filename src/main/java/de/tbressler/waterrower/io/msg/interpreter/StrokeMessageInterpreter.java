@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.StrokeMessage;
 
@@ -46,8 +47,8 @@ public class StrokeMessageInterpreter extends AbstractMessageInterpreter<StrokeM
     }
 
     @Override
-    public Class<StrokeMessage> getMessageType() {
-        return StrokeMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof StrokeMessage);
     }
 
     @Override

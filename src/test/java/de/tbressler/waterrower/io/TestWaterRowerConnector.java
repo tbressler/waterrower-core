@@ -6,9 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
 
-import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static org.mockito.Mockito.*;
 
 /**

@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage;
 import de.tbressler.waterrower.log.Log;
@@ -21,8 +22,8 @@ public class ConfigureWorkoutMessageInterpreter extends AbstractMessageInterpret
     }
 
     @Override
-    public Class<ConfigureWorkoutMessage> getMessageType() {
-        return ConfigureWorkoutMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof ConfigureWorkoutMessage);
     }
 
     @Override

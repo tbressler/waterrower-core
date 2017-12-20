@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.out.ResetMessage;
 
@@ -25,8 +26,8 @@ public class ResetMessageInterpreter extends AbstractMessageInterpreter<ResetMes
     }
 
     @Override
-    public Class<ResetMessage> getMessageType() {
-        return ResetMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof ResetMessage);
     }
 
     @Override

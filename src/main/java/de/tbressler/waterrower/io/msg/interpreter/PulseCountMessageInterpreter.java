@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
 import de.tbressler.waterrower.log.Log;
@@ -36,8 +37,8 @@ public class PulseCountMessageInterpreter extends AbstractMessageInterpreter<Pul
     }
 
     @Override
-    public Class<PulseCountMessage> getMessageType() {
-        return PulseCountMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof PulseCountMessage);
     }
 
     @Override

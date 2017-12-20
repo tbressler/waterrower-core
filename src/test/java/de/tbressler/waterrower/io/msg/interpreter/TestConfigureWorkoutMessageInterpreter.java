@@ -1,13 +1,14 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage;
 import org.junit.Before;
 import org.junit.Test;
 
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
 import static de.tbressler.waterrower.workout.WorkoutUnit.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for class ConfigureWorkoutMessageInterpreter.
@@ -28,14 +29,21 @@ public class TestConfigureWorkoutMessageInterpreter {
 
 
     @Test
-    public void getMessageTypeChar_returnsW() {
+    public void getMessageTypeChar_returnsNull() {
         assertNull(interpreter.getMessageIdentifier());
     }
 
 
     @Test
-    public void getMessageType_returnsConfigureWorkoutMessageClass() {
-        assertEquals(ConfigureWorkoutMessage.class, interpreter.getMessageType());
+    public void isSupported_withSupportedMessage_returnsTrue() {
+        ConfigureWorkoutMessage msg = mock(ConfigureWorkoutMessage.class, "message");
+        assertTrue(interpreter.isSupported(msg));
+    }
+
+    @Test
+    public void isSupported_withUnsupportedMessage_returnsFalse() {
+        AbstractMessage msg = mock(AbstractMessage.class, "message");
+        assertFalse(interpreter.isSupported(msg));
     }
 
 

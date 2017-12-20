@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.PingMessage;
 
@@ -28,8 +29,8 @@ public class PingMessageInterpreter extends AbstractMessageInterpreter<PingMessa
     }
 
     @Override
-    public Class<PingMessage> getMessageType() {
-        return PingMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof PingMessage);
     }
 
     @Override

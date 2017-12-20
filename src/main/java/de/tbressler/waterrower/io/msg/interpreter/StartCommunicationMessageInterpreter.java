@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 
@@ -24,8 +25,8 @@ public class StartCommunicationMessageInterpreter extends AbstractMessageInterpr
     }
 
     @Override
-    public Class<StartCommunicationMessage> getMessageType() {
-        return StartCommunicationMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof StartCommunicationMessage);
     }
 
     @Override

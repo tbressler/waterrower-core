@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.InformationRequestMessage;
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
@@ -82,8 +83,8 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
     }
 
     @Override
-    public Class<InformationRequestMessage> getMessageType() {
-        return InformationRequestMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof InformationRequestMessage);
     }
 
     @Override

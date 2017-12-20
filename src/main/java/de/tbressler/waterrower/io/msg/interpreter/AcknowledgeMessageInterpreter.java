@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.AcknowledgeMessage;
 
@@ -28,8 +29,8 @@ public class AcknowledgeMessageInterpreter extends AbstractMessageInterpreter<Ac
     }
 
     @Override
-    public Class<AcknowledgeMessage> getMessageType() {
-        return AcknowledgeMessage.class;
+    public boolean isSupported(AbstractMessage msg) {
+        return (msg instanceof AcknowledgeMessage);
     }
 
     @Override

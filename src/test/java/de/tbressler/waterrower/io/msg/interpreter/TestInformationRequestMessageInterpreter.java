@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.io.msg.interpreter;
 
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.InformationRequestMessage;
 import de.tbressler.waterrower.io.msg.Memory;
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
@@ -24,31 +25,39 @@ import static org.mockito.Mockito.mock;
 public class TestInformationRequestMessageInterpreter {
 
     /* Class under test. */
-    private InformationRequestMessageInterpreter informationRequestMessageInterpreter;
+    private InformationRequestMessageInterpreter interpreter;
 
 
     @Before
     public void setUp() {
-        informationRequestMessageInterpreter = new InformationRequestMessageInterpreter();
+        interpreter = new InformationRequestMessageInterpreter();
     }
 
 
     @Test
     public void getMessageTypeChar_returnsI() {
-        assertEquals("I", informationRequestMessageInterpreter.getMessageIdentifier());
+        assertEquals("I", interpreter.getMessageIdentifier());
     }
 
 
     @Test
-    public void getMessageType_returnsInformationRequestMessageClass() {
-        assertEquals(InformationRequestMessage.class, informationRequestMessageInterpreter.getMessageType());
+    public void isSupported_withSupportedMessage_returnsTrue() {
+        InformationRequestMessage msg = mock(InformationRequestMessage.class, "message");
+        assertTrue(interpreter.isSupported(msg));
     }
+
+    @Test
+    public void isSupported_withUnsupportedMessage_returnsTrue() {
+        AbstractMessage msg = mock(AbstractMessage.class, "message");
+        assertFalse(interpreter.isSupported(msg));
+    }
+
 
     // Decode model information message:
 
     @Test
     public void decode_withIV40200_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IV40200");
+        InformationRequestMessage msg = interpreter.decode("IV40200");
 
         assertNotNull(msg);
         assertModelInformationMessage(msg, WATER_ROWER_S4, "02.00");
@@ -56,7 +65,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIV50300_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IV50300");
+        InformationRequestMessage msg = interpreter.decode("IV50300");
 
         assertNotNull(msg);
         assertModelInformationMessage(msg, WATER_ROWER_S5, "03.00");
@@ -64,7 +73,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIV10300_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IV10200");
+        InformationRequestMessage msg = interpreter.decode("IV10200");
 
         assertNotNull(msg);
         assertModelInformationMessage(msg, UNKNOWN_MONITOR_TYPE, "02.00");
@@ -72,7 +81,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIV41234_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IV41234");
+        InformationRequestMessage msg = interpreter.decode("IV41234");
 
         assertNotNull(msg);
         assertModelInformationMessage(msg, WATER_ROWER_S4, "12.34");
@@ -82,7 +91,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDS00101_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDS00101");
+        InformationRequestMessage msg = interpreter.decode("IDS00101");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, SINGLE_MEMORY, 1, -1, -1, 1);
@@ -90,7 +99,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDSFFF00_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDSFFF00");
+        InformationRequestMessage msg = interpreter.decode("IDSFFF00");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, SINGLE_MEMORY, 4095, -1, -1, 0);
@@ -98,7 +107,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDS000FF_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDS000FF");
+        InformationRequestMessage msg = interpreter.decode("IDS000FF");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, SINGLE_MEMORY, 0, -1, -1, 255);
@@ -108,7 +117,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDD0010101_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDD0010101");
+        InformationRequestMessage msg = interpreter.decode("IDD0010101");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, DOUBLE_MEMORY, 1, -1, 1, 1);
@@ -116,7 +125,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDDFFF0101_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDDFFF0000");
+        InformationRequestMessage msg = interpreter.decode("IDDFFF0000");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, DOUBLE_MEMORY, 4095, -1, 0, 0);
@@ -124,7 +133,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDD000FFFF_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDD000FFFF");
+        InformationRequestMessage msg = interpreter.decode("IDD000FFFF");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, DOUBLE_MEMORY, 0, -1, 255, 255);
@@ -132,7 +141,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDD0000102_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDD0000102");
+        InformationRequestMessage msg = interpreter.decode("IDD0000102");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, DOUBLE_MEMORY, 0, -1, 1, 2);
@@ -142,7 +151,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDT001010101_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDT001010101");
+        InformationRequestMessage msg = interpreter.decode("IDT001010101");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, TRIPLE_MEMORY, 1, 1, 1, 1);
@@ -150,7 +159,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDTFFF000000_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDTFFF000000");
+        InformationRequestMessage msg = interpreter.decode("IDTFFF000000");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, TRIPLE_MEMORY, 4095, 0, 0, 0);
@@ -158,7 +167,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDT000FFFFFF_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDT000FFFFFF");
+        InformationRequestMessage msg = interpreter.decode("IDT000FFFFFF");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, TRIPLE_MEMORY, 0, 255, 255, 255);
@@ -166,7 +175,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withIDT000010203_returnsValidMessage() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("IDT000010203");
+        InformationRequestMessage msg = interpreter.decode("IDT000010203");
 
         assertNotNull(msg);
         assertDataMemoryMessage(msg, TRIPLE_MEMORY, 0, 1, 2, 3);
@@ -176,7 +185,7 @@ public class TestInformationRequestMessageInterpreter {
 
     @Test
     public void decode_withInvalidMessage_returnsNull() {
-        InformationRequestMessage msg = informationRequestMessageInterpreter.decode("INVALID");
+        InformationRequestMessage msg = interpreter.decode("INVALID");
         assertNull(msg);
     }
 
@@ -186,7 +195,7 @@ public class TestInformationRequestMessageInterpreter {
     public void encode_withSingleMemoryLocation001_returnsIRS001() {
         ReadMemoryMessage msg = new ReadMemoryMessage(SINGLE_MEMORY, 0x001);
 
-        String result = informationRequestMessageInterpreter.encode(msg);
+        String result = interpreter.encode(msg);
 
         assertNotNull(result);
         assertEquals("IRS001", result);
@@ -196,7 +205,7 @@ public class TestInformationRequestMessageInterpreter {
     public void encode_withSingleMemoryLocationFFF_returnsIRSFFF() {
         ReadMemoryMessage msg = new ReadMemoryMessage(SINGLE_MEMORY, 0xFFF);
 
-        String result = informationRequestMessageInterpreter.encode(msg);
+        String result = interpreter.encode(msg);
 
         assertNotNull(result);
         assertEquals("IRSFFF", result);
@@ -208,7 +217,7 @@ public class TestInformationRequestMessageInterpreter {
     public void encode_withDoubleMemoryLocation001_returnsIRD001() {
         ReadMemoryMessage msg = new ReadMemoryMessage(DOUBLE_MEMORY, 0x001);
 
-        String result = informationRequestMessageInterpreter.encode(msg);
+        String result = interpreter.encode(msg);
 
         assertNotNull(result);
         assertEquals("IRD001", result);
@@ -218,7 +227,7 @@ public class TestInformationRequestMessageInterpreter {
     public void encode_withDoubleMemoryLocationFFF_returnsIRDFFF() {
         ReadMemoryMessage msg = new ReadMemoryMessage(DOUBLE_MEMORY, 0xFFF);
 
-        String result = informationRequestMessageInterpreter.encode(msg);
+        String result = interpreter.encode(msg);
 
         assertNotNull(result);
         assertEquals("IRDFFF", result);
@@ -230,7 +239,7 @@ public class TestInformationRequestMessageInterpreter {
     public void encode_withTripleMemoryLocation001_returnsIRT001() {
         ReadMemoryMessage msg = new ReadMemoryMessage(TRIPLE_MEMORY, 0x001);
 
-        String result = informationRequestMessageInterpreter.encode(msg);
+        String result = interpreter.encode(msg);
 
         assertNotNull(result);
         assertEquals("IRT001", result);
@@ -240,7 +249,7 @@ public class TestInformationRequestMessageInterpreter {
     public void encode_withTripleMemoryLocationFFF_returnsIRTFFF() {
         ReadMemoryMessage msg = new ReadMemoryMessage(TRIPLE_MEMORY, 0xFFF);
 
-        String result = informationRequestMessageInterpreter.encode(msg);
+        String result = interpreter.encode(msg);
 
         assertNotNull(result);
         assertEquals("IRTFFF", result);
@@ -252,7 +261,7 @@ public class TestInformationRequestMessageInterpreter {
     public void encode_withRequestModelInformationMessage_returnsIV() {
         RequestModelInformationMessage msg = new RequestModelInformationMessage();
 
-        String result = informationRequestMessageInterpreter.encode(msg);
+        String result = interpreter.encode(msg);
 
         assertNotNull(result);
         assertEquals("IV?", result);
@@ -264,7 +273,7 @@ public class TestInformationRequestMessageInterpreter {
     public void encode_withInvalidMessage_returnsNull() {
         InformationRequestMessage msg = mock(InformationRequestMessage.class, "msg");
 
-        String result = informationRequestMessageInterpreter.encode(msg);
+        String result = interpreter.encode(msg);
 
         assertNull(result);
     }

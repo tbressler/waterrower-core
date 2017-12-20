@@ -18,11 +18,11 @@ public interface IMessageInterpreter<T extends AbstractMessage> {
     String getMessageIdentifier();
 
     /**
-     * Returns the type of message which this interpreter can encode.
+     * Returns true if the message type is supported by this interpreter.
      *
-     * @return The message type.
+     * @return The message.
      */
-    Class<T> getMessageType();
+    boolean isSupported(AbstractMessage msg);
 
     /**
      * Decodes the given ASCII string to a message object. If the message can not be decoded the method returns null.
