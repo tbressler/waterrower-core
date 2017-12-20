@@ -2,6 +2,7 @@ package de.tbressler.waterrower.io.codec;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.IMessageInterpreter;
+import de.tbressler.waterrower.io.msg.in.AcknowledgeMessage;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class TestRxtxMessageParser {
 
     private List<IMessageInterpreter> interpreters = new ArrayList<>();
 
-    private AbstractMessage message = mock(AbstractMessage.class, "message");
+    private AbstractMessage message = mock(AcknowledgeMessage.class, "message");
 
 
     @Before
@@ -117,7 +118,7 @@ public class TestRxtxMessageParser {
 
     @Test
     public void encode_withSupportedMessageType2_returnsMessage() {
-        mockInterpreter(interpreter1, AbstractMessage.class, message, null);
+        mockInterpreter(interpreter1, ErrorMessage.class, message, null);
         mockInterpreter(interpreter2, message.getClass(), message, "TEST");
 
         byte[] result = parser.encode(message);
