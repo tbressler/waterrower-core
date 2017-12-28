@@ -70,7 +70,7 @@ public abstract class WorkoutTotalSubscription extends AbstractMemorySubscriptio
 
 
     @Override
-    void handle(DataMemoryMessage msg) {
+    protected void handle(DataMemoryMessage msg) {
         int value = intFromHighAndLow(msg.getValue2(), msg.getValue1());
 
         // If the received value is the same as before,
@@ -90,6 +90,6 @@ public abstract class WorkoutTotalSubscription extends AbstractMemorySubscriptio
      * @param valueType The value type, never null.
      * @param value The new value.
      */
-    abstract void onTotalWorkoutValueUpdated(ValueType valueType, int value);
+    abstract protected void onTotalWorkoutValueUpdated(ValueType valueType, int value);
 
 }

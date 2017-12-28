@@ -106,6 +106,6 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
      * @param intervalIndex The index of the workout interval.
      * @param value The new value.
      */
-    protected abstract void onWorkoutIntervalUpdated(IntervalType intervalType, int intervalIndex, int value);
+    abstract protected void onWorkoutIntervalUpdated(IntervalType intervalType, int intervalIndex, int value);
 
 }

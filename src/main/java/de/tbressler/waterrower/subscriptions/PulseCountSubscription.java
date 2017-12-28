@@ -32,6 +32,6 @@ public abstract class PulseCountSubscription implements ISubscription {
      *
      * @param pulsesCount The number of pulse’s counted during the last 25mS period.
      */
-    abstract void onPulseCount(int pulsesCount);
+    abstract protected void onPulseCount(int pulsesCount);
 
 }

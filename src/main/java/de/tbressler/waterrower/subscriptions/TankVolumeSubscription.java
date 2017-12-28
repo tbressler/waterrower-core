@@ -43,6 +43,6 @@ public abstract class TankVolumeSubscription extends AbstractMemorySubscription 
      *
      * @param tankVolume The volume of water in the tank (in liters).
      */
-    protected abstract void onTankVolumeUpdated(int tankVolume);
+    abstract protected void onTankVolumeUpdated(int tankVolume);
 
 }

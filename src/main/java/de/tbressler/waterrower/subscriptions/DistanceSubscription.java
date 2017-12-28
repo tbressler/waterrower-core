@@ -91,6 +91,6 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
      * @param mode The distance mode (e.g. total distance or displayed distance), never null.
      * @param distance The new distance.
      */
-    protected abstract void onDistanceUpdated(DistanceMode mode, int distance);
+    abstract protected void onDistanceUpdated(DistanceMode mode, int distance);
 
 }

@@ -51,6 +51,6 @@ public abstract class ClockCountDownSubscription extends AbstractMemorySubscript
      *
      * @param duration The new clock count-down, never null.
      */
-    protected abstract void onClockCountDownUpdated(Duration duration);
+    abstract protected void onClockCountDownUpdated(Duration duration);
 
 }

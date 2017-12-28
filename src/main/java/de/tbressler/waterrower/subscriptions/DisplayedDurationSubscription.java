@@ -51,6 +51,6 @@ public abstract class DisplayedDurationSubscription extends AbstractMemorySubscr
      *
      * @param duration The new duration, never null.
      */
-    protected abstract void onDurationUpdated(Duration duration);
+    abstract protected void onDurationUpdated(Duration duration);
 
 }

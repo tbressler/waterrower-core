@@ -106,7 +106,7 @@ public class TestWorkoutTotalSubscription {
     private WorkoutTotalSubscription newWorkoutTotalSubscription(ValueType valueType) {
         return new WorkoutTotalSubscription(valueType) {
             @Override
-            void onTotalWorkoutValueUpdated(ValueType valueType, int value) {
+            protected void onTotalWorkoutValueUpdated(ValueType valueType, int value) {
                 internalSubscription.onTotalWorkoutValueUpdated(valueType, value);
             }
         };

@@ -25,7 +25,7 @@ public class TestDebugSubscription {
     public void new_withNullMemory_throwsNPE() {
         new DebugSubscription(null, CLOCK_DOWN_DEC) {
             @Override
-            void handle(DataMemoryMessage msg) {}
+            protected void handle(DataMemoryMessage msg) {}
         };
     }
 
@@ -33,7 +33,7 @@ public class TestDebugSubscription {
     public void new_withNullMemoryLocation_throwsNPE() {
         new DebugSubscription(SINGLE_MEMORY, null) {
             @Override
-            void handle(DataMemoryMessage msg) {}
+            protected void handle(DataMemoryMessage msg) {}
         };
     }
 
@@ -43,7 +43,7 @@ public class TestDebugSubscription {
     public void poll_returnsMessageForConstructorValues() {
         DebugSubscription subscription = new DebugSubscription(DOUBLE_MEMORY, M_S_LOW_AVERAGE) {
             @Override
-            void handle(DataMemoryMessage msg) {}
+            protected void handle(DataMemoryMessage msg) {}
         };
 
         ReadMemoryMessage msg = (ReadMemoryMessage) subscription.poll();

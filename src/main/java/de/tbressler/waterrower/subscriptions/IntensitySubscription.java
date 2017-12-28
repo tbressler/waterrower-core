@@ -63,7 +63,7 @@ public abstract class IntensitySubscription extends AbstractMemorySubscription {
 
 
     @Override
-    void handle(DataMemoryMessage msg) {
+    protected void handle(DataMemoryMessage msg) {
         int intensity = intFromHighAndLow(msg.getValue2(), msg.getValue1());
 
         // If the received intensity is the same as before,
@@ -83,6 +83,6 @@ public abstract class IntensitySubscription extends AbstractMemorySubscription {
      * @param intensityType The intensity type, never null.
      * @param intensity The new value.
      */
-    abstract void onIntensityUpdated(IntensityType intensityType, int intensity);
+    abstract protected void onIntensityUpdated(IntensityType intensityType, int intensity);
 
 }

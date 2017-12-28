@@ -74,6 +74,6 @@ public abstract class AverageStrokeTimeSubscription extends AbstractMemorySubscr
      *
      * @param averageStrokeTime The new average stroke time.
      */
-    protected abstract void onAverageStrokeTimeUpdated(int averageStrokeTime);
+    abstract protected void onAverageStrokeTimeUpdated(int averageStrokeTime);
 
 }

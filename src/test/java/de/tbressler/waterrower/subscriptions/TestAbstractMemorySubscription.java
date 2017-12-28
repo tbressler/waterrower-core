@@ -116,7 +116,7 @@ public class TestAbstractMemorySubscription {
     private AbstractMemorySubscription newAbstractMemorySubscription(Memory memory, MemoryLocation location) {
         return new AbstractMemorySubscription(memory, location) {
             @Override
-            void handle(DataMemoryMessage msg) {
+            protected void handle(DataMemoryMessage msg) {
                 internalSubscription.handle(msg);
             }
         };

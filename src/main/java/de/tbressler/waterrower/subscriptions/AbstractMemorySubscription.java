@@ -31,7 +31,7 @@ abstract class AbstractMemorySubscription implements ISubscription {
      * @param memory Single, double or triple memory. Must not be null.
      * @param location The memory location, must not be null.
      */
-    AbstractMemorySubscription(Memory memory, MemoryLocation location) {
+    public AbstractMemorySubscription(Memory memory, MemoryLocation location) {
         this.memory = requireNonNull(memory);
         this.location = requireNonNull(location);
     }
@@ -64,6 +64,6 @@ abstract class AbstractMemorySubscription implements ISubscription {
      *
      * @param msg The message, never null.
      */
-    abstract void handle(DataMemoryMessage msg);
+    abstract protected void handle(DataMemoryMessage msg);
 
 }

@@ -38,6 +38,6 @@ public abstract class StrokeSubscription implements ISubscription {
      *
      * @param strokeType The type of stroke (e.g. start or end), never null.
      */
-    abstract void onStroke(StrokeType strokeType);
+    abstract protected void onStroke(StrokeType strokeType);
 
 }

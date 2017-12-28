@@ -47,6 +47,6 @@ public abstract class StrokeCountSubscription extends AbstractMemorySubscription
      *
      * @param strokes The new stroke count.
      */
-    protected abstract void onStrokeCountUpdated(int strokes);
+    abstract protected void onStrokeCountUpdated(int strokes);
 
 }

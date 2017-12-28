@@ -27,7 +27,7 @@ public class TestPulseCountSubscription {
     public void setUp() {
         subscription = new PulseCountSubscription() {
             @Override
-            void onPulseCount(int pulsesCount) {
+            protected void onPulseCount(int pulsesCount) {
                 internalSubscription.onPulseCount(pulsesCount);
             }
         };

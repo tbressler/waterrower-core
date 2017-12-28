@@ -34,7 +34,7 @@ public class TestIntensitySubscription {
     public void new_withNull_throwsNPE() {
         new IntensitySubscription(null) {
             @Override
-            void onIntensityUpdated(IntensityType intensityType, int intensity) {}
+            protected void onIntensityUpdated(IntensityType intensityType, int intensity) {}
         };
     }
 
@@ -106,7 +106,7 @@ public class TestIntensitySubscription {
     private IntensitySubscription newIntensitySubscription(IntensityType type) {
         return new IntensitySubscription(type) {
             @Override
-            void onIntensityUpdated(IntensityType intensityType, int intensity) {
+            protected void onIntensityUpdated(IntensityType intensityType, int intensity) {
                 internalSubscription.onIntensityUpdated(intensityType, intensity);
             }
         };

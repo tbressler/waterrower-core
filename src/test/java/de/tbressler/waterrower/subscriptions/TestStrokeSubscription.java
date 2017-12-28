@@ -30,7 +30,7 @@ public class TestStrokeSubscription {
     public void setUp() {
         subscription = new StrokeSubscription() {
             @Override
-            void onStroke(StrokeType strokeType) {
+            protected void onStroke(StrokeType strokeType) {
                 internalSubscription.onStroke(strokeType);
             }
         };
