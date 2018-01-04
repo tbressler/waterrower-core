@@ -134,7 +134,7 @@ public class SubscriptionPollingService {
      */
     public void subscribe(ISubscription subscription) {
         subscriptions.add(requireNonNull(subscription));
-        Log.debug(LIBRARY, "Added subscription: " + subscription.getClass().getSimpleName());
+        Log.debug(LIBRARY, "Added subscription: " + subscription);
     }
 
     /**
@@ -144,7 +144,7 @@ public class SubscriptionPollingService {
      */
     public void unsubscribe(ISubscription subscription) {
         subscriptions.remove(requireNonNull(subscription));
-        Log.debug(LIBRARY, "Removed subscription: " + subscription.getClass().getSimpleName());
+        Log.debug(LIBRARY, "Removed subscription: " + subscription);
     }
 
 }

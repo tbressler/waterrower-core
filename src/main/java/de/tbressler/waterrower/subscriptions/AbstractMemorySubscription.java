@@ -7,6 +7,7 @@ import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.MemoryLocation;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static java.util.Objects.requireNonNull;
 
@@ -65,5 +66,14 @@ abstract class AbstractMemorySubscription implements ISubscription {
      * @param msg The message, never null.
      */
     abstract protected void handle(DataMemoryMessage msg);
+
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("memory", memory)
+                .add("location", location)
+                .toString();
+    }
 
 }
