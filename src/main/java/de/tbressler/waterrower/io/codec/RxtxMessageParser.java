@@ -2,6 +2,7 @@ package de.tbressler.waterrower.io.codec;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.IMessageInterpreter;
+import de.tbressler.waterrower.io.msg.in.DecodeErrorMessage;
 import de.tbressler.waterrower.io.msg.interpreter.*;
 import de.tbressler.waterrower.log.Log;
 
@@ -92,9 +93,7 @@ public class RxtxMessageParser {
                 return decodedMsg;
         }
 
-        Log.warn(SERIAL, "Message couldn't be decoded! Unknown message '"+ msg +"'.");
-
-        return null;
+        return new DecodeErrorMessage(msg);
     }
 
 
