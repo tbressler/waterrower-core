@@ -21,6 +21,10 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  *
  * [P] + XX + 0x0D0A
  *
+ * It seems the Pulse counts roughly (and linearly) corresponds to the distance. By experimenting you can
+ * find out your coef so that the distance on your S4 equals transforms pulses: `distanceOnS4 = pulseCount * coef`.
+ * On my Waterrower this number was 0.011.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */
