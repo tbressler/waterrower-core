@@ -3,6 +3,7 @@ package de.tbressler.waterrower.io.codec;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.IMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.AcknowledgeMessage;
+import de.tbressler.waterrower.io.msg.in.DecodeErrorMessage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -93,14 +94,18 @@ public class TestRxtxMessageParser {
     }
 
     @Test
-    public void decode_withInterpretersReturningNull_returnsNull() {
+    public void decode_withInterpretersReturningNull_returnsDecodeErrorMessage() {
 
         mockInterpreter(interpreter1, "Y", "TEST", null);
         mockInterpreter(interpreter2, "X", "TEST", null);
 
         AbstractMessage result = parser.decode(newBytes("XYZ"));
 
-        assertNull(result);
+        assertNotNull(result);
+        assertTrue(result instanceof DecodeErrorMessage);
+
+        DecodeErrorMessage errorMessage = (DecodeErrorMessage) result;
+        assertEquals("XYZ", errorMessage.getMessage());
     }
 
     // Encoder:
