@@ -64,11 +64,11 @@ public class RxtxMessageParser {
 
 
     /**
-     * Decodes the given byte array to a message object. Returns null if the message
+     * Decodes the given byte array to a message object. Returns a DecodeErrorMessage if the message
      * couldn't be decoded.
      *
      * @param bytes The byte array.
-     * @return The message object or null.
+     * @return The message object or a DecodeErrorMessage.
      */
     public AbstractMessage decode(byte[] bytes) {
 
