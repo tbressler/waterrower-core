@@ -1,5 +1,5 @@
 group 'de.tbressler.waterrower'
-version '0.9.9'
+version '0.9.10'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -23,9 +23,9 @@ configurations {
 dependencies {
 
     // Serial communication:
-    compile group: 'io.netty', name: 'netty-all', version: '4.1.5.Final'
-    compile group: 'io.netty', name: 'netty-transport-rxtx', version: '4.1.5.Final'
-    compile group: 'org.bidib.jbidib', name: 'jbidibc-rxtx-2.2', version: '1.6.0'
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.50.Final'
+    compile group: 'io.netty', name: 'netty-transport-rxtx', version: '4.1.50.Final'
+    compile group: 'org.bidib.jbidib', name: 'jbidibc-rxtx', version: '1.12.7'
     compile group: 'org.bidib.jbidib', name: 'bidib-rxtx-binaries', version: '2.2'
 
     // Utils:
