@@ -21,6 +21,8 @@ dependencies {
 
     // Serial communication:
     compile group: 'io.netty', name: 'netty-all', version: '4.1.56.Final'
+    compile group: 'se.koc', name: 'netty-transport-jserialcomm', version: '1.0.0'
+
 
     // Utils:
     compile group: 'com.google.guava', name: 'guava', version: '19.0'

@@ -16,15 +16,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for class RxtxMessageParser.
+ * Tests for class MessageParser.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestRxtxMessageParser {
+public class TestMessageParser {
 
     // Class under test.
-    private RxtxMessageParser parser;
+    private MessageParser parser;
 
     // Mocks:
     private IMessageInterpreter interpreter1 = mock(IMessageInterpreter.class, "interpreter1");
@@ -39,21 +39,21 @@ public class TestRxtxMessageParser {
     public void setUp() {
         interpreters.add(interpreter1);
         interpreters.add(interpreter2);
-        parser = new RxtxMessageParser(interpreters);
+        parser = new MessageParser(interpreters);
     }
 
     // Constructor:
 
     @Test(expected = NullPointerException.class)
     public void new_withNull_throwsNPE() {
-        new RxtxMessageParser(null);
+        new MessageParser(null);
     }
 
     // Check interpreters:
 
     @Test
     public void checkInterpreters() {
-        parser = new RxtxMessageParser();
+        parser = new MessageParser();
         List<IMessageInterpreter> interpreters = parser.getInterpreters();
         assertEquals(11, interpreters.size());
     }

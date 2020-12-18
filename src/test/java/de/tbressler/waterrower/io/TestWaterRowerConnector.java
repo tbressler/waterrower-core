@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import io.netty.channel.rxtx.RxtxDeviceAddress;
+import io.netty.channel.jsc.JSerialCommDeviceAddress;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,9 +21,9 @@ public class TestWaterRowerConnector {
     private WaterRowerConnector connector;
 
     // Mocks:
-    private RxtxCommunicationService communicationService = mock(RxtxCommunicationService.class, "communicationService");
-    private RxtxDeviceAddress address = mock(RxtxDeviceAddress.class, "address");
-    private IRxtxConnectionListener connectionListener = mock(IRxtxConnectionListener.class, "connectionListener");
+    private CommunicationService communicationService = mock(CommunicationService.class, "communicationService");
+    private JSerialCommDeviceAddress address = mock(JSerialCommDeviceAddress.class, "address");
+    private IConnectionListener connectionListener = mock(IConnectionListener.class, "connectionListener");
     private AbstractMessage message = mock(AbstractMessage.class, "message");
 
 
@@ -110,9 +110,9 @@ public class TestWaterRowerConnector {
     }
 
     @Test
-    public void addConnectionListener_addsListenerToRxtxCommunicationService() throws IOException {
+    public void addConnectionListener_addsListenerToCommunicationService() throws IOException {
         connector.addConnectionListener(connectionListener);
-        verify(communicationService, times(2)).addRxtxConnectionListener(connectionListener);
+        verify(communicationService, times(2)).addConnectionListener(connectionListener);
     }
 
     @Test(expected = NullPointerException.class)
@@ -121,9 +121,9 @@ public class TestWaterRowerConnector {
     }
 
     @Test
-    public void removeConnectionListener_removesListenerToRxtxCommunicationService() throws IOException {
+    public void removeConnectionListener_removesListenerToCommunicationService() throws IOException {
         connector.removeConnectionListener(connectionListener);
-        verify(communicationService, times(1)).removeRxtxConnectionListener(connectionListener);
+        verify(communicationService, times(1)).removeConnectionListener(connectionListener);
     }
 
 }

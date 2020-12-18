@@ -16,20 +16,20 @@ import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for class RxtxMessageFrameDecoder.
+ * Tests for class MessageFrameDecoder.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestRxtxMessageFrameDecoder {
+public class TestMessageFrameDecoder {
 
     /* Class under test. */
-    private RxtxMessageFrameDecoder messageFrameDecoder;
+    private MessageFrameDecoder messageFrameDecoder;
 
     private List<Object> out = new ArrayList<>();
 
     // Mocks:
-    private RxtxMessageParser parser = mock(RxtxMessageParser.class, "parser");
+    private MessageParser parser = mock(MessageParser.class, "parser");
     private ChannelHandlerContext ctx = mock(ChannelHandlerContext.class, "ctx");
 
     private AbstractMessage message1 = mock(AbstractMessage.class, "message1");
@@ -38,7 +38,7 @@ public class TestRxtxMessageFrameDecoder {
 
     @Before
     public void setUp() {
-        messageFrameDecoder = new RxtxMessageFrameDecoder(parser);
+        messageFrameDecoder = new MessageFrameDecoder(parser);
     }
 
 
@@ -46,7 +46,7 @@ public class TestRxtxMessageFrameDecoder {
 
     @Test(expected = NullPointerException.class)
     public void new_withNullParser_throwsException() {
-        new RxtxMessageFrameEncoder(null);
+        new MessageFrameEncoder(null);
     }
 
     // Decode:

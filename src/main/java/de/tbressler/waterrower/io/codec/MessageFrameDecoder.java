@@ -20,10 +20,10 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
+public class MessageFrameDecoder extends ByteToMessageDecoder {
 
     /* The message parser. */
-    private final RxtxMessageParser parser;
+    private final MessageParser parser;
 
 
     /**
@@ -31,7 +31,7 @@ public class RxtxMessageFrameDecoder extends ByteToMessageDecoder {
      *
      * @param parser The message parser, must not be null.
      */
-    public RxtxMessageFrameDecoder(RxtxMessageParser parser) {
+    public MessageFrameDecoder(MessageParser parser) {
         this.parser = requireNonNull(parser);
     }
 

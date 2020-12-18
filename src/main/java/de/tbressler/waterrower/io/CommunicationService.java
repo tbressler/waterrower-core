@@ -5,9 +5,9 @@ import de.tbressler.waterrower.log.Log;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.oio.OioEventLoopGroup;
-import io.netty.channel.rxtx.RxtxChannel;
-import io.netty.channel.rxtx.RxtxDeviceAddress;
+import io.netty.channel.jsc.JSerialCommChannel;
+import io.netty.channel.jsc.JSerialCommDeviceAddress;
+import io.netty.channel.nio.NioEventLoopGroup;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,12 +19,12 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * A communication service that manages the serial connection.
- * It can receive and send serial messages via RXTX.
+ * It can receive and send serial messages.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class RxtxCommunicationService {
+public class CommunicationService {
 
     /* The bootstrap. */
     private final Bootstrap bootstrap;
@@ -35,12 +35,12 @@ public class RxtxCommunicationService {
     /* A lock for synchronized access to open/close/read/write on channel. */
     private ReentrantLock lock = new ReentrantLock(true);
 
-    /* Listeners for RXTX connections. */
-    private final List<IRxtxConnectionListener> connectionListeners = new ArrayList<>();
+    /* Listeners for serial connections. */
+    private final List<IConnectionListener> connectionListeners = new ArrayList<>();
 
 
     /* Handler for the communication channel. */
-    private RxtxSerialHandler serialHandler = new RxtxSerialHandler() {
+    private SerialHandler serialHandler = new SerialHandler() {
 
         @Override
         protected void onConnected() {
@@ -68,20 +68,20 @@ public class RxtxCommunicationService {
 
     /**
      * A communication service that manages the serial connection.
-     * It can receive and send serial messages via RXTX.
+     * It can receive and send serial messages.
      *
      * @param bootstrap The bootstrap, not null.
      * @param channelInitializer The channel initializer, not null.
      */
-    public RxtxCommunicationService(Bootstrap bootstrap, RxtxChannelInitializer channelInitializer) {
+    public CommunicationService(Bootstrap bootstrap, ChannelInitializer channelInitializer) {
         requireNonNull(bootstrap);
         requireNonNull(channelInitializer);
 
         this.bootstrap = bootstrap;
-        this.bootstrap.group(new OioEventLoopGroup());
-        this.bootstrap.channel(RxtxChannel.class);
+        this.bootstrap.group(new NioEventLoopGroup());
+        this.bootstrap.channel(JSerialCommChannel.class);
 
-        channelInitializer.setRxTxSerialHandler(serialHandler);
+        channelInitializer.setSerialHandler(serialHandler);
 
         this.bootstrap.handler(channelInitializer);
     }
@@ -93,7 +93,7 @@ public class RxtxCommunicationService {
      * @param address The serial port, must not be null.
      * @throws IOException if opening of the channel fails.
      */
-    public void open(RxtxDeviceAddress address) throws IOException {
+    public void open(JSerialCommDeviceAddress address) throws IOException {
         requireNonNull(address);
 
         lock.lock();
@@ -225,29 +225,29 @@ public class RxtxCommunicationService {
      *
      * @param listener The listener.
      */
-    public void addRxtxConnectionListener(IRxtxConnectionListener listener) {
+    public void addConnectionListener(IConnectionListener listener) {
         requireNonNull(listener);
         connectionListeners.add(listener);
     }
 
     /* Notify all listeners about a successful connection. */
     private void fireOnConnected() {
-        connectionListeners.forEach(IRxtxConnectionListener::onConnected);
+        connectionListeners.forEach(IConnectionListener::onConnected);
     }
 
     /* Notify all listeners about an error. */
     private void fireOnError() {
-        connectionListeners.forEach(IRxtxConnectionListener::onError);
+        connectionListeners.forEach(IConnectionListener::onError);
     }
 
     /* Notify all listeners about a disconnect. */
     private void fireOnDisconnected() {
-        connectionListeners.forEach(IRxtxConnectionListener::onDisconnected);
+        connectionListeners.forEach(IConnectionListener::onDisconnected);
     }
 
     /* Notify all listeners about a received message. */
     private void fireOnMessageReceived(AbstractMessage msg) {
-        for (IRxtxConnectionListener listener : connectionListeners)
+        for (IConnectionListener listener : connectionListeners)
             listener.onMessageReceived(msg);
     }
 
@@ -256,7 +256,7 @@ public class RxtxCommunicationService {
      *
      * @param listener The listener.
      */
-    public void removeRxtxConnectionListener(IRxtxConnectionListener listener) {
+    public void removeConnectionListener(IConnectionListener listener) {
         requireNonNull(listener);
         connectionListeners.remove(listener);
     }

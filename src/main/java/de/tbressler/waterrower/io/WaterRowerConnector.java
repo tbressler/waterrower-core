@@ -2,7 +2,7 @@ package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
-import io.netty.channel.rxtx.RxtxDeviceAddress;
+import io.netty.channel.jsc.JSerialCommDeviceAddress;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,22 +20,22 @@ import static java.util.Objects.requireNonNull;
  */
 public class WaterRowerConnector {
 
-    /* The RXTX communication service. */
-    private final RxtxCommunicationService communicationService;
+    /* The serial communication service. */
+    private final CommunicationService communicationService;
 
     /* The lock to synchronize connect and disconnect. */
     private ReentrantLock lock = new ReentrantLock(true);
 
-    /* Listeners for the RXTX communication. */
-    private List<IRxtxConnectionListener> listeners = new ArrayList<>();
+    /* Listeners for the serial communication. */
+    private List<IConnectionListener> listeners = new ArrayList<>();
 
 
     /**
      * Handles the connection to the WaterRower.
      *
-     * @param communicationService The RXTX communication service, must not be null.
+     * @param communicationService The communication service, must not be null.
      */
-    public WaterRowerConnector(RxtxCommunicationService communicationService) {
+    public WaterRowerConnector(CommunicationService communicationService) {
         this.communicationService = requireNonNull(communicationService);
     }
 
@@ -47,7 +47,7 @@ public class WaterRowerConnector {
      *
      * @throws IOException If connect fails.
      */
-    public void connect(RxtxDeviceAddress address) throws IOException {
+    public void connect(JSerialCommDeviceAddress address) throws IOException {
         requireNonNull(address);
 
         lock.lock();
@@ -57,7 +57,7 @@ public class WaterRowerConnector {
             if (isConnected())
                 throw new IOException("Service is already connected! Can not connect.");
 
-            Log.debug(LIBRARY, "Opening RXTX channel at '" + address.value() + "' connection.");
+            Log.debug(LIBRARY, "Opening serial channel at '" + address.value() + "' connection.");
             communicationService.open(address);
 
         } finally {
@@ -86,7 +86,7 @@ public class WaterRowerConnector {
             if (!isConnected())
                 throw new IOException("Service is not connected! Can not disconnect.");
 
-            Log.debug(LIBRARY, "Closing RXTX channel.");
+            Log.debug(LIBRARY, "Closing serial channel.");
             communicationService.close();
 
         } finally {
@@ -124,9 +124,9 @@ public class WaterRowerConnector {
      *
      * @param listener The listener, must not be null.
      */
-    public void addConnectionListener(IRxtxConnectionListener listener) {
+    public void addConnectionListener(IConnectionListener listener) {
         listeners.add(requireNonNull(listener));
-        communicationService.addRxtxConnectionListener(listener);
+        communicationService.addConnectionListener(listener);
     }
 
     /**
@@ -134,9 +134,9 @@ public class WaterRowerConnector {
      *
      * @param listener The listener, must not be null.
      */
-    public void removeConnectionListener(IRxtxConnectionListener listener) {
+    public void removeConnectionListener(IConnectionListener listener) {
         listeners.remove(requireNonNull(listener));
-        communicationService.removeRxtxConnectionListener(listener);
+        communicationService.removeConnectionListener(listener);
     }
 
 }

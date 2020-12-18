@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.subscriptions;
 
-import de.tbressler.waterrower.io.IRxtxConnectionListener;
-import de.tbressler.waterrower.io.RxtxConnectionListener;
+import de.tbressler.waterrower.io.ConnectionListener;
+import de.tbressler.waterrower.io.IConnectionListener;
 import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
@@ -42,7 +42,7 @@ public class SubscriptionPollingService {
 
 
     /* Listener for the connection to the WaterRower, which handles the received messages*/
-    private final IRxtxConnectionListener listener = new RxtxConnectionListener() {
+    private final IConnectionListener listener = new ConnectionListener() {
         @Override
         public void onMessageReceived(AbstractMessage msg) {
 

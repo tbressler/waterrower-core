@@ -8,25 +8,25 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for class RxtxSerialHandler.
+ * Tests for class SerialHandler.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestRxtxSerialHandler {
+public class TestSerialHandler {
 
     // Class under test.
-    private RxtxSerialHandler handler;
+    private SerialHandler handler;
 
     // Mocks:
-    private RxtxSerialHandler internalHandler = mock(RxtxSerialHandler.class, "internalHandler");
+    private SerialHandler internalHandler = mock(SerialHandler.class, "internalHandler");
     private ChannelHandlerContext ctx = mock(ChannelHandlerContext.class, "ctx");
     private AbstractMessage message = mock(AbstractMessage.class, "message");
 
 
     @Before
     public void setUp() {
-        handler = new RxtxSerialHandler() {
+        handler = new SerialHandler() {
             @Override
             protected void onMessageReceived(AbstractMessage message) {
                 internalHandler.onMessageReceived(message);

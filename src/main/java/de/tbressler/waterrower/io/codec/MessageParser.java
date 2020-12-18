@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class RxtxMessageParser {
+public class MessageParser {
 
     /* List of message interpreters. */
     private List<IMessageInterpreter> interpreters = new ArrayList<>();
@@ -28,7 +28,7 @@ public class RxtxMessageParser {
     /**
      * Decodes and encodes messages received from or sent to the WaterRower S4/S5 monitor.
      */
-    public RxtxMessageParser() {
+    public MessageParser() {
         createAndAddMessageInterpreters();
     }
 
@@ -58,7 +58,7 @@ public class RxtxMessageParser {
      *
      * @param interpreters The interpreters for the different messages, must not be null.
      */
-    RxtxMessageParser(List<IMessageInterpreter> interpreters) {
+    MessageParser(List<IMessageInterpreter> interpreters) {
         this.interpreters = requireNonNull(interpreters);
     }
 

@@ -14,24 +14,24 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for class RxtxMessageFrameEncoder.
+ * Tests for class MessageFrameEncoder.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestRxtxMessageFrameEncoder {
+public class TestMessageFrameEncoder {
 
     /* Class under test. */
-    private RxtxMessageFrameEncoder messageFrameEncoder;
+    private MessageFrameEncoder messageFrameEncoder;
 
     // Mocks:
-    private RxtxMessageParser parser = mock(RxtxMessageParser.class, "parser");
+    private MessageParser parser = mock(MessageParser.class, "parser");
     private ChannelHandlerContext ctx = mock(ChannelHandlerContext.class, "ctx");
 
 
     @Before
     public void setUp() {
-        messageFrameEncoder = new RxtxMessageFrameEncoder(parser);
+        messageFrameEncoder = new MessageFrameEncoder(parser);
     }
 
 
@@ -40,7 +40,7 @@ public class TestRxtxMessageFrameEncoder {
      */
     @Test(expected = NullPointerException.class)
     public void new_withNullParser_throwsException() {
-        new RxtxMessageFrameEncoder(null);
+        new MessageFrameEncoder(null);
     }
 
 

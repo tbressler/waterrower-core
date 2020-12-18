@@ -3,12 +3,12 @@ package de.tbressler.waterrower.io;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 
 /**
- * Listener for RXTX connections.
+ * Listener for serial connections.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public interface IRxtxConnectionListener {
+public interface IConnectionListener {
 
     /**
      * Called if connection was established.
