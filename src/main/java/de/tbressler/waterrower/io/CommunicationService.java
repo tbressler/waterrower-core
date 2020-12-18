@@ -8,6 +8,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.oio.OioEventLoopGroup;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class CommunicationService {
         requireNonNull(channelInitializer);
 
         this.bootstrap = bootstrap;
-        this.bootstrap.group(new NioEventLoopGroup());
+        this.bootstrap.group(new OioEventLoopGroup());
         this.bootstrap.channel(JSerialCommChannel.class);
 
         channelInitializer.setSerialHandler(serialHandler);
