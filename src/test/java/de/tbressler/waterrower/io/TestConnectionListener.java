@@ -7,20 +7,20 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 
 /**
- * Tests for class RxtxConnectionListener.
+ * Tests for class ConnectionListener.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestRxtxConnectionListener {
+public class TestConnectionListener {
 
     // Class under test.
-    RxtxConnectionListener listener;
+    ConnectionListener listener;
 
 
     @Before
     public void setUp() {
-        listener = new RxtxConnectionListener();
+        listener = new ConnectionListener();
     }
 
     @Test

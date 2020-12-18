@@ -122,7 +122,7 @@ public class TestWorkoutFlags {
         WorkoutFlags a = new WorkoutFlags(1);
         WorkoutFlags b = new WorkoutFlags(1);
         WorkoutFlags c = new WorkoutFlags(2);
-        Integer d = new Integer(2);
+        Integer d = Integer.valueOf(2);
 
         assertTrue(a.equals(b));
         assertFalse(a.equals(c));

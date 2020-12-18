@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.subscriptions;
 
-import de.tbressler.waterrower.io.IRxtxConnectionListener;
+import de.tbressler.waterrower.io.IConnectionListener;
 import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import org.junit.Before;
@@ -43,7 +43,7 @@ public class TestSubscriptionPollingService {
 
     // Capture:
     private ArgumentCaptor<Runnable> task = forClass(Runnable.class);
-    private ArgumentCaptor<IRxtxConnectionListener> listener = forClass(IRxtxConnectionListener.class);
+    private ArgumentCaptor<IConnectionListener> listener = forClass(IConnectionListener.class);
 
 
     @Before

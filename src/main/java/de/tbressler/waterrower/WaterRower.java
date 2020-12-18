@@ -1,13 +1,14 @@
 package de.tbressler.waterrower;
 
-import de.tbressler.waterrower.io.IRxtxConnectionListener;
-import de.tbressler.waterrower.io.RxtxConnectionListener;
+import de.tbressler.waterrower.io.ConnectionListener;
+import de.tbressler.waterrower.io.IConnectionListener;
 import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.*;
+import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
@@ -19,7 +20,6 @@ import de.tbressler.waterrower.watchdog.PingWatchdog;
 import de.tbressler.waterrower.workout.Workout;
 import de.tbressler.waterrower.workout.WorkoutInterval;
 import de.tbressler.waterrower.workout.WorkoutUnit;
-import io.netty.channel.rxtx.RxtxDeviceAddress;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class WaterRower {
 
 
     /* The listener for the WaterRower connector. */
-    private IRxtxConnectionListener connectionListener = new RxtxConnectionListener() {
+    private IConnectionListener connectionListener = new ConnectionListener() {
 
         @Override
         public void onConnected() {
@@ -153,7 +153,7 @@ public class WaterRower {
      *
      * @throws IOException If connect fails.
      */
-    public void connect(RxtxDeviceAddress address) throws IOException {
+    public void connect(JSerialCommDeviceAddress address) throws IOException {
         Log.debug(LIBRARY, "Connecting...");
 
         if (connector.isConnected())
@@ -166,7 +166,7 @@ public class WaterRower {
     private void handleOnConnect() {
         try {
 
-            Log.debug(LIBRARY, "RXTX connected. Sending 'start communication' message.");
+            Log.debug(LIBRARY, "Serial device connected. Sending 'start communication' message.");
 
             deviceVerificationWatchdog.start();
 
@@ -288,7 +288,7 @@ public class WaterRower {
     /* Handle disconnect. */
     private void handleOnDisconnected() {
 
-        Log.debug(LIBRARY, "RXTX disconnected.");
+        Log.debug(LIBRARY, "Serial device disconnected.");
 
         stopInternalServices();
 

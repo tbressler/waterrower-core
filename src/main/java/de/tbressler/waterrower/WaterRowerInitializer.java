@@ -1,7 +1,7 @@
 package de.tbressler.waterrower;
 
-import de.tbressler.waterrower.io.RxtxChannelInitializer;
-import de.tbressler.waterrower.io.RxtxCommunicationService;
+import de.tbressler.waterrower.io.ChannelInitializer;
+import de.tbressler.waterrower.io.CommunicationService;
 import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
 import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
@@ -56,7 +56,7 @@ public class WaterRowerInitializer {
 
         Bootstrap bootstrap = new Bootstrap();
 
-        RxtxCommunicationService communicationService = new RxtxCommunicationService(bootstrap, new RxtxChannelInitializer());
+        CommunicationService communicationService = new CommunicationService(bootstrap, new ChannelInitializer());
 
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(threadPoolSize);
 

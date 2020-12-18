@@ -1,12 +1,13 @@
 package de.tbressler.waterrower;
 
-import de.tbressler.waterrower.io.IRxtxConnectionListener;
+import de.tbressler.waterrower.io.IConnectionListener;
 import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.*;
 import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType;
+import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.subscriptions.ISubscription;
 import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
@@ -15,7 +16,6 @@ import de.tbressler.waterrower.watchdog.ITimeoutListener;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
 import de.tbressler.waterrower.workout.Workout;
 import de.tbressler.waterrower.workout.WorkoutUnit;
-import io.netty.channel.rxtx.RxtxDeviceAddress;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -52,14 +52,14 @@ public class TestWaterRower {
     private PingWatchdog pingWatchdog = mock(PingWatchdog.class, "pingWatchdog");
     private DeviceVerificationWatchdog deviceVerificationWatchdog = mock(DeviceVerificationWatchdog.class, "deviceVerificationWatchdog");
     private SubscriptionPollingService subscriptionPollingService = mock(SubscriptionPollingService.class, "subscriptionPollingService");
-    private RxtxDeviceAddress address = mock(RxtxDeviceAddress.class, "address");
+    private JSerialCommDeviceAddress address = mock(JSerialCommDeviceAddress.class, "address");
     private IWaterRowerConnectionListener waterRowerConnectionListener = mock(IWaterRowerConnectionListener.class, "waterRowerConnectionListener");
     private ISubscription subscription = mock(ISubscription.class, "subscription");
 
     private WaterRowerInitializer initializer = mock(WaterRowerInitializer.class, "initializer");
 
     // Capture:
-    private ArgumentCaptor<IRxtxConnectionListener> connectionListener = forClass(IRxtxConnectionListener.class);
+    private ArgumentCaptor<IConnectionListener> connectionListener = forClass(IConnectionListener.class);
     private ArgumentCaptor<ITimeoutListener> pingListener = forClass(ITimeoutListener.class);
     private ArgumentCaptor<ITimeoutListener> deviceVerificationListener = forClass(ITimeoutListener.class);
 

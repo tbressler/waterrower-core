@@ -16,7 +16,7 @@ import static de.tbressler.waterrower.log.Log.SERIAL;
  * @version 1.0
  */
 @Sharable
-public abstract class RxtxSerialHandler extends ChannelInboundHandlerAdapter {
+public abstract class SerialHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

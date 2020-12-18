@@ -1,5 +1,5 @@
 group 'de.tbressler.waterrower'
-version '0.9.11'
+version '0.10.0'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -11,9 +11,6 @@ repositories {
 
 configurations {
 
-    // Workaround: Don't use RXTX library from Netty:
-    all*.exclude group: 'org.rxtx'
-
     // Workaround: Don't use SLF4J:
     all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     all*.exclude group: 'org.slf4j', module: 'slf4j-api'
@@ -23,10 +20,12 @@ configurations {
 dependencies {
 
     // Serial communication:
-    compile group: 'io.netty', name: 'netty-all', version: '4.1.50.Final'
-    compile group: 'io.netty', name: 'netty-transport-rxtx', version: '4.1.50.Final'
-    compile group: 'org.bidib.jbidib', name: 'jbidibc-rxtx-2.2', version: '1.6.0'
-    compile group: 'org.bidib.jbidib', name: 'bidib-rxtx-binaries', version: '2.2'
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.56.Final'
+
+
+    // jSerialComm:
+    compile group: 'com.fazecast', name: 'jSerialComm', version: '2.6.2'
+    // compile group: 'se.koc', name: 'netty-transport-jserialcomm', version: '1.0.0'
 
     // Utils:
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
