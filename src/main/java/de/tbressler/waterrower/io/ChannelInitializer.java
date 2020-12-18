@@ -4,14 +4,14 @@ import de.tbressler.waterrower.io.codec.MessageFrameDecoder;
 import de.tbressler.waterrower.io.codec.MessageFrameEncoder;
 import de.tbressler.waterrower.io.codec.MessageParser;
 import de.tbressler.waterrower.io.transport.JSerialCommChannel;
+import de.tbressler.waterrower.io.transport.JSerialCommChannelConfig;
 import de.tbressler.waterrower.log.Log;
 import io.netty.channel.ChannelPipeline;
-import de.tbressler.waterrower.io.transport.JSerialCommChannelConfig;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 
-import static de.tbressler.waterrower.log.Log.SERIAL;
 import static de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Paritybit.NONE;
 import static de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Stopbits.STOPBITS_1;
+import static de.tbressler.waterrower.log.Log.SERIAL;
 import static io.netty.handler.codec.Delimiters.lineDelimiter;
 import static java.util.Objects.requireNonNull;
 
