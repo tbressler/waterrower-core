@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-APL%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Travis CI](https://travis-ci.org/tbressler/waterrower-core.svg?branch=master)](https://travis-ci.org/tbressler/waterrower-core)
 
-A Java library which connects the WaterRower S4/S5 Performance Monitor with your multi-platform Java application.
+A Java library which connects the WaterRower S4/S5 Performance Monitor.
 
 ## Usage
 
@@ -81,7 +81,7 @@ The following devices were tested:
 
 - WaterRower S4: Firmware 2.xx
 
-If you have successfully tested more devices please feel free to add them to issue #8.
+If you have successfully tested more devices please feel free to add them to issue [#8](https://github.com/tbressler/waterrower-core/issues/8).
 
 Thank you for your support :-)
 
