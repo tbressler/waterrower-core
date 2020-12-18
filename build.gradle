@@ -21,8 +21,6 @@ dependencies {
 
     // Serial communication:
     compile group: 'io.netty', name: 'netty-all', version: '4.1.56.Final'
-    // compile group: 'io.netty', name: 'netty-transport', version: '4.1.56.Final'
-    // compile group: 'io.netty', name: 'netty-codec', version: '4.1.56.Final'
 
 
     // jSerialComm:
