@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import io.netty.channel.jsc.JSerialCommDeviceAddress;
+import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
 import org.junit.Before;
 import org.junit.Test;
 

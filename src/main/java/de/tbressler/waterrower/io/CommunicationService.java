@@ -1,12 +1,12 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.transport.JSerialCommChannel;
+import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.jsc.JSerialCommChannel;
-import io.netty.channel.jsc.JSerialCommDeviceAddress;
 import io.netty.channel.nio.NioEventLoopGroup;
 
 import java.io.IOException;

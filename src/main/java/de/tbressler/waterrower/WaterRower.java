@@ -8,6 +8,7 @@ import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.*;
+import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
@@ -19,7 +20,6 @@ import de.tbressler.waterrower.watchdog.PingWatchdog;
 import de.tbressler.waterrower.workout.Workout;
 import de.tbressler.waterrower.workout.WorkoutInterval;
 import de.tbressler.waterrower.workout.WorkoutUnit;
-import io.netty.channel.jsc.JSerialCommDeviceAddress;
 
 import java.io.IOException;
 import java.util.ArrayList;

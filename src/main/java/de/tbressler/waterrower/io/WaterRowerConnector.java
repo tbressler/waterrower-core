@@ -1,8 +1,8 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
 import de.tbressler.waterrower.log.Log;
-import io.netty.channel.jsc.JSerialCommDeviceAddress;
 
 import java.io.IOException;
 import java.util.ArrayList;

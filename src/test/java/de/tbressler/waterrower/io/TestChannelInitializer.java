@@ -2,15 +2,15 @@ package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.codec.MessageFrameDecoder;
 import de.tbressler.waterrower.io.codec.MessageFrameEncoder;
+import de.tbressler.waterrower.io.transport.JSerialCommChannel;
+import de.tbressler.waterrower.io.transport.JSerialCommChannelConfig;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.jsc.JSerialCommChannel;
-import io.netty.channel.jsc.JSerialCommChannelConfig;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import org.junit.Before;
 import org.junit.Test;
 
-import static io.netty.channel.jsc.JSerialCommChannelConfig.Paritybit.NONE;
-import static io.netty.channel.jsc.JSerialCommChannelConfig.Stopbits.STOPBITS_1;
+import static de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Paritybit.NONE;
+import static de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Stopbits.STOPBITS_1;
 import static org.mockito.Mockito.*;
 
 /**

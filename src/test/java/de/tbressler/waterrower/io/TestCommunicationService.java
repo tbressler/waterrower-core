@@ -1,10 +1,10 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
+import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.jsc.JSerialCommDeviceAddress;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
