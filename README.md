@@ -61,12 +61,29 @@ waterRower.startWorkout(workout);
 
 ```
 
+### Find available serial ports
+
+```Java
+
+// Get all available serial ports:
+SerialPort[] commPorts = SerialPort.getCommPorts();
+
+// Get the name of the ports:
+for (SerialPort port : commPorts) {
+    String portName = port.getSystemPortName();
+}
+
+```
+
 ## Compatibility
 
 The following devices were tested:
 
-- S4: 2.xx
-- S5: ????
+- WaterRower S4: Firmware 2.xx
+
+If you have successfully tested more devices please feel free to add them to issue #8.
+
+Thank you for your support :-)
 
 ## License
 
@@ -85,10 +102,6 @@ The following devices were tested:
    See the License for the specific language governing permissions and
    limitations under the License.
 ```
-
-## Changelog
-
-Currently under development. No releases yet.
 
 ## Contribution
 
