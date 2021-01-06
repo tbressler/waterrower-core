@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="WARN">
+
+    <Appenders>
+
+        <!-- Configure the console logging below: -->
+
+        <Console name="Console" target="SYSTEM_OUT">
+
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] [%marker] %-5level: %msg%n"/>
+
+            <filters>
+
+                <!-- Uncomment one of the following filters if you don't want to see
+                     the entries with this marker in the logs: -->
+                <!--
+                <MarkerFilter marker="Test" onMatch="DENY" onMismatch="NEUTRAL"/>
+                -->
+
+            </filters>
+
+        </Console>
+
+        <!-- Configure the file logging below: -->
+
+        <File name="File" fileName="logs/waterrower-workout.log">
+
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] [%marker] %-5level: %msg%n"/>
+
+            <filters>
+
+                <!-- Uncomment one of the following filters if you don't want to see
+                     the entries with this marker in the logs: -->
+                <!--
+                <MarkerFilter marker="Test" onMatch="DENY" onMismatch="NEUTRAL"/>
+                -->
+
+            </filters>
+
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="debug">
+
+            <AppenderRef ref="Console"/>
+            <!-- Uncomment the following line to enable file logging: -->
+            <!--
+            <AppenderRef ref="File"/>
+            -->
+
+        </Root>
+
+    </Loggers>
+
+</Configuration>
