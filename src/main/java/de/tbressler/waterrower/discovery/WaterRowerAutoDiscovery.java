@@ -80,6 +80,7 @@ public class WaterRowerAutoDiscovery {
      * Handles the auto-discovery of the WaterRower.
      *
      * @param waterRower The WaterRower, must not be null.
+     * @param discoveryStore The store for successful serial ports.
      * @param executorService The executor service, must not be null.
      */
     public WaterRowerAutoDiscovery(WaterRower waterRower, IDiscoveryStore discoveryStore, ScheduledExecutorService executorService) {
@@ -87,6 +88,26 @@ public class WaterRowerAutoDiscovery {
         this.waterRower.addConnectionListener(connectionListener);
         this.discoveryStore = requireNonNull(discoveryStore);
         this.executorService = requireNonNull(executorService);
+    }
+
+    /**
+     * Handles the auto-discovery of the WaterRower.
+     *
+     * @param waterRower The WaterRower, must not be null.
+     * @param executorService The executor service, must not be null.
+     */
+    public WaterRowerAutoDiscovery(WaterRower waterRower, ScheduledExecutorService executorService) {
+        this(waterRower, new IDiscoveryStore() {
+
+            @Override
+            public void setLastSuccessfulSerialPort(String serialPort) {}
+
+            @Override
+            public String getLastSuccessfulSerialPort() {
+                return null;
+            }
+
+        }, executorService);
     }
 
 

@@ -45,7 +45,7 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
 
 
     /**
-     * Subscription to the displayed distance values.
+     * Subscription to the distance values.
      *
      * @param distanceMode The distance mode (e.g. total distance or displayed distance), must
      *                 not be null.
@@ -86,7 +86,7 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
 
 
     /**
-     * Is called if the value for the displayed distance was updated.
+     * Is called if the value for the distance was updated.
      *
      * @param mode The distance mode (e.g. total distance or displayed distance), never null.
      * @param distance The new distance.
