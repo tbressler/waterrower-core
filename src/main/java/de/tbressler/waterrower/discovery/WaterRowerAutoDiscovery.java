@@ -23,6 +23,10 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Handles the auto-discovery of the WaterRower.
  *
+ * This class automatically searches for the available serial ports and connects to
+ * the WaterRower Performance Monitor. When the connection is lost, the class automatically
+ * connects the WaterRower again as soon as the device is available again.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */
