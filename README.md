@@ -75,6 +75,27 @@ for (SerialPort port : commPorts) {
 
 ```
 
+If you don't want to search for the correct port manually, you can use the class ```WaterRowerAutoDiscovery```. The auto-discovery automatically searches for the available ports and tries to connect the WaterRower:
+
+```Java
+
+WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, new IDiscoveryStore() {
+
+    @Override
+    public void setLastSuccessfulSerialPort(String serialPort) {
+        // Persist the successfully connected serial ports here.
+    }
+
+    @Override
+    public String getLastSuccessfulSerialPort() {
+        // Return the previously connected serial port here, in order 
+        // to speed up the search process in the future.  
+    }
+
+}, Executors.newSingleThreadScheduledExecutor());
+
+```
+
 ## Compatibility
 
 The following devices were tested:
