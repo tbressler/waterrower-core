@@ -79,22 +79,11 @@ If you don't want to search for the correct port manually, you can use the class
 
 ```Java
 
-WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, new IDiscoveryStore() {
-
-    @Override
-    public void setLastSuccessfulSerialPort(String serialPort) {
-        // Persist the successfully connected serial ports here.
-    }
-
-    @Override
-    public String getLastSuccessfulSerialPort() {
-        // Return the previously connected serial port here, in order 
-        // to speed up the search process in the future.  
-    }
-
-}, Executors.newSingleThreadScheduledExecutor());
+WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
 
 ```
+
+Please note, you can use the interface ```IDiscoveryStore``` in order to improve the performance when searching for serial ports.
 
 ## Compatibility
 
