@@ -1,6 +1,5 @@
 package de.tbressler.waterrower.discovery;
 
-import com.fazecast.jSerialComm.SerialPort;
 import de.tbressler.waterrower.IWaterRowerConnectionListener;
 import de.tbressler.waterrower.WaterRower;
 import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
@@ -10,6 +9,7 @@ import de.tbressler.waterrower.model.ModelInformation;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -182,11 +182,11 @@ public class WaterRowerAutoDiscovery {
         Log.debug(DISCOVERY, "Updating list of available serial ports.");
 
         // Get all available serial ports:
-        SerialPort[] commPorts = serialPortWrapper.getCommPorts();
+        List<AvailablePort> availablePorts = serialPortWrapper.getAvailablePorts();
 
-        for(SerialPort portIdentifier : commPorts) {
+        for(AvailablePort port : availablePorts) {
 
-            String portName = portIdentifier.getSystemPortName();
+            String portName = port.getSystemPortName();
             // Ignore /dev/cu ports.
             if (portName.startsWith("/dev/cu."))
                 continue;
@@ -195,12 +195,12 @@ public class WaterRowerAutoDiscovery {
             if (portName.contains("Bluetooth") || portName.contains("BT"))
                 continue;
 
-            if (portIdentifier.isOpen()) {
+            if (port.isOpen()) {
                 Log.warn(DISCOVERY, "Skipping serial port '"+portName+"', because it is currently owned by another thread or application.");
                 continue;
             }
 
-            availablePorts.push(new JSerialCommDeviceAddress(portName));
+            this.availablePorts.push(new JSerialCommDeviceAddress(portName));
 
             Log.debug(DISCOVERY, "Serial port found: " + portName);
         }

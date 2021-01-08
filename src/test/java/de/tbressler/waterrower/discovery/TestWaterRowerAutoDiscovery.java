@@ -1,6 +1,5 @@
 package de.tbressler.waterrower.discovery;
 
-import com.fazecast.jSerialComm.SerialPort;
 import de.tbressler.waterrower.IWaterRowerConnectionListener;
 import de.tbressler.waterrower.WaterRower;
 import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
@@ -14,7 +13,9 @@ import org.mockito.ArgumentMatcher;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static de.tbressler.waterrower.discovery.WaterRowerAutoDiscovery.TRY_AGAIN_INTERVAL;
+import static java.util.Collections.emptyList;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -38,8 +39,8 @@ public class TestWaterRowerAutoDiscovery {
     private IDiscoveryStore discoveryStore = mock(IDiscoveryStore.class, "discoveryStore");
     private ScheduledExecutorService executor = mock(ScheduledExecutorService.class, "executor");
     private SerialPortWrapper serialPortWrapper = mock(SerialPortWrapper.class, "serialPortWrapper");
-    private SerialPort serialPort1 = SerialPort.getCommPort("/serial/port1");
-    private SerialPort serialPort2 = SerialPort.getCommPort("/serial/port2");
+    private AvailablePort serialPort1 = mockAvailablePort("/serial/port1", false);
+    private AvailablePort serialPort2 = mockAvailablePort("/serial/port2", false);
 
     // Capture:
     private ArgumentCaptor<IWaterRowerConnectionListener> connectionListener = forClass(IWaterRowerConnectionListener.class);
@@ -121,7 +122,7 @@ public class TestWaterRowerAutoDiscovery {
     public void start_withAvailableSerialPort1_connectToSerialPort1() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getCommPorts()).thenReturn(new SerialPort[] { serialPort1 });
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1));
 
         task.getValue().run();
 
@@ -136,7 +137,7 @@ public class TestWaterRowerAutoDiscovery {
     public void start_withAvailableSerialPort1And2_connectToLastSuccessfulSerialPortFirst() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getCommPorts()).thenReturn(new SerialPort[] { serialPort1, serialPort2 });
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1, serialPort2));
         when(discoveryStore.getLastSuccessfulSerialPort()).thenReturn("/serial/port2");
 
         task.getValue().run();
@@ -146,14 +147,29 @@ public class TestWaterRowerAutoDiscovery {
     }
 
     @Test
-    public void start_withInvalidSerialPorts_doNotConnect() throws IOException {
-        SerialPort serialPortDev = SerialPort.getCommPort("/dev/cu.1");
-        SerialPort serialPortBT1 = SerialPort.getCommPort("Bluetooth-1");
-        SerialPort serialPortBT2 = SerialPort.getCommPort("BT-1");
+    public void start_withAvailableSerialPorts_connectOnlyClosed() throws IOException {
+        AvailablePort serialPortOpened = mockAvailablePort("/serial/portOpened", true);
+        AvailablePort serialPortClosed = mockAvailablePort("/serial/portClosed", false);
 
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getCommPorts()).thenReturn(new SerialPort[] { serialPortDev, serialPortBT1, serialPortBT2 });
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPortOpened, serialPortClosed));
+
+        task.getValue().run();
+
+        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/portClosed")));
+    }
+
+
+    @Test
+    public void start_withInvalidSerialPorts_doNotConnect() throws IOException {
+        AvailablePort serialPortDev = mockAvailablePort("/dev/cu.1", false);
+        AvailablePort serialPortBT1 = mockAvailablePort("Bluetooth-1", false);
+        AvailablePort serialPortBT2 = mockAvailablePort("BT-1", false);
+
+        discovery.start();
+        verify(executor, times(1)).submit(task.capture());
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPortDev, serialPortBT1, serialPortBT2));
 
         task.getValue().run();
 
@@ -164,7 +180,7 @@ public class TestWaterRowerAutoDiscovery {
     public void start_withNoSerialPort_scheduleAgain() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getCommPorts()).thenReturn(new SerialPort[] {});
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(emptyList());
 
         task.getValue().run();
 
@@ -176,7 +192,7 @@ public class TestWaterRowerAutoDiscovery {
     public void start_whenDisconnected_scheduleNewConnectionAttempts() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getCommPorts()).thenReturn(new SerialPort[] { serialPort1 });
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1));
 
         task.getValue().run();
 
@@ -191,7 +207,7 @@ public class TestWaterRowerAutoDiscovery {
     public void start_onIOException_scheduleNewConnectionAttempts() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getCommPorts()).thenReturn(new SerialPort[] { serialPort1 });
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1));
 
         doThrow(new IOException("exception")).when(waterRower).connect(any());
 
@@ -208,6 +224,13 @@ public class TestWaterRowerAutoDiscovery {
 
 
     // Helper methods:
+
+    private AvailablePort mockAvailablePort(String port, boolean isOpen) {
+        AvailablePort availablePort = mock(AvailablePort.class, "port-"+port);
+        when(availablePort.getSystemPortName()).thenReturn(port);
+        when(availablePort.isOpen()).thenReturn(isOpen);
+        return availablePort;
+    }
 
     private ArgumentMatcher<JSerialCommDeviceAddress> eqAddress(String port) {
         return new ArgumentMatcher<>() {

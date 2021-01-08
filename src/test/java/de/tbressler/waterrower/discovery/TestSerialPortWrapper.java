@@ -14,7 +14,7 @@ public class TestSerialPortWrapper {
 
     @Test
     public void getCommPorts() {
-        assertNotNull(new SerialPortWrapper().getCommPorts());
+        assertNotNull(new SerialPortWrapper().getAvailablePorts());
     }
 
 }
