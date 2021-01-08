@@ -33,7 +33,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class WaterRowerAutoDiscovery {
 
     /* Try again interval, if no ports are available currently. */
-    private static final Duration TRY_AGAIN_INTERVAL = ofSeconds(5);
+    static final Duration TRY_AGAIN_INTERVAL = ofSeconds(5);
 
 
     /* The WaterRower. */
@@ -44,6 +44,10 @@ public class WaterRowerAutoDiscovery {
 
     /* The executor service. */
     private final ScheduledExecutorService executorService;
+
+    /* Wrapper for the serial port implementation. */
+    private final SerialPortWrapper serialPortWrapper;
+
 
     /* The current stack of available ports. */
     private Stack<JSerialCommDeviceAddress> availablePorts = new Stack<>();
@@ -88,10 +92,7 @@ public class WaterRowerAutoDiscovery {
      * @param executorService The executor service, must not be null.
      */
     public WaterRowerAutoDiscovery(WaterRower waterRower, IDiscoveryStore discoveryStore, ScheduledExecutorService executorService) {
-        this.waterRower = requireNonNull(waterRower);
-        this.waterRower.addConnectionListener(connectionListener);
-        this.discoveryStore = requireNonNull(discoveryStore);
-        this.executorService = requireNonNull(executorService);
+        this(waterRower, discoveryStore, executorService, new SerialPortWrapper());
     }
 
     /**
@@ -112,6 +113,22 @@ public class WaterRowerAutoDiscovery {
             }
 
         }, executorService);
+    }
+
+    /**
+     * Handles the auto-discovery of the WaterRower.
+     *
+     * @param waterRower The WaterRower, must not be null.
+     * @param discoveryStore The store for successful serial ports.
+     * @param executorService The executor service, must not be null.
+     * @param serialPortWrapper The serial port wrapper, must not be null.
+     */
+    WaterRowerAutoDiscovery(WaterRower waterRower, IDiscoveryStore discoveryStore, ScheduledExecutorService executorService, SerialPortWrapper serialPortWrapper) {
+        this.waterRower = requireNonNull(waterRower);
+        this.waterRower.addConnectionListener(connectionListener);
+        this.discoveryStore = requireNonNull(discoveryStore);
+        this.executorService = requireNonNull(executorService);
+        this.serialPortWrapper = requireNonNull(serialPortWrapper);
     }
 
 
@@ -165,7 +182,7 @@ public class WaterRowerAutoDiscovery {
         Log.debug(DISCOVERY, "Updating list of available serial ports.");
 
         // Get all available serial ports:
-        SerialPort[] commPorts = SerialPort.getCommPorts();
+        SerialPort[] commPorts = serialPortWrapper.getCommPorts();
 
         for(SerialPort portIdentifier : commPorts) {
 
