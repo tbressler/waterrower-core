@@ -44,6 +44,8 @@ public class JSerialCommChannel extends OioByteStreamChannel {
         super(null);
 
         config = new DefaultJSerialCommChannelConfig(this);
+        config.setReadTimeout(5000);
+        config.setAutoClose(true);
     }
 
     @Override
