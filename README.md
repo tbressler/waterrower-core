@@ -7,7 +7,7 @@ A Java library which connects the WaterRower S4/S5 Performance Monitor.
 
 ## Usage
 
-The library requires JDK 1.8 or higher.
+The library requires JDK 9 or higher.
 
 The usage of the library is very simple. Just start with the following examples:
 
