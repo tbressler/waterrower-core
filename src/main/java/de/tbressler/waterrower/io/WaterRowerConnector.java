@@ -110,7 +110,6 @@ public class WaterRowerConnector {
             if (!isConnected())
                 throw new IOException("Not connected! Can not send message to WaterRower.");
 
-            Log.debug(LIBRARY, "Sending message '" + msg.toString() + "'.");
             communicationService.send(msg);
 
         } finally {

@@ -25,6 +25,9 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public class SubscriptionPollingService {
 
+    private static final int SEND_INTERVAL = 50; // millis
+
+
     /* The polling interval. */
     private final Duration interval;
 
@@ -82,37 +85,55 @@ public class SubscriptionPollingService {
         Log.debug(LIBRARY, "Start subscription polling service.");
 
         isActive.set(true);
-        scheduleTask();
+        schedulePollingTask();
     }
 
-    /* Schedule the task for execution. */
-    private void scheduleTask() {
-        executorService.schedule(this::executeTask, interval.toMillis(), MILLISECONDS);
+    /* Schedule the polling task for execution. */
+    private void schedulePollingTask() {
+        executorService.schedule(this::executePolling, interval.toMillis(), MILLISECONDS);
     }
 
-    /* Execute the task. */
-    private void executeTask() {
+    /* Execute the polling task. */
+    private void executePolling() {
 
-        Log.debug(LIBRARY, "Start polling for "+subscriptions.size()+" subscription(s)...");
+        Log.debug(LIBRARY, "Schedule polling for "+subscriptions.size()+" subscription(s)...");
 
+        int delay = SEND_INTERVAL;
         for (ISubscription subscription : subscriptions) {
 
             // If not active skip execution.
             if (!isActive.get())
                 return;
 
-            try {
-                AbstractMessage msg = subscription.poll();
-                connector.send(msg);
-            } catch (IOException e) {
-                Log.error("Couldn't poll for subscriptions, due to errors!", e);
-            }
+            AbstractMessage msg = subscription.poll();
+            scheduleSendingTask(msg, delay);
+
+            delay += SEND_INTERVAL;
         }
 
-        Log.debug(LIBRARY, "Finished polling.");
-
         if (isActive.get())
-            scheduleTask();
+            schedulePollingTask();
+    }
+
+    /* Schedule the send task for execution. */
+    private void scheduleSendingTask(AbstractMessage msg, int delay) {
+        executorService.schedule(() -> executeSending(msg), delay, MILLISECONDS);
+    }
+
+    private void executeSending(AbstractMessage msg) {
+        try {
+
+            // If not active skip execution.
+            if (!isActive.get())
+                return;
+
+            Log.debug(LIBRARY, "Send scheduled polling message >" + msg.toString() + "<");
+
+            connector.send(msg);
+
+        } catch (IOException e) {
+            Log.error("Couldn't send polling message!", e);
+        }
     }
 
 

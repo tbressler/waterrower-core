@@ -21,7 +21,7 @@ public class Log {
     public static final String DISCOVERY = "Discovery";
 
     /* The logger. */
-    private static final Logger logger = LoggerFactory.getLogger("WaterRower Library");
+    private static final Logger logger = LoggerFactory.getLogger("WaterRowerLibrary");
 
 
     /* Private constructor. */
@@ -31,6 +31,11 @@ public class Log {
     /** Logs debug messages. */
     public static void debug(String marker, String msg) {
         logger.debug(msg);
+    }
+
+    /** Logs debug messages. */
+    public static void info(String marker, String msg) {
+        logger.info(msg);
     }
 
     /** Logs warning messages. */

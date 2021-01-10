@@ -6,7 +6,7 @@ import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.subscriptions.DisplayedDistanceSubscription;
 import de.tbressler.waterrower.subscriptions.DisplayedDurationSubscription;
-import de.tbressler.waterrower.subscriptions.StrokeCountSubscription;
+import de.tbressler.waterrower.subscriptions.TankVolumeSubscription;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -27,6 +27,8 @@ public class TestWithRealDevice {
 
     private static final String TEST = "Test";
 
+    private static int STROKES = 0;
+
 
     public static void main(String...args) throws IOException {
 
@@ -41,7 +43,11 @@ public class TestWithRealDevice {
             @Override
             public void onDisconnected() {
                 Log.debug(TEST, "Disconnected.");
-
+                try {
+                    waterRower.disconnect();
+                } catch (IOException e) {
+                    Log.error("Couldn't disconnect! " + e.getMessage(), null);
+                }
             }
             
             @Override
@@ -53,24 +59,24 @@ public class TestWithRealDevice {
 
         WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
 
-        waterRower.subscribe(new StrokeCountSubscription() {
+        waterRower.subscribe(new TankVolumeSubscription() {
             @Override
-            protected void onStrokeCountUpdated(int strokes) {
-                Log.debug(TEST, "Value updated. Stroke count = " + strokes);
+            protected void onTankVolumeUpdated(int tankVolume) {
+                Log.info(TEST, "Value updated. Tank volume = "+tankVolume + " ------------------------------------");
             }
         });
 
         waterRower.subscribe(new DisplayedDurationSubscription() {
             @Override
             protected void onDurationUpdated(Duration duration) {
-                Log.debug(TEST, "Value updated. Displayed duration = "+duration.toMinutes()+" minute(s)");
+                Log.info(TEST, "Value updated. Displayed duration = "+duration.toMinutes()+" minute(s)" + " ------------------------------------");
             }
         });
 
         waterRower.subscribe(new DisplayedDistanceSubscription() {
             @Override
             protected void onDistanceUpdated(int distance) {
-                Log.debug(TEST, "Value updated. Displayed distance = "+distance + " meter(s)");
+                Log.info(TEST, "Value updated. Displayed distance = "+distance+" meter(s)" + " ------------------------------------");
             }
         });
 
