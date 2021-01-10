@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
+import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class TestWaterRowerConnector {
 
     // Mocks:
     private CommunicationService communicationService = mock(CommunicationService.class, "communicationService");
-    private JSerialCommDeviceAddress address = mock(JSerialCommDeviceAddress.class, "address");
+    private SerialDeviceAddress address = mock(SerialDeviceAddress.class, "address");
     private IConnectionListener connectionListener = mock(IConnectionListener.class, "connectionListener");
     private AbstractMessage message = mock(AbstractMessage.class, "message");
 

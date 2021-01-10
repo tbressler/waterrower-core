@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
+import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class WaterRowerConnector {
      *
      * @throws IOException If connect fails.
      */
-    public void connect(JSerialCommDeviceAddress address) throws IOException {
+    public void connect(SerialDeviceAddress address) throws IOException {
         requireNonNull(address);
 
         lock.lock();

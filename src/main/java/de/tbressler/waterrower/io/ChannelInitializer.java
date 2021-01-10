@@ -3,14 +3,14 @@ package de.tbressler.waterrower.io;
 import de.tbressler.waterrower.io.codec.MessageFrameDecoder;
 import de.tbressler.waterrower.io.codec.MessageFrameEncoder;
 import de.tbressler.waterrower.io.codec.MessageParser;
-import de.tbressler.waterrower.io.transport.JSerialCommChannel;
-import de.tbressler.waterrower.io.transport.JSerialCommChannelConfig;
+import de.tbressler.waterrower.io.transport.SerialChannel;
+import de.tbressler.waterrower.io.transport.SerialChannelConfig;
 import de.tbressler.waterrower.log.Log;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 
-import static de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Paritybit.NONE;
-import static de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Stopbits.STOPBITS_1;
+import static de.tbressler.waterrower.io.transport.SerialChannelConfig.Paritybit.NONE;
+import static de.tbressler.waterrower.io.transport.SerialChannelConfig.Stopbits.STOPBITS_1;
 import static de.tbressler.waterrower.log.Log.SERIAL;
 import static io.netty.handler.codec.Delimiters.lineDelimiter;
 import static java.util.Objects.requireNonNull;
@@ -21,7 +21,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class ChannelInitializer extends io.netty.channel.ChannelInitializer<JSerialCommChannel> {
+public class ChannelInitializer extends io.netty.channel.ChannelInitializer<SerialChannel> {
 
     /* Maximum length of a single frame. */
     private static final int MAX_FRAME_LENGTH = 32;
@@ -51,7 +51,7 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<JSer
 
 
     @Override
-    protected void initChannel(JSerialCommChannel channel) throws Exception {
+    protected void initChannel(SerialChannel channel) throws Exception {
         Log.debug(SERIAL, "Serial channel initialized. Configuring pipeline and channel...");
 
         checkIfSerialHandlerIsSet();
@@ -71,8 +71,8 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<JSer
 
 
     /* Configures the channel. */
-    private void configureChannel(JSerialCommChannel channel) {
-        JSerialCommChannelConfig config = channel.config();
+    private void configureChannel(SerialChannel channel) {
+        SerialChannelConfig config = channel.config();
         config.setBaudrate(19200);
         config.setDatabits(8);
         config.setStopbits(STOPBITS_1);
@@ -82,7 +82,7 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<JSer
     }
 
     /* Logs the serial configuration. */
-    private void logSerialConfiguration(JSerialCommChannelConfig config) {
+    private void logSerialConfiguration(SerialChannelConfig config) {
         Log.debug(SERIAL, "Serial channel configured to: " +
                 "\n Baudrate: " + config.getBaudrate() +
                 "\n Databits: " + config.getDatabits() +
@@ -91,7 +91,7 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<JSer
     }
 
     /* Configures the pipeline. */
-    private void configurePipeline(JSerialCommChannel channel) {
+    private void configurePipeline(SerialChannel channel) {
         ChannelPipeline pipeline = channel.pipeline();
 
         // Decode messages:

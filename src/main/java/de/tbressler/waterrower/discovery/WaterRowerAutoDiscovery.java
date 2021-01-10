@@ -2,7 +2,7 @@ package de.tbressler.waterrower.discovery;
 
 import de.tbressler.waterrower.IWaterRowerConnectionListener;
 import de.tbressler.waterrower.WaterRower;
-import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
+import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
@@ -50,7 +50,7 @@ public class WaterRowerAutoDiscovery {
 
 
     /* The current stack of available ports. */
-    private Stack<JSerialCommDeviceAddress> availablePorts = new Stack<>();
+    private Stack<SerialDeviceAddress> availablePorts = new Stack<>();
 
     /* True if active. */
     private AtomicBoolean isActive = new AtomicBoolean(false);
@@ -161,7 +161,7 @@ public class WaterRowerAutoDiscovery {
                 return;
             }
 
-            JSerialCommDeviceAddress address = availablePorts.pop();
+            SerialDeviceAddress address = availablePorts.pop();
             currentSerialPort = address.value();
 
             Log.debug(DISCOVERY, "Auto-connecting serial port '"+address.value()+"'.");
@@ -200,7 +200,7 @@ public class WaterRowerAutoDiscovery {
                 continue;
             }
 
-            this.availablePorts.push(new JSerialCommDeviceAddress(portName));
+            this.availablePorts.push(new SerialDeviceAddress(portName));
 
             Log.debug(DISCOVERY, "Serial port found: " + portName);
         }
@@ -216,7 +216,7 @@ public class WaterRowerAutoDiscovery {
         if (lastSuccessfulPort == null)
             return;
 
-        JSerialCommDeviceAddress lastAddress = new JSerialCommDeviceAddress(lastSuccessfulPort);
+        SerialDeviceAddress lastAddress = new SerialDeviceAddress(lastSuccessfulPort);
 
         boolean wasRemoved = availablePorts.removeIf(address -> address.value().equals(lastSuccessfulPort));
         if (!wasRemoved)

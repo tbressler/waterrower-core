@@ -2,7 +2,7 @@ package de.tbressler.waterrower.discovery;
 
 import de.tbressler.waterrower.IWaterRowerConnectionListener;
 import de.tbressler.waterrower.WaterRower;
-import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
+import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.MonitorType;
 import org.junit.Before;
@@ -232,13 +232,13 @@ public class TestWaterRowerAutoDiscovery {
         return availablePort;
     }
 
-    private ArgumentMatcher<JSerialCommDeviceAddress> eqAddress(String port) {
+    private ArgumentMatcher<SerialDeviceAddress> eqAddress(String port) {
         return new ArgumentMatcher<>() {
             @Override
             public boolean matches(Object argument) {
-                if (!(argument instanceof JSerialCommDeviceAddress))
+                if (!(argument instanceof SerialDeviceAddress))
                     return false;
-                JSerialCommDeviceAddress address = (JSerialCommDeviceAddress) argument;
+                SerialDeviceAddress address = (SerialDeviceAddress) argument;
                 return address.value().equals(port);
             }
         };

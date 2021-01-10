@@ -8,7 +8,7 @@ import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.*;
-import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
+import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
@@ -153,7 +153,7 @@ public class WaterRower {
      *
      * @throws IOException If connect fails.
      */
-    public void connect(JSerialCommDeviceAddress address) throws IOException {
+    public void connect(SerialDeviceAddress address) throws IOException {
         Log.debug(LIBRARY, "Connecting...");
 
         if (connector.isConnected())

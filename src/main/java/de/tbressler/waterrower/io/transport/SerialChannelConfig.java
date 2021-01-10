@@ -27,25 +27,25 @@ import io.netty.channel.RecvByteBufAllocator;
  * <h3>Available options</h3>
  *
  * In addition to the options provided by {@link ChannelConfig},
- * {@link DefaultJSerialCommChannelConfig} allows the following options in the option map:
+ * {@link DefaultSerialChannelConfig} allows the following options in the option map:
  *
  * <table border="1" cellspacing="0" cellpadding="6">
  * <tr>
  * <th>Name</th><th>Associated setter method</th>
  * </tr><tr>
- * <td>{@link JSerialCommChannelOption#BAUD_RATE}</td><td>{@link #setBaudrate(int)}</td>
+ * <td>{@link SerialChannelOption#BAUD_RATE}</td><td>{@link #setBaudrate(int)}</td>
  * </tr><tr>
- * <td>{@link JSerialCommChannelOption#STOP_BITS}</td><td>{@link #setStopbits(Stopbits)}</td>
+ * <td>{@link SerialChannelOption#STOP_BITS}</td><td>{@link #setStopbits(Stopbits)}</td>
  * </tr><tr>
- * <td>{@link JSerialCommChannelOption#DATA_BITS}</td><td>{@link #setDatabits(int)}</td>
+ * <td>{@link SerialChannelOption#DATA_BITS}</td><td>{@link #setDatabits(int)}</td>
  * </tr><tr>
- * <td>{@link JSerialCommChannelOption#PARITY_BIT}</td><td>{@link #setParitybit(Paritybit)}</td>
+ * <td>{@link SerialChannelOption#PARITY_BIT}</td><td>{@link #setParitybit(Paritybit)}</td>
  * </tr><tr>
- * <td>{@link JSerialCommChannelOption#WAIT_TIME}</td><td>{@link #setWaitTimeMillis(int)}</td>
+ * <td>{@link SerialChannelOption#WAIT_TIME}</td><td>{@link #setWaitTimeMillis(int)}</td>
  * </tr>
  * </table>
  */
-public interface JSerialCommChannelConfig extends ChannelConfig {
+public interface SerialChannelConfig extends ChannelConfig {
     enum Stopbits {
         /**
          * 1 stop bit will be sent at the end of every character
@@ -131,7 +131,7 @@ public interface JSerialCommChannelConfig extends ChannelConfig {
      *
      * @param baudrate The baud rate (in bits per second)
      */
-    JSerialCommChannelConfig setBaudrate(int baudrate);
+    SerialChannelConfig setBaudrate(int baudrate);
 
     /**
      * Sets the number of stop bits to include at the end of every character to aid the
@@ -139,7 +139,7 @@ public interface JSerialCommChannelConfig extends ChannelConfig {
      *
      * @param stopbits The number of stop bits to use
      */
-    JSerialCommChannelConfig setStopbits(Stopbits stopbits);
+    SerialChannelConfig setStopbits(Stopbits stopbits);
 
     /**
      * Sets the number of data bits to use to make up each character sent to the serial
@@ -147,14 +147,14 @@ public interface JSerialCommChannelConfig extends ChannelConfig {
      *
      * @param databits The number of data bits to use
      */
-    JSerialCommChannelConfig setDatabits(int databits);
+    SerialChannelConfig setDatabits(int databits);
 
     /**
      * Sets the type of parity bit to be used when communicating with the serial device.
      *
      * @param paritybit The type of parity bit to be used
      */
-    JSerialCommChannelConfig setParitybit(Paritybit paritybit);
+    SerialChannelConfig setParitybit(Paritybit paritybit);
 
     /**
      * @return The configured baud rate, defaulting to 115200 if unset
@@ -191,12 +191,12 @@ public interface JSerialCommChannelConfig extends ChannelConfig {
      *     wait) if unset
      * @throws IllegalArgumentException if the supplied value is &lt; 0
      */
-    JSerialCommChannelConfig setWaitTimeMillis(int waitTimeMillis);
+    SerialChannelConfig setWaitTimeMillis(int waitTimeMillis);
 
     /**
      * Sets the maximal time (in ms) to block while try to read from the serial port. Default is 1000ms
      */
-    JSerialCommChannelConfig setReadTimeout(int readTimeout);
+    SerialChannelConfig setReadTimeout(int readTimeout);
 
     /**
      * Return the maximal time (in ms) to block and wait for something to be ready to read.
@@ -204,26 +204,26 @@ public interface JSerialCommChannelConfig extends ChannelConfig {
     int getReadTimeout();
 
     @Override
-    JSerialCommChannelConfig setConnectTimeoutMillis(int connectTimeoutMillis);
+    SerialChannelConfig setConnectTimeoutMillis(int connectTimeoutMillis);
 
     @Override
-    JSerialCommChannelConfig setWriteSpinCount(int writeSpinCount);
+    SerialChannelConfig setWriteSpinCount(int writeSpinCount);
 
     @Override
-    JSerialCommChannelConfig setAllocator(ByteBufAllocator allocator);
+    SerialChannelConfig setAllocator(ByteBufAllocator allocator);
 
     @Override
-    JSerialCommChannelConfig setRecvByteBufAllocator(RecvByteBufAllocator allocator);
+    SerialChannelConfig setRecvByteBufAllocator(RecvByteBufAllocator allocator);
 
     @Override
-    JSerialCommChannelConfig setAutoRead(boolean autoRead);
+    SerialChannelConfig setAutoRead(boolean autoRead);
 
     @Override
-    JSerialCommChannelConfig setWriteBufferHighWaterMark(int writeBufferHighWaterMark);
+    SerialChannelConfig setWriteBufferHighWaterMark(int writeBufferHighWaterMark);
 
     @Override
-    JSerialCommChannelConfig setWriteBufferLowWaterMark(int writeBufferLowWaterMark);
+    SerialChannelConfig setWriteBufferLowWaterMark(int writeBufferLowWaterMark);
 
     @Override
-    JSerialCommChannelConfig setMessageSizeEstimator(MessageSizeEstimator estimator);
+    SerialChannelConfig setMessageSizeEstimator(MessageSizeEstimator estimator);
 }

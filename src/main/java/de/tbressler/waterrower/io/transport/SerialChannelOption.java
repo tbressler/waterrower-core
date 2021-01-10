@@ -15,14 +15,14 @@
  */
 package de.tbressler.waterrower.io.transport;
 
-import de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Paritybit;
-import de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Stopbits;
+import de.tbressler.waterrower.io.transport.SerialChannelConfig.Paritybit;
+import de.tbressler.waterrower.io.transport.SerialChannelConfig.Stopbits;
 import io.netty.channel.ChannelOption;
 
 /**
  * Option for configuring a serial port connection
  */
-public final class JSerialCommChannelOption<T> extends ChannelOption<T> {
+public final class SerialChannelOption<T> extends ChannelOption<T> {
 
     public static final ChannelOption<Integer> BAUD_RATE = valueOf("BAUD_RATE");
     public static final ChannelOption<Stopbits> STOP_BITS = valueOf("STOP_BITS");
@@ -32,7 +32,7 @@ public final class JSerialCommChannelOption<T> extends ChannelOption<T> {
     public static final ChannelOption<Integer> READ_TIMEOUT = valueOf("READ_TIMEOUT");
 
     @SuppressWarnings({ "unused", "deprecation" })
-    private JSerialCommChannelOption() {
+    private SerialChannelOption() {
         super(null);
     }
 

@@ -2,15 +2,15 @@ package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.codec.MessageFrameDecoder;
 import de.tbressler.waterrower.io.codec.MessageFrameEncoder;
-import de.tbressler.waterrower.io.transport.JSerialCommChannel;
-import de.tbressler.waterrower.io.transport.JSerialCommChannelConfig;
+import de.tbressler.waterrower.io.transport.SerialChannel;
+import de.tbressler.waterrower.io.transport.SerialChannelConfig;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Paritybit.NONE;
-import static de.tbressler.waterrower.io.transport.JSerialCommChannelConfig.Stopbits.STOPBITS_1;
+import static de.tbressler.waterrower.io.transport.SerialChannelConfig.Paritybit.NONE;
+import static de.tbressler.waterrower.io.transport.SerialChannelConfig.Stopbits.STOPBITS_1;
 import static org.mockito.Mockito.*;
 
 /**
@@ -25,9 +25,9 @@ public class TestChannelInitializer {
     private ChannelInitializer initializer;
 
     // Mocks:
-    private JSerialCommChannel channel = mock(JSerialCommChannel.class, "channel");
+    private SerialChannel channel = mock(SerialChannel.class, "channel");
     private SerialHandler handler = mock(SerialHandler.class, "handler");
-    private JSerialCommChannelConfig config = mock(JSerialCommChannelConfig.class, "config");
+    private SerialChannelConfig config = mock(SerialChannelConfig.class, "config");
     private ChannelPipeline pipeline = mock(ChannelPipeline.class, "pipeline");
 
 

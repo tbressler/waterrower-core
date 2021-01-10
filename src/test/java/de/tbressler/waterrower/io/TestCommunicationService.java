@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
+import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -29,7 +29,7 @@ public class TestCommunicationService {
     // Mocks:
     private Bootstrap bootstrap = mock(Bootstrap.class, "bootstrap");
     private ChannelInitializer channelInitializer = mock(ChannelInitializer.class, "channelInitializer");
-    private JSerialCommDeviceAddress address = new JSerialCommDeviceAddress("some-port");
+    private SerialDeviceAddress address = new SerialDeviceAddress("some-port");
     private ChannelFuture channelFuture = mock(ChannelFuture.class, "channelFuture");
     private Channel channel = mock(Channel.class, "channel");
 

@@ -1,8 +1,8 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import de.tbressler.waterrower.io.transport.JSerialCommChannel;
-import de.tbressler.waterrower.io.transport.JSerialCommDeviceAddress;
+import de.tbressler.waterrower.io.transport.SerialChannel;
+import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -79,7 +79,7 @@ public class CommunicationService {
 
         this.bootstrap = bootstrap;
         this.bootstrap.group(new OioEventLoopGroup());
-        this.bootstrap.channel(JSerialCommChannel.class);
+        this.bootstrap.channel(SerialChannel.class);
 
         channelInitializer.setSerialHandler(serialHandler);
 
@@ -93,7 +93,7 @@ public class CommunicationService {
      * @param address The serial port, must not be null.
      * @throws IOException if opening of the channel fails.
      */
-    public void open(JSerialCommDeviceAddress address) throws IOException {
+    public void open(SerialDeviceAddress address) throws IOException {
         requireNonNull(address);
 
         lock.lock();
