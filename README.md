@@ -50,7 +50,7 @@ You can use one of the following subscriptions:
 | ```DisplayedDistanceSubscription``` | Subscription for the *displayed distance* (in meters) on the distance window of the Performance Monitor. |
 | ```DisplayedDurationSubscription``` | Subscription for the *displayed duration* on the duration window of the Performance Monitor. The duration window displays the time covered (or time to be covered in a duration workout). |
 | ```TotalDistanceSubscription``` | Subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this is stored everytime the Performance Monitor is switched off. |
-| ```StrokeCountSubscription``` | Subscription for stroke count value. |
+| ```StrokeCountSubscription``` | Subscription for the *stroke count* value (number of strokes). |
 
 ### Configure workouts
 
