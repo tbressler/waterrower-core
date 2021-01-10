@@ -1,10 +1,7 @@
 package de.tbressler.waterrower.log;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
-
-import static org.apache.logging.log4j.LogManager.getLogger;
-import static org.apache.logging.log4j.MarkerManager.getMarker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Simple singleton for logging.
@@ -15,16 +12,16 @@ import static org.apache.logging.log4j.MarkerManager.getMarker;
 public class Log {
 
     /** Marker for serial communication logs. */
-    public static final Marker SERIAL = getMarker("Serial");
+    public static final String SERIAL = "Serial";
     /** Marker for messages that are send and received via serial communication. */
-    public static final Marker MESSAGES = getMarker("Messages");
+    public static final String MESSAGES = "Messages";
     /** Marker for library logs. */
-    public static final Marker LIBRARY = getMarker("Library");
+    public static final String LIBRARY = "Library";
     /** Marker for auto discovery logs. */
-    public static final Marker DISCOVERY = getMarker("Discovery");
+    public static final String DISCOVERY = "Discovery";
 
     /* The logger. */
-    private static final Logger logger = getLogger();
+    private static final Logger logger = LoggerFactory.getLogger("WaterRower Library");
 
 
     /* Private constructor. */
@@ -32,13 +29,13 @@ public class Log {
 
 
     /** Logs debug messages. */
-    public static void debug(Marker marker, String msg) {
-        logger.debug(marker, msg);
+    public static void debug(String marker, String msg) {
+        logger.debug(msg);
     }
 
     /** Logs warning messages. */
-    public static void warn(Marker marker, String msg) {
-        logger.warn(marker, msg);
+    public static void warn(String marker, String msg) {
+        logger.warn(msg);
     }
 
     /** Logs error messages. */

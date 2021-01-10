@@ -7,8 +7,6 @@ import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.subscriptions.DisplayedDistanceSubscription;
 import de.tbressler.waterrower.subscriptions.DisplayedDurationSubscription;
 import de.tbressler.waterrower.subscriptions.StrokeCountSubscription;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -27,7 +25,7 @@ import static java.time.Duration.ofSeconds;
  */
 public class TestWithRealDevice {
 
-    private static final Marker TEST = MarkerManager.getMarker("Test");
+    private static final String TEST = "Test";
 
 
     public static void main(String...args) throws IOException {
