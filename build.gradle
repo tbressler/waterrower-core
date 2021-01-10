@@ -12,14 +12,6 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-
-    // Workaround: Don't use SLF4J:
-    all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-    all*.exclude group: 'org.slf4j', module: 'slf4j-api'
-
-}
-
 dependencies {
 
     // Serial communication:
@@ -27,14 +19,16 @@ dependencies {
 
     // jSerialComm:
     compile group: 'com.fazecast', name: 'jSerialComm', version: '2.6.2'
-    // compile group: 'se.koc', name: 'netty-transport-jserialcomm', version: '1.0.0'
 
     // Utils:
     compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
 
     // Logging:
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
+    // compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
+    // compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
+
 
     // JUnit and tests:
     testCompile group: 'junit', name: 'junit', version: '4.13.1'
