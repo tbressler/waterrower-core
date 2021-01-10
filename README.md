@@ -98,7 +98,7 @@ Please note, you can use the interface ```IDiscoveryStore``` in order to improve
 
 The following devices were tested:
 
-- WaterRower S4: Firmware 2.xx
+- WaterRower S4 Performance Monitor (Firmware 2.1)
 
 If you have successfully tested more devices please feel free to add them to issue [#8](https://github.com/tbressler/waterrower-core/issues/8).
 

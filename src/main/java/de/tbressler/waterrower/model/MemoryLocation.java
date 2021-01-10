@@ -92,9 +92,9 @@ public enum MemoryLocation {
     /* Used to generate the display clock: */
 
     DISPLAY_SEC_DEC(0x1e0),     // seconds 0.0-0.9
-    DISPLAY_SEC(0x1e1),         // seconds 0-59
-    DISPLAY_MIN(0x1e2),         // minutes 0-59
-    DISPLAY_HR(0x1e3),          // hours 0-9 only
+    DISPLAY_SEC(0x1e1),         // seconds 0-59 (send as ACH not byte value)
+    DISPLAY_MIN(0x1e2),         // minutes 0-59 (send as ACH not byte value)
+    DISPLAY_HR(0x1e3),          // hours 0-9 only (send as ACH not byte value)
 
     /* Workout total times/distances/limits: */
 
