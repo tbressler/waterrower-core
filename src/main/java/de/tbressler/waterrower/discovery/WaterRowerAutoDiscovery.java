@@ -169,7 +169,7 @@ public class WaterRowerAutoDiscovery {
             waterRower.connect(address);
 
         } catch (IOException e) {
-            Log.error("Couldn't connect, due to errors! Trying next port.", e);
+            Log.warn(DISCOVERY, "Couldn't connect to serial port, due to error ("+e.getMessage()+")! Trying next port.");
             executorService.schedule(this::tryNextConnectionAttempt, TRY_AGAIN_INTERVAL.getSeconds(), SECONDS);
         } finally {
             lock.unlock();

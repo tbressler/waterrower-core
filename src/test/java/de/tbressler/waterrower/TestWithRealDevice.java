@@ -4,9 +4,8 @@ import de.tbressler.waterrower.discovery.WaterRowerAutoDiscovery;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
-import de.tbressler.waterrower.subscriptions.AverageStrokeTimeSubscription;
+import de.tbressler.waterrower.subscriptions.DisplayedDistanceSubscription;
 import de.tbressler.waterrower.subscriptions.DisplayedDurationSubscription;
-import de.tbressler.waterrower.subscriptions.DistanceSubscription;
 import de.tbressler.waterrower.subscriptions.StrokeCountSubscription;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -63,20 +62,6 @@ public class TestWithRealDevice {
             }
         });
 
-        waterRower.subscribe((new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.WHOLE_STROKE) {
-            @Override
-            protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
-                Log.debug(TEST, "Value updated. Average stroke time (whole stroke) = " + averageStrokeTime + " ?");
-            }
-        }));
-
-        waterRower.subscribe((new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.PULL_ONLY) {
-            @Override
-            protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
-                Log.debug(TEST, "Value updated. Average stroke time (pull only) = " + averageStrokeTime + " ?");
-            }
-        }));
-
         waterRower.subscribe(new DisplayedDurationSubscription() {
             @Override
             protected void onDurationUpdated(Duration duration) {
@@ -84,24 +69,10 @@ public class TestWithRealDevice {
             }
         });
 
-        waterRower.subscribe(new DistanceSubscription(DistanceSubscription.DistanceMode.DISPLAYED_DISTANCE) {
+        waterRower.subscribe(new DisplayedDistanceSubscription() {
             @Override
-            protected void onDistanceUpdated(DistanceMode mode, int distance) {
-                Log.debug(TEST, "Value updated. Displayed distance ("+mode+") = "+distance);
-            }
-        });
-
-        waterRower.subscribe(new DistanceSubscription(DistanceSubscription.DistanceMode.DISTANCE) {
-            @Override
-            protected void onDistanceUpdated(DistanceMode mode, int distance) {
-                Log.debug(TEST, "Value updated. Distance ("+mode+") = "+distance);
-            }
-        });
-
-        waterRower.subscribe(new DistanceSubscription(DistanceSubscription.DistanceMode.TOTAL_DISTANCE) {
-            @Override
-            protected void onDistanceUpdated(DistanceMode mode, int distance) {
-                Log.debug(TEST, "Value updated. Total distance ("+mode+") = "+distance);
+            protected void onDistanceUpdated(int distance) {
+                Log.debug(TEST, "Value updated. Displayed distance = "+distance + " meter(s)");
             }
         });
 

@@ -18,7 +18,10 @@ import static java.util.Objects.requireNonNull;
  *
  * @author Tobias Bressler
  * @version 1.0
+ *
+ * @deprecated Please use DisplayedDurationSubscription and TotalDistanceSubscription instead.
  */
+@Deprecated
 public abstract class DistanceSubscription extends AbstractMemorySubscription {
 
     /**
@@ -94,3 +97,5 @@ public abstract class DistanceSubscription extends AbstractMemorySubscription {
     abstract protected void onDistanceUpdated(DistanceMode mode, int distance);
 
 }
+
+

@@ -6,10 +6,14 @@ import java.time.Duration;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.DISPLAY_SEC;
+import static java.lang.Integer.parseInt;
 import static java.time.Duration.ofSeconds;
 
 /**
- * Subscription for the displayed duration values.
+ * Subscription for the displayed duration on the duration window of the Performance Monitor.
+ *
+ * The duration window displays the time covered (or time to be covered in a duration workout)
+ * in units of hours, minutes, seconds and decimal seconds.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -31,17 +35,21 @@ public abstract class DisplayedDurationSubscription extends AbstractMemorySubscr
     @Override
     protected final void handle(DataMemoryMessage msg) {
 
-        Duration duration = ofSeconds(msg.getValue1())
-                .plusMinutes(msg.getValue2())
-                .plusHours(msg.getValue3());
+        int sec = parseInt(msg.getValue1AsACH());
+        int min = parseInt(msg.getValue2AsACH());
+        int hrs = parseInt(msg.getValue3AsACH());
+
+        Duration duration = ofSeconds(sec)
+                .plusMinutes(min)
+                .plusHours(hrs);
 
         // If the received duration is the same as before,
         // don't send an update.
         if (duration.equals(lastDuration))
             return;
-
         lastDuration = duration;
 
+        // Notify update.
         onDurationUpdated(duration);
     }
 

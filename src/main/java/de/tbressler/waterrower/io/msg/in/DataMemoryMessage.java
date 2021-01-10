@@ -4,6 +4,7 @@ import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static de.tbressler.waterrower.io.msg.Memory.*;
+import static de.tbressler.waterrower.utils.MessageUtils.intToAch;
 
 /**
  * Value from single, double or triple memory locations (S4/S5 -> PC).
@@ -117,6 +118,15 @@ public class DataMemoryMessage extends ReadMemoryMessage {
         return value3;
     }
 
+    /**
+     * Returns the single byte of data Y3 from the memory location (as ACH string).
+     *
+     * @return The single byte of data (00 .. FF) from memory location.
+     */
+    public String getValue3AsACH() {
+        return intToAch(value3, 2);
+    }
+
 
     /**
      * Returns the single byte of data Y2 from the memory location.
@@ -128,6 +138,15 @@ public class DataMemoryMessage extends ReadMemoryMessage {
         return value2;
     }
 
+    /**
+     * Returns the single byte of data Y2 from the memory location (as ACH string).
+     *
+     * @return The single byte of data (00 .. FF) from memory location.
+     */
+    public String getValue2AsACH() {
+        return intToAch(value2, 2);
+    }
+
 
     /**
      * Returns the single byte of data Y1 from the memory location.
@@ -136,6 +155,15 @@ public class DataMemoryMessage extends ReadMemoryMessage {
      */
     public int getValue1() {
         return value1;
+    }
+
+    /**
+     * Returns the single byte of data Y1 from the memory location (as ACH string).
+     *
+     * @return The single byte of data (00 .. FF) from memory location.
+     */
+    public String getValue1AsACH() {
+        return intToAch(value1, 2);
     }
 
 
