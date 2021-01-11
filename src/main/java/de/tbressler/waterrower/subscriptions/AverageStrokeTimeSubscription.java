@@ -1,6 +1,7 @@
 package de.tbressler.waterrower.subscriptions;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
+import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.MemoryLocation;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
@@ -63,8 +64,10 @@ public abstract class AverageStrokeTimeSubscription extends AbstractMemorySubscr
         // don't send an update.
         if (lastAverageStrokeTime == averageStrokeTime)
             return;
-
         lastAverageStrokeTime = averageStrokeTime;
+
+        // TODO Remove debug message!
+        Log.info("AverageStrokeTimeSubscription ========= [ ACH=" + msg.getValue1AsACH() + " ] === " + averageStrokeTime);
 
         onAverageStrokeTimeUpdated(averageStrokeTime);
     }

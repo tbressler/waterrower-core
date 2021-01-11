@@ -1,6 +1,7 @@
 package de.tbressler.waterrower.subscriptions;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
+import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.MemoryLocation;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
@@ -71,8 +72,10 @@ public abstract class IntensitySubscription extends AbstractMemorySubscription {
         // don't send an update.
         if (lastIntensity == intensity)
             return;
-
         lastIntensity = intensity;
+
+        // TODO Remove debug message!
+        Log.info("IntensitySubscription ========= [ ACH2=" + msg.getValue2AsACH() + ", ACH1="+msg.getValue1AsACH() + " ] === " + intensity);
 
         onIntensityUpdated(intensityType, intensity);
     }
@@ -80,6 +83,10 @@ public abstract class IntensitySubscription extends AbstractMemorySubscription {
 
     /**
      * Is called if the value for the intensity was updated.
+     *
+     * Depending on the intensity type the values are:
+     * - Total distance per second in cm
+     * - Instant average distance in cm
      *
      * @param intensityType The intensity type, never null.
      * @param intensity The new value.

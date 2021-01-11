@@ -2,6 +2,7 @@ package de.tbressler.waterrower.model;
 
 /**
  * Memory locations of the WaterRower S4, version 2.00.
+ * See PDF file 'docs/Water_Rower_S4_S5_USB_Protocol_Iss_1.04.pdf' for more details.
  *
  * @author Tobias Bressler
  * @version 1.0

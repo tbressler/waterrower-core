@@ -36,7 +36,6 @@ public abstract class StrokeCountSubscription extends AbstractMemorySubscription
         // don't send an update.
         if (lastStrokeCount == strokes)
             return;
-
         lastStrokeCount = strokes;
 
         onStrokeCountUpdated(strokes);
