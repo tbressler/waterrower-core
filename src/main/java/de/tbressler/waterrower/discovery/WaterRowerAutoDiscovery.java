@@ -6,6 +6,8 @@ import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
+import de.tbressler.waterrower.utils.AvailablePort;
+import de.tbressler.waterrower.utils.SerialPortWrapper;
 
 import java.io.IOException;
 import java.time.Duration;

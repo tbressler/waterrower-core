@@ -1,5 +1,6 @@
 package de.tbressler.waterrower.discovery;
 
+import de.tbressler.waterrower.utils.SerialPortWrapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;

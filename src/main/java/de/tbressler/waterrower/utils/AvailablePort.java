@@ -1,4 +1,4 @@
-package de.tbressler.waterrower.discovery;
+package de.tbressler.waterrower.utils;
 
 import com.fazecast.jSerialComm.SerialPort;
 
