@@ -8,6 +8,10 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 /**
  * A subscription for pulse count events.
  *
+ * Will be called, when pulse count was updated. The value is representing the number of
+ * pulse’s counted during the last 25mS period; this value can range from 1 to 50
+ * typically. (Zero values will not be transmitted).
+ *
  * @author Tobias Bressler
  * @version 1.0
  */

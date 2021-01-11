@@ -12,6 +12,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
  * @author Tobias Bressler
  * @version 1.0
  */
+@Deprecated
 public abstract class StrokeCountSubscription extends AbstractMemorySubscription {
 
     /* The last stroke count received. */

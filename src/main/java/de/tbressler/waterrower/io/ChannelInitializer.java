@@ -11,7 +11,6 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 
 import static de.tbressler.waterrower.io.transport.SerialChannelConfig.Paritybit.NONE;
 import static de.tbressler.waterrower.io.transport.SerialChannelConfig.Stopbits.STOPBITS_1;
-import static de.tbressler.waterrower.log.Log.SERIAL;
 import static io.netty.handler.codec.Delimiters.lineDelimiter;
 import static java.util.Objects.requireNonNull;
 
@@ -52,7 +51,7 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<Seri
 
     @Override
     protected void initChannel(SerialChannel channel) throws Exception {
-        Log.debug(SERIAL, "Serial channel initialized. Configuring pipeline and channel...");
+        Log.debug("Serial channel initialized. Configuring pipeline and channel...");
 
         checkIfSerialHandlerIsSet();
 
@@ -83,7 +82,7 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<Seri
 
     /* Logs the serial configuration. */
     private void logSerialConfiguration(SerialChannelConfig config) {
-        Log.debug(SERIAL, "Serial channel configured to: " +
+        Log.debug("Serial channel configured to: " +
                 "\n Baudrate: " + config.getBaudrate() +
                 "\n Databits: " + config.getDatabits() +
                 "\n Stopbits: " + config.getStopbits().name() +
@@ -104,7 +103,7 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<Seri
         // Handle messages and exceptions:
         pipeline.addLast("handler", serialHandler);
 
-        Log.debug(SERIAL, "Pipeline configured and handler added.");
+        Log.debug("Pipeline configured and handler added.");
     }
 
 }

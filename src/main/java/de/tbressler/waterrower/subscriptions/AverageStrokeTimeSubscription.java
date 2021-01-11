@@ -14,6 +14,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
+@Deprecated
 public abstract class AverageStrokeTimeSubscription extends AbstractMemorySubscription {
 
     // TODO Rename this enum. StrokeType already exists.

@@ -7,8 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
-import static de.tbressler.waterrower.log.Log.SERIAL;
-
 /**
  * Handler for different events on the serial connection (e.g. connect, disconnect).
  *
@@ -23,11 +21,11 @@ public abstract class SerialHandler extends ChannelInboundHandlerAdapter {
         try {
 
             if (!(msg instanceof AbstractMessage)) {
-                Log.warn(SERIAL, "Invalid message received! Message skipped.");
+                Log.warn("Invalid message received! Message skipped.");
                 return;
             }
 
-            Log.debug(SERIAL, "Message received: " + msg);
+            Log.debug("Message received: " + msg);
 
             // Notify that a message was received.
             onMessageReceived((AbstractMessage) msg);
@@ -71,9 +69,9 @@ public abstract class SerialHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        Log.error("Unexpected exception caught in "+this.getClass().getSimpleName() + "!", cause);
+        Log.error("Unexpected exception caught in serial handler!", cause);
         ctx.close();
-        Log.debug(SERIAL, "Connection to serial port closed.");
+        Log.debug("Connection to serial port closed.");
         onError();
     }
 

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -57,7 +56,7 @@ public class WaterRowerConnector {
             if (isConnected())
                 throw new IOException("Service is already connected! Can not connect.");
 
-            Log.debug(LIBRARY, "Opening serial channel at '" + address.value() + "' connection.");
+            Log.debug("Opening serial channel at '" + address.value() + "' connection.");
             communicationService.open(address);
 
         } finally {
@@ -86,7 +85,7 @@ public class WaterRowerConnector {
             if (!isConnected())
                 throw new IOException("Service is not connected! Can not disconnect.");
 
-            Log.debug(LIBRARY, "Closing serial channel.");
+            Log.debug("Closing serial channel.");
             communicationService.close();
 
         } finally {

@@ -11,7 +11,6 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.MonitorType;
 
-import static de.tbressler.waterrower.log.Log.SERIAL;
 import static de.tbressler.waterrower.model.MonitorType.*;
 import static de.tbressler.waterrower.utils.MessageUtils.achToInt;
 import static de.tbressler.waterrower.utils.MessageUtils.intToAch;
@@ -136,7 +135,7 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
             return new DataMemoryMessage(location, value3, value2, value1);
         }
 
-        Log.warn(SERIAL, "Message couldn't be decoded!\n" +
+        Log.warn("Message couldn't be decoded!\n" +
                 " Message was: >" + msg + "<");
 
         return null;
@@ -162,7 +161,7 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
             return encodeReadMemoryMessage((ReadMemoryMessage) msg);
         }
 
-        Log.warn(SERIAL, "Message couldn't be encoded!\n" +
+        Log.warn("Message couldn't be encoded!\n" +
                 " Message was: " + msg);
 
         return null;
@@ -183,7 +182,7 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
                 result += "T";
                 break;
             default:
-                Log.warn(SERIAL, "Message contains invalid values!\n" +
+                Log.warn("Message contains invalid values!\n" +
                         " Message was: "+msg.toString());
                 return null;
         }

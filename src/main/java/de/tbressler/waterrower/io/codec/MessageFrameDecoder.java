@@ -9,8 +9,6 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 import static de.tbressler.waterrower.io.utils.ByteUtils.bufferToString;
-import static de.tbressler.waterrower.log.Log.MESSAGES;
-import static de.tbressler.waterrower.log.Log.SERIAL;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.util.Objects.requireNonNull;
 
@@ -38,14 +36,14 @@ public class MessageFrameDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 
-        Log.debug(MESSAGES, "Decoder received new message buffer:\n" +
+        Log.debug("Decoder received new message buffer:\n" +
                 " Buffer: " + bufferToString(in));
 
         int numberOfBytes = in.readableBytes();
 
         // Check if bytes are available and this is not an empty frame.
         if (numberOfBytes == 0) {
-            Log.warn(SERIAL, "No bytes in message buffer! Skipping frame.");
+            Log.warn("No bytes in message buffer! Skipping frame.");
             return;
         }
 
@@ -53,12 +51,12 @@ public class MessageFrameDecoder extends ByteToMessageDecoder {
 
         in.readBytes(byteArray, 0, numberOfBytes);
 
-        Log.debug(SERIAL, "Message buffer decoded to: >" + new String(byteArray, US_ASCII) + "<");
+        Log.debug("Message buffer decoded to: >" + new String(byteArray, US_ASCII) + "<");
 
         // Decode the message.
          AbstractMessage decodedMessage = parser.decode(byteArray);
          if (decodedMessage == null) {
-             Log.debug(SERIAL, "Couldn't decode bytes to message! Skipping it.");
+             Log.debug("Couldn't decode bytes to message! Skipping it.");
              return;
          }
 

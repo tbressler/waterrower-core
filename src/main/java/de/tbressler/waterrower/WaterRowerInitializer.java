@@ -26,7 +26,7 @@ public class WaterRowerInitializer {
     private final WaterRowerConnector connector;
 
     /* Polls and handles subscriptions. */
-    private final SubscriptionPollingService subscriptionPollingService;
+    private final SubscriptionPollingService subscriptionPolling;
 
     /* Watchdog that checks if a ping is received periodically. */
     private final PingWatchdog pingWatchdog;
@@ -61,11 +61,8 @@ public class WaterRowerInitializer {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(threadPoolSize);
 
         connector = new WaterRowerConnector(communicationService);
-
-        subscriptionPollingService = new SubscriptionPollingService(pollingInterval, connector, executorService);
-
+        subscriptionPolling = new SubscriptionPollingService(pollingInterval, connector, executorService);
         pingWatchdog = new PingWatchdog(timeoutInterval, executorService);
-
         deviceVerificationWatchdog = new DeviceVerificationWatchdog(timeoutInterval, executorService);
     }
 
@@ -104,7 +101,7 @@ public class WaterRowerInitializer {
      * @return The subscription polling service, never null.
      */
     SubscriptionPollingService getSubscriptionPollingService() {
-        return subscriptionPollingService;
+        return subscriptionPolling;
     }
 
 }

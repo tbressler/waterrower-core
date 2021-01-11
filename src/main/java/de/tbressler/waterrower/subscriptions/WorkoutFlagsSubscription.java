@@ -22,6 +22,7 @@ import static de.tbressler.waterrower.model.MemoryLocation.FEXTENDED;
  * @author Tobias Bressler
  * @version 1.0
  */
+@Deprecated
 public abstract class WorkoutFlagsSubscription extends AbstractMemorySubscription {
 
     /* The last received workout flags. */

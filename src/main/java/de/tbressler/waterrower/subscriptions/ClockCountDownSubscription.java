@@ -15,6 +15,7 @@ import static java.time.Duration.ofMillis;
  * @author Tobias Bressler
  * @version 1.0
  */
+@Deprecated
 public abstract class ClockCountDownSubscription extends AbstractMemorySubscription {
 
     /* The last clock count down received. */

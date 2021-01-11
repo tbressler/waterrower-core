@@ -5,6 +5,7 @@ import com.fazecast.jSerialComm.SerialPort;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -16,8 +17,15 @@ import static java.util.stream.Collectors.toList;
  */
 public class SerialPortWrapper {
 
+    /**
+     * Returns the list of available ports.
+     *
+     * @return A list of the available ports, never null.
+     */
     public List<AvailablePort> getAvailablePorts() {
         SerialPort[] serialPorts = SerialPort.getCommPorts();
+        if (serialPorts.length == 0)
+            return emptyList();
         return asList(serialPorts).stream().map((port) -> new AvailablePort(port)).collect(toList());
     }
 

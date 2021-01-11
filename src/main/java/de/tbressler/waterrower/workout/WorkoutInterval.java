@@ -62,7 +62,6 @@ public class WorkoutInterval {
         return restInterval;
     }
 
-    // TODO Duplicate code!
     /* Checks if distance is in range. */
     private int checkDistance(int distance, WorkoutUnit unit) {
         switch(unit) {
@@ -71,23 +70,26 @@ public class WorkoutInterval {
             case KMS:
                 // When unit = METERS, MILES or KMS: this value is in Meters, the display value for
                 // miles is a conversion and valid values are 0x0001 to 0xFA00.
-                if ((distance < 0x0001) || (distance > 0xFA00))
-                    throw new IllegalArgumentException("The distance of the workout must be between 0x0001 and 0xFA00!");
+                checkRange(distance, 0x0001, 0xFA00, "The distance of the workout must be between 0x0001 and 0xFA00!");
                 break;
             case STROKES:
                 // When unit = STROKES this value is the number of strokes and valid values are
                 // 0x0001 to 0x1388.
-                if ((distance < 0x0001) || (distance > 0x1388))
-                    throw new IllegalArgumentException("The distance of the workout must be between 0x0001 and 0x1388!");
+                checkRange(distance, 0x0001, 0x1388, "The distance of the workout must be between 0x0001 and 0x1388!");
                 break;
             case SECONDS:
                 // When unit = SECONDS this value is in seconds. Valid values are 0x0001 to 0x4650. This value is limited
                 // to 5 Hours, which is 18,000 seconds.
-                if ((distance < 0x0001) || (distance > 0x4650))
-                    throw new IllegalArgumentException("The duration of the workout must be between 0x0001 and 0x4650!");
+                checkRange(distance, 0x0001, 0x4650, "The duration of the workout must be between 0x0001 and 0x4650!");
                 break;
         }
         return distance;
+    }
+
+    /* Checks if the range is correct. */
+    private void checkRange(int distance, int min, int max, String msg) {
+        if ((distance < min) || (distance > max))
+            throw new IllegalArgumentException(msg);
     }
 
 

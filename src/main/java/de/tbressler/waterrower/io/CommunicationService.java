@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static de.tbressler.waterrower.log.Log.SERIAL;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -102,7 +101,7 @@ public class CommunicationService {
 
             checkIfChannelIsClose();
 
-            Log.debug(SERIAL, "Opening channel at serial port '" + address.value() + "'.");
+            Log.debug("Opening channel at serial port '" + address.value() + "'.");
 
             ChannelFuture future = bootstrap.connect(address).syncUninterruptibly();
             if (!future.isSuccess()) {
@@ -110,7 +109,7 @@ public class CommunicationService {
                 throw new IOException("Serial channel couldn't be opened!");
             }
 
-            Log.debug(SERIAL, "Serial channel was successfully opened.");
+            Log.debug("Serial channel was successfully opened.");
 
             currentChannel = future.channel();
 
@@ -161,7 +160,7 @@ public class CommunicationService {
 
             checkIfChannelIsOpen();
 
-            Log.debug(SERIAL, "Sending message '" + msg.toString() + "'.");
+            Log.debug("Sending message '" + msg.toString() + "'.");
 
             currentChannel.write(msg);
 
@@ -186,13 +185,13 @@ public class CommunicationService {
 
             checkIfChannelIsOpen();
 
-            Log.debug(SERIAL, "Closing serial channel.");
+            Log.debug("Closing serial channel.");
 
             ChannelFuture future = currentChannel.close().syncUninterruptibly();
             if (!future.isSuccess())
                 throw new IOException("Serial channel couldn't be closed!");
 
-            Log.debug(SERIAL, "Serial channel was successfully closed.");
+            Log.debug("Serial channel was successfully closed.");
 
             currentChannel = null;
 
@@ -212,10 +211,10 @@ public class CommunicationService {
     /* Close the channel and suppress exceptions. */
     private void closeWithoutExceptions() {
         try {
-            Log.debug(SERIAL, "Try to close channel.");
+            Log.debug("Try to close channel.");
             close();
         } catch (IOException e) {
-            Log.warn(SERIAL, "Channel can not be closed!");
+            Log.warn("Channel can not be closed!");
         }
     }
 

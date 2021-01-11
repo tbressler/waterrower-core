@@ -27,14 +27,15 @@ public abstract class TankVolumeSubscription extends AbstractMemorySubscription 
 
     @Override
     protected final void handle(DataMemoryMessage msg) {
-        int tankVolume = msg.getValue1() / 10;
+        int tankVolume = msg.getValue1();
 
         if (lastTankVolume == tankVolume)
             return;
-
         lastTankVolume = tankVolume;
 
-        onTankVolumeUpdated(tankVolume);
+        double value = ((double) tankVolume) / 10D;
+
+        onTankVolumeUpdated(value);
     }
 
 
@@ -43,6 +44,6 @@ public abstract class TankVolumeSubscription extends AbstractMemorySubscription 
      *
      * @param tankVolume The volume of water in the tank (in liters).
      */
-    abstract protected void onTankVolumeUpdated(int tankVolume);
+    abstract protected void onTankVolumeUpdated(double tankVolume);
 
 }

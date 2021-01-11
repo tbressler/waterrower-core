@@ -11,15 +11,6 @@ import org.slf4j.LoggerFactory;
  */
 public class Log {
 
-    /** Marker for serial communication logs. */
-    public static final String SERIAL = "Serial";
-    /** Marker for messages that are send and received via serial communication. */
-    public static final String MESSAGES = "Messages";
-    /** Marker for library logs. */
-    public static final String LIBRARY = "Library";
-    /** Marker for auto discovery logs. */
-    public static final String DISCOVERY = "Discovery";
-
     /* The logger. */
     private static final Logger logger = LoggerFactory.getLogger("WaterRowerLibrary");
 
@@ -29,17 +20,17 @@ public class Log {
 
 
     /** Logs debug messages. */
-    public static void debug(String marker, String msg) {
+    public static void debug(String msg) {
         logger.debug(msg);
     }
 
     /** Logs debug messages. */
-    public static void info(String marker, String msg) {
+    public static void info(String msg) {
         logger.info(msg);
     }
 
     /** Logs warning messages. */
-    public static void warn(String marker, String msg) {
+    public static void warn(String msg) {
         logger.warn(msg);
     }
 

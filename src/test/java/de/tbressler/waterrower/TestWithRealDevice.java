@@ -4,14 +4,14 @@ import de.tbressler.waterrower.discovery.WaterRowerAutoDiscovery;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
-import de.tbressler.waterrower.subscriptions.DisplayedDistanceSubscription;
-import de.tbressler.waterrower.subscriptions.DisplayedDurationSubscription;
-import de.tbressler.waterrower.subscriptions.TankVolumeSubscription;
+import de.tbressler.waterrower.model.StrokeType;
+import de.tbressler.waterrower.subscriptions.*;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.Executors;
 
+import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
 import static java.time.Duration.ofSeconds;
 
 /**
@@ -25,8 +25,6 @@ import static java.time.Duration.ofSeconds;
  */
 public class TestWithRealDevice {
 
-    private static final String TEST = "Test";
-
     private static int STROKES = 0;
 
 
@@ -37,13 +35,14 @@ public class TestWithRealDevice {
         waterRower.addConnectionListener(new IWaterRowerConnectionListener() {
             @Override
             public void onConnected(ModelInformation modelInformation) {
-                Log.debug(TEST, "Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
+                Log.debug("Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
             }
             
             @Override
             public void onDisconnected() {
-                Log.debug(TEST, "Disconnected.");
+                Log.debug("Disconnected.");
                 try {
+                    // TODO Move this disconnect to the auto-discovery.
                     waterRower.disconnect();
                 } catch (IOException e) {
                     Log.error("Couldn't disconnect! " + e.getMessage(), null);
@@ -59,24 +58,48 @@ public class TestWithRealDevice {
 
         WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
 
+        waterRower.subscribe(new StrokeSubscription() {
+            @Override
+            protected void onStroke(StrokeType strokeType) {
+                if (strokeType.equals(END_OF_STROKE))
+                    return;
+                STROKES++;
+                Log.info("Stroke(s) = " + STROKES + " counted");
+            }
+        });
+
         waterRower.subscribe(new TankVolumeSubscription() {
             @Override
-            protected void onTankVolumeUpdated(int tankVolume) {
-                Log.info(TEST, "Value updated. Tank volume = "+tankVolume + " ------------------------------------");
+            protected void onTankVolumeUpdated(double tankVolume) {
+                Log.info("Tank volume = "+tankVolume);
             }
         });
 
         waterRower.subscribe(new DisplayedDurationSubscription() {
             @Override
             protected void onDurationUpdated(Duration duration) {
-                Log.info(TEST, "Value updated. Displayed duration = "+duration.toMinutes()+" minute(s)" + " ------------------------------------");
+                Log.info("Displayed duration = "+duration.toMinutes());
             }
         });
 
         waterRower.subscribe(new DisplayedDistanceSubscription() {
             @Override
             protected void onDistanceUpdated(int distance) {
-                Log.info(TEST, "Value updated. Displayed distance = "+distance+" meter(s)" + " ------------------------------------");
+                Log.info("Displayed distance = "+distance+" meter(s)");
+            }
+        });
+
+        waterRower.subscribe(new TotalDistanceSubscription() {
+            @Override
+            protected void onDistanceUpdated(int distance) {
+                Log.info("Total distance = "+distance+" meter(s)");
+            }
+        });
+
+        waterRower.subscribe(new StrokeCountSubscription() {
+            @Override
+            protected void onStrokeCountUpdated(int strokes) {
+                Log.info("Stroke count = "+strokes+" stroke(s)");
             }
         });
 

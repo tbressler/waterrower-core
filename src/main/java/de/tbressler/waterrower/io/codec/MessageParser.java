@@ -9,7 +9,6 @@ import de.tbressler.waterrower.log.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.tbressler.waterrower.log.Log.SERIAL;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.util.Objects.requireNonNull;
 
@@ -72,7 +71,7 @@ public class MessageParser {
      */
     public AbstractMessage decode(byte[] bytes) {
 
-        Log.debug(SERIAL, "Parsing message to object.");
+        Log.debug("Parsing message to object.");
 
         String msg = new String(bytes, US_ASCII);
 
@@ -107,7 +106,7 @@ public class MessageParser {
     @SuppressWarnings("unchecked")
     public byte[] encode(AbstractMessage msg) {
 
-        Log.debug(SERIAL, "Parsing message '"+msg.toString()+"' to bytes.");
+        Log.debug("Parsing message '"+msg.toString()+"' to bytes.");
 
         for (IMessageInterpreter interpreter : interpreters) {
 
@@ -122,7 +121,7 @@ public class MessageParser {
                 return encodedMsg.getBytes(US_ASCII);
         }
 
-        Log.warn(SERIAL, "Message couldn't be encoded! Unknown message type '"+msg.getClass().getName()+"'.");
+        Log.warn("Message couldn't be encoded! Unknown message type '"+msg.getClass().getName()+"'.");
 
         return null;
     }

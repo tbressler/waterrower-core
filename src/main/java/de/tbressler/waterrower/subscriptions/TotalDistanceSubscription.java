@@ -15,6 +15,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
  * @author Tobias Bressler
  * @version 1.0
  */
+@Deprecated
 public abstract class TotalDistanceSubscription extends AbstractMemorySubscription {
 
         /* The last distance received. */

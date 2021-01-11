@@ -5,7 +5,6 @@ import de.tbressler.waterrower.io.msg.AbstractMessageInterpreter;
 import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage;
 import de.tbressler.waterrower.log.Log;
 
-import static de.tbressler.waterrower.log.Log.SERIAL;
 import static de.tbressler.waterrower.utils.MessageUtils.intToAch;
 
 /**
@@ -44,7 +43,7 @@ public class ConfigureWorkoutMessageInterpreter extends AbstractMessageInterpret
                 return "WIN" + intToAch(msg.getRestInterval(), 4) + intToAch(msg.getDistance(), 4);
         }
 
-        Log.warn(SERIAL, "Message couldn't be encoded!\n" +
+        Log.warn("Message couldn't be encoded!\n" +
                 " Message was: " + msg);
 
         return null;

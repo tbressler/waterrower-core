@@ -8,7 +8,6 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.MemoryLocation;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
-import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -53,7 +52,7 @@ abstract class AbstractMemorySubscription implements ISubscription {
         if (dataMemoryMessage.getLocation() != location.getLocation())
             return;
         if (dataMemoryMessage.getMemory() != memory) {
-            Log.warn(LIBRARY, "Received message has memory type '"+dataMemoryMessage.getMemory()+"', but expected is '"+memory+"'!");
+            Log.warn("Received message has memory type '"+dataMemoryMessage.getMemory()+"', but expected is '"+memory+"'!");
             return;
         }
 

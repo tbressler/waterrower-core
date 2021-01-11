@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -25,7 +24,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public class SubscriptionPollingService {
 
-    private static final int SEND_INTERVAL = 50; // millis
+    // TODO Maybe 25 ms or less is also possible?
+    private static final int SEND_INTERVAL = 50; // in ms
 
 
     /* The polling interval. */
@@ -82,7 +82,7 @@ public class SubscriptionPollingService {
      */
     public void start() {
 
-        Log.debug(LIBRARY, "Start subscription polling service.");
+        Log.debug("Start subscription polling service.");
 
         isActive.set(true);
         schedulePollingTask();
@@ -96,17 +96,17 @@ public class SubscriptionPollingService {
     /* Execute the polling task. */
     private void executePolling() {
 
-        Log.debug(LIBRARY, "Schedule polling for "+subscriptions.size()+" subscription(s)...");
+        // If not active skip execution.
+        if (!isActive.get())
+            return;
+
+        Log.debug("Schedule polling for "+subscriptions.size()+" subscription(s)...");
 
         int delay = SEND_INTERVAL;
         for (ISubscription subscription : subscriptions) {
 
-            // If not active skip execution.
-            if (!isActive.get())
-                return;
-
             AbstractMessage msg = subscription.poll();
-            scheduleSendingTask(msg, delay);
+            scheduleSendMessageTask(msg, delay);
 
             delay += SEND_INTERVAL;
         }
@@ -116,18 +116,19 @@ public class SubscriptionPollingService {
     }
 
     /* Schedule the send task for execution. */
-    private void scheduleSendingTask(AbstractMessage msg, int delay) {
-        executorService.schedule(() -> executeSending(msg), delay, MILLISECONDS);
+    private void scheduleSendMessageTask(AbstractMessage msg, int delay) {
+        executorService.schedule(() -> sendMessage(msg), delay, MILLISECONDS);
     }
 
-    private void executeSending(AbstractMessage msg) {
+    /* Send the given message to the WaterRower. */
+    private void sendMessage(AbstractMessage msg) {
         try {
 
             // If not active skip execution.
             if (!isActive.get())
                 return;
 
-            Log.debug(LIBRARY, "Send scheduled polling message >" + msg.toString() + "<");
+            Log.debug("Send scheduled polling message >" + msg.toString() + "<");
 
             connector.send(msg);
 
@@ -142,7 +143,7 @@ public class SubscriptionPollingService {
      */
     public void stop() {
 
-        Log.debug(LIBRARY, "Stop subscription polling service.");
+        Log.debug("Stop subscription polling service.");
 
         isActive.set(false);
     }
@@ -155,7 +156,7 @@ public class SubscriptionPollingService {
      */
     public void subscribe(ISubscription subscription) {
         subscriptions.add(requireNonNull(subscription));
-        Log.debug(LIBRARY, "Added subscription: " + subscription);
+        Log.debug("Added subscription: " + subscription);
     }
 
     /**
@@ -165,7 +166,7 @@ public class SubscriptionPollingService {
      */
     public void unsubscribe(ISubscription subscription) {
         subscriptions.remove(requireNonNull(subscription));
-        Log.debug(LIBRARY, "Removed subscription: " + subscription);
+        Log.debug("Removed subscription: " + subscription);
     }
 
 }
