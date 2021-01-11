@@ -51,7 +51,7 @@ public abstract class ClockCountDownSubscription extends AbstractMemorySubscript
         lastClockCountDown = duration;
 
         // TODO Remove debug message!
-        Log.info("ClockCountDownSubscription ========= [ ACH1=" + msg.getValue1AsACH() + ", ACH2=" + msg.getValue2AsACH() + ", ACH3="+msg.getValue3AsACH() + " ] === " + duration.toMinutesPart() + ":" + duration.toSecondsPart());
+        Log.info("ClockCountDownSubscription ========= [ ACH3=" + msg.getValue3AsACH() + ", ACH2=" + msg.getValue2AsACH() + ", ACH1="+msg.getValue1AsACH() + " ] === " + duration.toMinutesPart() + ":" + duration.toSecondsPart());
 
         onClockCountDownUpdated(duration);
     }
