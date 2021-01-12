@@ -73,6 +73,7 @@ The following value subscriptions are available:
 | ```AverageVelocitySubscription``` | Subscription for the *displayed average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
 | ```StrokeSubscription``` |  A subscription for *stroke events*. The values will be send immediately by the Performance Monitor and will not be polled by the library. |
 | ```StrokeCountSubscription``` | Subscription for the *stroke count* value (number of strokes). |
+| ```StrokeRateSubscription``` | Subscription for the *displayed stroke rate* (strokes/min) of a whole stroke which is displayed in the stroke rate window of the Performance Monitor. |
 | ```TankVolumeSubscription``` | Subscription for the *tank volume* value (in liters). This is the value the user has set in the Performance Monitor (see manual). |
 | ```ClockCountDownSubscription``` | Subscription for *clock count down* values. This value is transmitted if a count down is programmed in the Performance Monitor. |
 | ```TotalDistanceSubscription``` | Subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this value will be reset to zero when the Performance Monitor is switched off. |

@@ -5,7 +5,6 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.WorkoutFlags;
-import de.tbressler.waterrower.subscriptions.AverageStrokeTimeSubscription;
 import de.tbressler.waterrower.subscriptions.AverageVelocitySubscription;
 import de.tbressler.waterrower.subscriptions.ClockCountDownSubscription;
 import de.tbressler.waterrower.subscriptions.WorkoutFlagsSubscription;
@@ -50,19 +49,6 @@ public class TestWithRealDevice {
         });
 
         WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
-
-        waterRower.subscribe(new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.WHOLE_STROKE) {
-            @Override
-            protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
-
-                if (averageStrokeTime == 0)
-                    return;
-
-                Log.info("Average stroke time (WHOLE) - Original = "+averageStrokeTime);
-                Log.info("Average stroke time (WHOLE) - V1 = "+ (60000D / (((double) averageStrokeTime) * 25D)));
-                Log.info("Average stroke time (WHOLE) - V2 = "+ (60000D / ((double) averageStrokeTime)));
-            }
-        });
 
         waterRower.subscribe(new AverageVelocitySubscription() {
             @Override
