@@ -157,6 +157,7 @@ public class WaterRower {
 
         if (connector.isConnected())
             throw new IOException("Already connected! Can not connect again.");
+
         connector.connect(requireNonNull(address));
     }
 
@@ -301,6 +302,13 @@ public class WaterRower {
         Log.debug("Serial device disconnected.");
 
         stopInternalServices();
+
+        try {
+            // Make sure the WaterRower gets disconnected.
+            disconnect();
+        } catch (IOException e) {
+            Log.warn("Couldn't disconnect!" + e.getMessage());
+        }
 
         fireOnDisconnected();
     }

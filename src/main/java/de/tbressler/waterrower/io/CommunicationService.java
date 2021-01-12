@@ -193,11 +193,10 @@ public class CommunicationService {
 
             Log.debug("Serial channel was successfully closed.");
 
-            currentChannel = null;
-
         } catch (Exception e) {
             throw new IOException("Can not disconnect!", e);
         } finally {
+            currentChannel = null;
             lock.unlock();
         }
     }

@@ -6,6 +6,7 @@ import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.WorkoutFlags;
 import de.tbressler.waterrower.subscriptions.AverageStrokeTimeSubscription;
+import de.tbressler.waterrower.subscriptions.AverageVelocitySubscription;
 import de.tbressler.waterrower.subscriptions.ClockCountDownSubscription;
 import de.tbressler.waterrower.subscriptions.WorkoutFlagsSubscription;
 
@@ -39,12 +40,6 @@ public class TestWithRealDevice {
             @Override
             public void onDisconnected() {
                 Log.debug("Disconnected.");
-                try {
-                    // TODO Move this disconnect to the auto-discovery.
-                    waterRower.disconnect();
-                } catch (IOException e) {
-                    Log.error("Couldn't disconnect! " + e.getMessage(), e);
-                }
             }
             
             @Override
@@ -59,18 +54,20 @@ public class TestWithRealDevice {
         waterRower.subscribe(new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.WHOLE_STROKE) {
             @Override
             protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
+
+                if (averageStrokeTime == 0)
+                    return;
+
                 Log.info("Average stroke time (WHOLE) - Original = "+averageStrokeTime);
-                Log.info("Average stroke time (WHOLE) - V1 = "+ (60000 / (averageStrokeTime * 25)));
-                Log.info("Average stroke time (WHOLE) - V2 = "+ (60000 / averageStrokeTime));
+                Log.info("Average stroke time (WHOLE) - V1 = "+ (60000D / (((double) averageStrokeTime) * 25D)));
+                Log.info("Average stroke time (WHOLE) - V2 = "+ (60000D / ((double) averageStrokeTime)));
             }
         });
 
-        waterRower.subscribe(new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.PULL_ONLY) {
+        waterRower.subscribe(new AverageVelocitySubscription() {
             @Override
-            protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
-                Log.info("Average stroke time (PULL-ONLY) - Original = "+averageStrokeTime);
-                Log.info("Average stroke time (PULL-ONLY) - V1 = "+ (60000 / (averageStrokeTime * 25)));
-                Log.info("Average stroke time (PULL-ONLY) - V2 = "+ (60000 / averageStrokeTime));
+            protected void onVelocityUpdated(double velocity) {
+                Log.info("Velocity = " + velocity);
             }
         });
 
