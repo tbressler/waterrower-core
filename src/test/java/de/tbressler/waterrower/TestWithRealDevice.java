@@ -25,9 +25,6 @@ import static java.time.Duration.ofSeconds;
  */
 public class TestWithRealDevice {
 
-    private static int STROKES = 0;
-
-
     public static void main(String...args) throws IOException {
 
         WaterRowerInitializer initializer = new WaterRowerInitializer(ofSeconds(5), ofSeconds(5), 5);
@@ -58,30 +55,6 @@ public class TestWithRealDevice {
 
         WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
 
-        waterRower.subscribe(new StrokeSubscription() {
-            @Override
-            protected void onStroke(StrokeType strokeType) {
-                if (strokeType.equals(END_OF_STROKE))
-                    return;
-                STROKES++;
-                Log.info("Stroke(s) = " + STROKES + " counted");
-            }
-        });
-
-        waterRower.subscribe(new TankVolumeSubscription() {
-            @Override
-            protected void onTankVolumeUpdated(double tankVolume) {
-                Log.info("Tank volume = "+tankVolume);
-            }
-        });
-
-        waterRower.subscribe(new DisplayedDurationSubscription() {
-            @Override
-            protected void onDurationUpdated(Duration duration) {
-                Log.info("Displayed duration = "+duration.toMinutes());
-            }
-        });
-
         waterRower.subscribe(new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.WHOLE_STROKE) {
             @Override
             protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
@@ -101,6 +74,15 @@ public class TestWithRealDevice {
             protected void onDistanceUpdated(int distance) {
                 Log.info("Total distance = "+distance+" meter(s)");
             }
+        });
+
+        waterRower.subscribe(new ClockCountDownSubscription() {
+
+            @Override
+            protected void onClockCountDownUpdated(Duration duration) {
+                Log.info("Clock count down = "+duration.toMinutesPart()+":"+duration.toSecondsPart());
+            }
+
         });
 
 
