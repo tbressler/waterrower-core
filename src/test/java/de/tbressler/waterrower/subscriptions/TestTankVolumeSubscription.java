@@ -41,41 +41,41 @@ public class TestTankVolumeSubscription {
     // Handle:
 
     @Test
-    public void handle_withTANK_VOLUMEAnd0x0F_notifiesOnTankVolumeUpdated() {
+    public void handle_withTANK_VOLUMEAnd0xA0_notifiesOnTankVolumeUpdated() {
         subscription = newTankVolumeSubscription();
 
-        DataMemoryMessage msg = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0x0F);
+        DataMemoryMessage msg = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0xA5);
 
         subscription.handle((AbstractMessage) msg);
 
-        verify(internalSubscription, times(1)).onTankVolumeUpdated(eq(15));
+        verify(internalSubscription, times(1)).onTankVolumeUpdated(eq(16.5D));
     }
 
     @Test
     public void handle_twoTimesWithSameMessages_onlyNotifiesOneTime() {
         subscription = newTankVolumeSubscription();
 
-        DataMemoryMessage msg1 = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0x02);
-        DataMemoryMessage msg2 = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0x02);
+        DataMemoryMessage msg1 = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0x96);
+        DataMemoryMessage msg2 = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0x96);
 
         subscription.handle((AbstractMessage) msg1);
         subscription.handle((AbstractMessage) msg2);
 
-        verify(internalSubscription, times(1)).onTankVolumeUpdated(eq(2));
+        verify(internalSubscription, times(1)).onTankVolumeUpdated(eq(15D));
     }
 
     @Test
     public void handle_twoTimesWithNotSameMessages_notifiesTwoTime() {
         subscription = newTankVolumeSubscription();
 
-        DataMemoryMessage msg1 = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0x10);
-        DataMemoryMessage msg2 = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0x11);
+        DataMemoryMessage msg1 = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0xA0);
+        DataMemoryMessage msg2 = new DataMemoryMessage(TANK_VOLUME.getLocation(), 0x96);
 
         subscription.handle((AbstractMessage) msg1);
         subscription.handle((AbstractMessage) msg2);
 
-        verify(internalSubscription, times(1)).onTankVolumeUpdated(eq(16));
-        verify(internalSubscription, times(1)).onTankVolumeUpdated(eq(17));
+        verify(internalSubscription, times(1)).onTankVolumeUpdated(eq(16D));
+        verify(internalSubscription, times(1)).onTankVolumeUpdated(eq(15D));
     }
 
 
@@ -85,7 +85,7 @@ public class TestTankVolumeSubscription {
     private TankVolumeSubscription newTankVolumeSubscription() {
         return new TankVolumeSubscription() {
             @Override
-            protected void onTankVolumeUpdated(int tankVolume) {
+            protected void onTankVolumeUpdated(double tankVolume) {
                 internalSubscription.onTankVolumeUpdated(tankVolume);
             }
         };

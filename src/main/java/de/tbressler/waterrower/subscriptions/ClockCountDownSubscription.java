@@ -1,13 +1,13 @@
 package de.tbressler.waterrower.subscriptions;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
+import de.tbressler.waterrower.utils.MessageUtils;
 
 import java.time.Duration;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.CLOCK_DOWN_DEC;
-import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
-import static java.time.Duration.ofMillis;
+import static java.time.Duration.ofSeconds;
 
 /**
  * Subscription for clock count down values.
@@ -32,14 +32,15 @@ public abstract class ClockCountDownSubscription extends AbstractMemorySubscript
     @Override
     protected final void handle(DataMemoryMessage msg) {
 
-        Duration duration = ofMillis(msg.getValue1() * 100)
-                .plusSeconds(intFromHighAndLow(msg.getValue3(), msg.getValue2()));
+        int millis = msg.getValue1();
+        int sec = MessageUtils.intFromHighAndLow(msg.getValue3(), msg.getValue2());
+
+        Duration duration = ofSeconds(sec).plusMillis(millis * 100);
 
         // If the received duration is the same as before,
         // don't send an update.
         if (duration.equals(lastClockCountDown))
             return;
-
         lastClockCountDown = duration;
 
         onClockCountDownUpdated(duration);

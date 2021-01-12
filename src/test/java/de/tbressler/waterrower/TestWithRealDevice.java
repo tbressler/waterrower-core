@@ -4,9 +4,10 @@ import de.tbressler.waterrower.discovery.WaterRowerAutoDiscovery;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
-import de.tbressler.waterrower.subscriptions.DisplayedDistanceSubscription;
-import de.tbressler.waterrower.subscriptions.DisplayedDurationSubscription;
-import de.tbressler.waterrower.subscriptions.StrokeCountSubscription;
+import de.tbressler.waterrower.model.WorkoutFlags;
+import de.tbressler.waterrower.subscriptions.AverageVelocitySubscription;
+import de.tbressler.waterrower.subscriptions.ClockCountDownSubscription;
+import de.tbressler.waterrower.subscriptions.WorkoutFlagsSubscription;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -25,9 +26,6 @@ import static java.time.Duration.ofSeconds;
  */
 public class TestWithRealDevice {
 
-    private static final String TEST = "Test";
-
-
     public static void main(String...args) throws IOException {
 
         WaterRowerInitializer initializer = new WaterRowerInitializer(ofSeconds(5), ofSeconds(5), 5);
@@ -35,13 +33,12 @@ public class TestWithRealDevice {
         waterRower.addConnectionListener(new IWaterRowerConnectionListener() {
             @Override
             public void onConnected(ModelInformation modelInformation) {
-                Log.debug(TEST, "Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
+                Log.info("Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
             }
             
             @Override
             public void onDisconnected() {
-                Log.debug(TEST, "Disconnected.");
-
+                Log.debug("Disconnected.");
             }
             
             @Override
@@ -53,24 +50,29 @@ public class TestWithRealDevice {
 
         WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
 
-        waterRower.subscribe(new StrokeCountSubscription() {
+        waterRower.subscribe(new AverageVelocitySubscription() {
             @Override
-            protected void onStrokeCountUpdated(int strokes) {
-                Log.debug(TEST, "Value updated. Stroke count = " + strokes);
+            protected void onVelocityUpdated(double velocity) {
+                Log.info("Velocity = " + velocity);
             }
         });
 
-        waterRower.subscribe(new DisplayedDurationSubscription() {
+        waterRower.subscribe(new ClockCountDownSubscription() {
+
             @Override
-            protected void onDurationUpdated(Duration duration) {
-                Log.debug(TEST, "Value updated. Displayed duration = "+duration.toMinutes()+" minute(s)");
+            protected void onClockCountDownUpdated(Duration duration) {
+                Log.info("Clock count down = "+duration.toMinutesPart()+":"+duration.toSecondsPart());
             }
+
         });
 
-        waterRower.subscribe(new DisplayedDistanceSubscription() {
+        waterRower.subscribe(new WorkoutFlagsSubscription() {
             @Override
-            protected void onDistanceUpdated(int distance) {
-                Log.debug(TEST, "Value updated. Displayed distance = "+distance + " meter(s)");
+            protected void onWorkoutModeUpdated(WorkoutFlags flags) {
+                Log.info("Workout distance mode = " + flags.isWorkoutDistanceMode());
+                Log.info("Workout distance interval mode = " + flags.isWorkoutDistanceIntervalMode());
+                Log.info("Workout duration mode = " + flags.isWorkoutDurationMode());
+                Log.info("Workout duration interval mode = " + flags.isWorkoutDurationIntervalMode());
             }
         });
 

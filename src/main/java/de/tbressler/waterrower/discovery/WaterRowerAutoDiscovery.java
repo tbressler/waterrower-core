@@ -6,6 +6,8 @@ import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
+import de.tbressler.waterrower.utils.AvailablePort;
+import de.tbressler.waterrower.utils.SerialPortWrapper;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -15,7 +17,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static de.tbressler.waterrower.log.Log.DISCOVERY;
 import static java.time.Duration.ofSeconds;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -74,7 +75,7 @@ public class WaterRowerAutoDiscovery {
 
         @Override
         public void onDisconnected() {
-            Log.debug(DISCOVERY, "WaterRower disconnected. Try to auto-connect again.");
+            Log.debug("WaterRower disconnected. Try to auto-connect again.");
             executorService.submit(() -> tryNextConnectionAttempt());
         }
 
@@ -136,7 +137,7 @@ public class WaterRowerAutoDiscovery {
      * Starts the auto-discovery.
      */
     public void start() {
-        Log.debug(DISCOVERY, "Starting discovery.");
+        Log.debug("Starting discovery.");
         isActive.set(true);
         executorService.submit(() -> tryNextConnectionAttempt());
     }
@@ -156,7 +157,7 @@ public class WaterRowerAutoDiscovery {
 
             if (availablePorts.empty()) {
                 // Still no serial ports available!
-                Log.warn(DISCOVERY, "Currently no serial ports available! Trying again in "+TRY_AGAIN_INTERVAL.getSeconds()+" second(s)...");
+                Log.warn("Currently no serial ports available! Trying again in "+TRY_AGAIN_INTERVAL.getSeconds()+" second(s)...");
                 executorService.schedule(this::tryNextConnectionAttempt, TRY_AGAIN_INTERVAL.getSeconds(), SECONDS);
                 return;
             }
@@ -164,12 +165,12 @@ public class WaterRowerAutoDiscovery {
             SerialDeviceAddress address = availablePorts.pop();
             currentSerialPort = address.value();
 
-            Log.debug(DISCOVERY, "Auto-connecting serial port '"+address.value()+"'.");
+            Log.info("Auto-connecting serial port '"+address.value()+"'.");
 
             waterRower.connect(address);
 
         } catch (IOException e) {
-            Log.warn(DISCOVERY, "Couldn't connect to serial port, due to error ("+e.getMessage()+")! Trying next port.");
+            Log.warn("Couldn't connect to serial port '"+currentSerialPort+"', due to error ("+e.getMessage()+")! Trying next port.");
             executorService.schedule(this::tryNextConnectionAttempt, TRY_AGAIN_INTERVAL.getSeconds(), SECONDS);
         } finally {
             lock.unlock();
@@ -179,7 +180,7 @@ public class WaterRowerAutoDiscovery {
     /* Updates the available serial ports on the stack. */
     private void updateAvailablePorts() {
 
-        Log.debug(DISCOVERY, "Updating list of available serial ports.");
+        Log.debug("Updating list of available serial ports.");
 
         // Get all available serial ports:
         List<AvailablePort> availablePorts = serialPortWrapper.getAvailablePorts();
@@ -187,6 +188,7 @@ public class WaterRowerAutoDiscovery {
         for(AvailablePort port : availablePorts) {
 
             String portName = port.getSystemPortName();
+
             // Ignore /dev/cu ports.
             if (portName.startsWith("/dev/cu."))
                 continue;
@@ -196,13 +198,13 @@ public class WaterRowerAutoDiscovery {
                 continue;
 
             if (port.isOpen()) {
-                Log.warn(DISCOVERY, "Skipping serial port '"+portName+"', because it is currently owned by another thread or application.");
+                Log.warn("Skipping serial port '"+portName+"', because it is already open.");
                 continue;
             }
 
             this.availablePorts.push(new SerialDeviceAddress(portName));
 
-            Log.debug(DISCOVERY, "Serial port found: " + portName);
+            Log.info("Serial port found: " + portName);
         }
 
         putLastSuccessfulPortFirst();
@@ -240,7 +242,7 @@ public class WaterRowerAutoDiscovery {
      * Stops the auto-discovery.
      */
     public void stop() {
-        Log.debug(DISCOVERY, "Stopping discovery.");
+        Log.debug("Stopping discovery.");
         isActive.set(false);
     }
 

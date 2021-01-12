@@ -44,7 +44,7 @@ public class SerialChannel extends OioByteStreamChannel {
         super(null);
 
         config = new DefaultSerialChannelConfig(this);
-        config.setReadTimeout(5000);
+        config.setReadTimeout(3000);
         config.setAutoClose(true);
     }
 

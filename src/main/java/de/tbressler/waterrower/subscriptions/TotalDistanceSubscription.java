@@ -9,7 +9,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 /**
  * Subscription for the total distance values of the Performance Monitor.
  *
- * The value represents the total distance meter counter - this is stored when the Performance
+ * The value represents the total distance meter counter - this value will be reset to zero when the Performance
  * Monitor is switched off.
  *
  * @author Tobias Bressler

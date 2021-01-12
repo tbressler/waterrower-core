@@ -1,4 +1,4 @@
-package de.tbressler.waterrower.discovery;
+package de.tbressler.waterrower.utils;
 
 import com.fazecast.jSerialComm.SerialPort;
 
@@ -13,16 +13,33 @@ import static java.util.Objects.requireNonNull;
  */
 public class AvailablePort {
 
+    /* The underlying jSerialComm port. */
     private SerialPort serialPort;
 
+
+    /**
+     * Wrapper for the SerialPort implementation.
+     *
+     * @param serialPort The underlying jSerialComm port, must not be null.
+     */
     public AvailablePort(SerialPort serialPort) {
         this.serialPort = requireNonNull(serialPort);
     }
 
+    /**
+     * The system name of the port.
+     *
+     * @return The name of the port.
+     */
     public String getSystemPortName() {
         return serialPort.getSystemPortName();
     }
 
+    /**
+     * Returns true if the port is open.
+     *
+     * @return True if the port is open.
+     */
     public boolean isOpen() {
         return serialPort.isOpen();
     }

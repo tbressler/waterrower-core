@@ -31,8 +31,8 @@ public class TestClockCountDownSubscription {
     @Test
     public void handle_withMessage_notifiesOnAverageStrokeTimeUpdated() {
         subscription = newClockCountDownSubscription();
-        subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x01, 0x02, 0x03));
-        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x0102, 300)));
+        subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x01, 0xFF, 0x03));
+        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(511, 300)));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class TestClockCountDownSubscription {
         subscription = newClockCountDownSubscription();
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x03, 0x02, 0x01));
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x03, 0x02, 0x01));
-        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x0302, 100)));
+        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(770, 100)));
     }
 
     @Test
@@ -48,8 +48,8 @@ public class TestClockCountDownSubscription {
         subscription = newClockCountDownSubscription();
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x01, 0x02, 0x09));
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x03, 0x02, 0x01));
-        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x0102, 900)));
-        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x0302, 100)));
+        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(258, 900)));
+        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(770, 100)));
     }
 
     @Test

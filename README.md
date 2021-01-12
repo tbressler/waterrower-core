@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-APL%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Travis CI](https://travis-ci.org/tbressler/waterrower-core.svg?branch=master)](https://travis-ci.org/tbressler/waterrower-core)
 
-A Java library which connects the WaterRower S4/S5 Performance Monitor.
+A Java library which connects the WaterRower S4/S5 Performance Monitor with Windows, Linux or macOS.
 
 ## Usage
 
@@ -28,6 +28,27 @@ waterRower.disconnect();
 
 ```
 
+If you don't want to search for the correct port manually, you can use the class ```WaterRowerAutoDiscovery```. The auto-discovery automatically searches for the available ports and tries to connect the WaterRower.
+In this case you don't need to connect the WaterRower yourself.
+
+```Java
+
+// Initialize and start the auto-discovery:
+WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
+discovery.start();
+
+...
+
+// Stop the auto-discovery:
+discovery.stop();
+
+```
+
+If the connection to the WaterRower gets lost. The auto-discovery tries to reconnect automatically.
+
+Please note, you can use the interface ```IDiscoveryStore``` in order to improve the performance when searching for serial ports.
+
+
 ### Subscribe to values
 
 ```Java
@@ -43,14 +64,22 @@ waterRower.subscribe(new StrokeSubscription() {
 
 ```
 
-You can use one of the following subscriptions:
+The following value subscriptions are available:
 
-| subscription | notes |
+| Subscription | Description |
 |---|---|
-| ```DisplayedDistanceSubscription``` | Subscription for the *displayed distance* (in meters) on the distance window of the Performance Monitor. |
-| ```DisplayedDurationSubscription``` | Subscription for the *displayed duration* on the duration window of the Performance Monitor. The duration window displays the time covered (or time to be covered in a duration workout). |
-| ```TotalDistanceSubscription``` | Subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this is stored everytime the Performance Monitor is switched off. |
-| ```StrokeCountSubscription``` | Subscription for the *stroke count* value (number of strokes). |
+| ```DisplayedDistanceSubscription``` | A subscription for the *displayed distance* (in meters) on the distance window of the Performance Monitor. The value is set to zero if the Performance Monitor was reset. |
+| ```DisplayedDurationSubscription``` | A subscription for the *displayed duration* on the duration window of the Performance Monitor. The duration window displays the time covered (or time to be covered in a duration workout). |
+| ```AverageVelocitySubscription``` | A subscription for the *displayed average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
+| ```StrokeSubscription``` |  A subscription for *stroke events*. The values will be send immediately by the Performance Monitor and will not be polled by the library. |
+| ```StrokeCountSubscription``` | A subscription for the *stroke count* value (number of strokes). |
+| ```AverageStrokeRateSubscription``` | A subscription for the *displayed stroke rate* (strokes/min) of a whole stroke which is displayed in the stroke rate window of the Performance Monitor. |
+| ```TankVolumeSubscription``` | A subscription for the *tank volume* value (in liters). This is the value the user has set in the Performance Monitor (see manual). |
+| ```ClockCountDownSubscription``` | A subscription for *clock count down* values. This value is transmitted if a count down is programmed in the Performance Monitor. |
+| ```TotalDistanceSubscription``` | A subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this value will be reset to zero when the Performance Monitor is switched off. |
+| **Advanced subscriptions:** | | 
+| ```PulseCountSubscription``` | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
+| ```TotalVelocitySubscription``` | A subscription for the *total velocity* (in meters per second). |
 
 ### Configure workouts
 
@@ -70,7 +99,7 @@ waterRower.startWorkout(workout);
 
 ```
 
-### Find available serial ports
+### Find available serial ports (manually)
 
 ```Java
 
@@ -83,16 +112,6 @@ for (SerialPort port : commPorts) {
 }
 
 ```
-
-If you don't want to search for the correct port manually, you can use the class ```WaterRowerAutoDiscovery```. The auto-discovery automatically searches for the available ports and tries to connect the WaterRower:
-
-```Java
-
-WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
-
-```
-
-Please note, you can use the interface ```IDiscoveryStore``` in order to improve the performance when searching for serial ports.
 
 ## Compatibility
 

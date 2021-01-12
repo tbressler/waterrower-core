@@ -5,6 +5,8 @@ import de.tbressler.waterrower.WaterRower;
 import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.MonitorType;
+import de.tbressler.waterrower.utils.AvailablePort;
+import de.tbressler.waterrower.utils.SerialPortWrapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

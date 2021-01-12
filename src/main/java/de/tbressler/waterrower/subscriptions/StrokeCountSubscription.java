@@ -7,7 +7,7 @@ import static de.tbressler.waterrower.model.MemoryLocation.STROKES_CNT_LOW;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
- * Subscription for stroke count value.
+ * Subscription for the stroke count value.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -19,7 +19,7 @@ public abstract class StrokeCountSubscription extends AbstractMemorySubscription
 
 
     /**
-     * Subscription for stroke count value.
+     * Subscription for the stroke count value.
      */
     public StrokeCountSubscription() {
         super(DOUBLE_MEMORY, STROKES_CNT_LOW);
@@ -31,11 +31,10 @@ public abstract class StrokeCountSubscription extends AbstractMemorySubscription
 
         int strokes = intFromHighAndLow(msg.getValue2(), msg.getValue1());
 
-        // If the received duration is the same as before,
+        // If the received stroke count is the same as before,
         // don't send an update.
         if (lastStrokeCount == strokes)
             return;
-
         lastStrokeCount = strokes;
 
         onStrokeCountUpdated(strokes);

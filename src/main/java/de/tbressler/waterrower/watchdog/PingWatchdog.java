@@ -6,7 +6,6 @@ import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static de.tbressler.waterrower.log.Log.LIBRARY;
 import static de.tbressler.waterrower.watchdog.TimeoutReason.PING_TIMEOUT;
 import static java.lang.System.currentTimeMillis;
 
@@ -48,9 +47,9 @@ public class PingWatchdog extends Watchdog {
 
     @Override
     protected void wakeUpAndCheck() {
-        Log.debug(LIBRARY, "Checking if a message (e.g. ping) was received in the last "+maxPingDuration+" ms.");
+        Log.debug("Checking if a message (e.g. ping) was received in the last "+maxPingDuration+" ms.");
         if (currentTimeMillis() - lastReceivedPing.get() > maxPingDuration) {
-            Log.warn(LIBRARY, "No message (e.g. ping) received in the last "+maxPingDuration+" ms.");
+            Log.warn("No message (e.g. ping) received in the last "+maxPingDuration+" ms.");
             fireOnTimeout(PING_TIMEOUT);
         }
     }

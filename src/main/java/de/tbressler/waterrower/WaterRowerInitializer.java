@@ -3,6 +3,7 @@ package de.tbressler.waterrower;
 import de.tbressler.waterrower.io.ChannelInitializer;
 import de.tbressler.waterrower.io.CommunicationService;
 import de.tbressler.waterrower.io.WaterRowerConnector;
+import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
 import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
@@ -26,7 +27,7 @@ public class WaterRowerInitializer {
     private final WaterRowerConnector connector;
 
     /* Polls and handles subscriptions. */
-    private final SubscriptionPollingService subscriptionPollingService;
+    private final SubscriptionPollingService subscriptionPolling;
 
     /* Watchdog that checks if a ping is received periodically. */
     private final PingWatchdog pingWatchdog;
@@ -43,7 +44,7 @@ public class WaterRowerInitializer {
      *                        Recommended = 1 second.
      * @param timeoutInterval The timeout interval for messages, if a message was not received from the WaterRower
      *                        during this interval a timeout error will get fired, must not be null.
-     *                        Recommended = 1 second.
+     *                        Recommended = 5 second.
      * @param threadPoolSize The number of threads to keep in the pool, which should be used by the WaterRower
      *                       service even if they are idle.
      *                       Recommended = 5.
@@ -54,6 +55,10 @@ public class WaterRowerInitializer {
         if (threadPoolSize < 1)
             throw new IllegalArgumentException("The number of thread must be at least 1!");
 
+        // Log a warning if the polling interval is below 1 second.
+        if (pollingInterval.toMillis() < 1000)
+            Log.warn("Recommendation: The polling interval should be greater or equal to 1 second in order to avoid performance issues.");
+
         Bootstrap bootstrap = new Bootstrap();
 
         CommunicationService communicationService = new CommunicationService(bootstrap, new ChannelInitializer());
@@ -61,11 +66,8 @@ public class WaterRowerInitializer {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(threadPoolSize);
 
         connector = new WaterRowerConnector(communicationService);
-
-        subscriptionPollingService = new SubscriptionPollingService(pollingInterval, connector, executorService);
-
+        subscriptionPolling = new SubscriptionPollingService(pollingInterval, connector, executorService);
         pingWatchdog = new PingWatchdog(timeoutInterval, executorService);
-
         deviceVerificationWatchdog = new DeviceVerificationWatchdog(timeoutInterval, executorService);
     }
 
@@ -104,7 +106,7 @@ public class WaterRowerInitializer {
      * @return The subscription polling service, never null.
      */
     SubscriptionPollingService getSubscriptionPollingService() {
-        return subscriptionPollingService;
+        return subscriptionPolling;
     }
 
 }
