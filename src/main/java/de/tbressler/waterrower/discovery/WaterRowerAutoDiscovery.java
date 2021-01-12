@@ -165,12 +165,12 @@ public class WaterRowerAutoDiscovery {
             SerialDeviceAddress address = availablePorts.pop();
             currentSerialPort = address.value();
 
-            Log.debug("Auto-connecting serial port '"+address.value()+"'.");
+            Log.info("Auto-connecting serial port '"+address.value()+"'.");
 
             waterRower.connect(address);
 
         } catch (IOException e) {
-            Log.warn("Couldn't connect to serial port, due to error ("+e.getMessage()+")! Trying next port.");
+            Log.warn("Couldn't connect to serial port '"+currentSerialPort+"', due to error ("+e.getMessage()+")! Trying next port.");
             executorService.schedule(this::tryNextConnectionAttempt, TRY_AGAIN_INTERVAL.getSeconds(), SECONDS);
         } finally {
             lock.unlock();
@@ -203,7 +203,7 @@ public class WaterRowerAutoDiscovery {
 
             this.availablePorts.push(new SerialDeviceAddress(portName));
 
-            Log.debug("Serial port found: " + portName);
+            Log.info("Serial port found: " + portName);
         }
 
         putLastSuccessfulPortFirst();
