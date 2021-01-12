@@ -68,15 +68,17 @@ The following value subscriptions are available:
 
 | Subscription | Description |
 |---|---|
-| ```DisplayedDistanceSubscription``` | Subscription for the *displayed distance* (in meters) on the distance window of the Performance Monitor. |
+| ```DisplayedDistanceSubscription``` | Subscription for the *displayed distance* (in meters) on the distance window of the Performance Monitor. The value is set to zero if the Performance Monitor was reset. |
 | ```DisplayedDurationSubscription``` | Subscription for the *displayed duration* on the duration window of the Performance Monitor. The duration window displays the time covered (or time to be covered in a duration workout). |
 | ```AverageVelocitySubscription``` | Subscription for the *displayed average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
 | ```StrokeSubscription``` |  A subscription for *stroke events*. The values will be send immediately by the Performance Monitor and will not be polled by the library. |
 | ```StrokeCountSubscription``` | Subscription for the *stroke count* value (number of strokes). |
 | ```TankVolumeSubscription``` | Subscription for the *tank volume* value (in liters). This is the value the user has set in the Performance Monitor (see manual). |
+| ```ClockCountDownSubscription``` | Subscription for *clock count down* values. This value is transmitted if a count down is programmed in the Performance Monitor. |
+| ```TotalDistanceSubscription``` | Subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this value will be reset to zero when the Performance Monitor is switched off. |
 | **Advanced subscriptions:** | | 
-| ```TotalDistanceSubscription``` | Subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this is stored everytime the Performance Monitor is switched off. |
 | ```PulseCountSubscription``` | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
+| ```TotalVelocitySubscription``` | A subscription for the *total velocity* (in meters per second). |
 
 ### Configure workouts
 

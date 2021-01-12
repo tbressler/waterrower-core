@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.log.Log;
+import de.tbressler.waterrower.utils.MessageUtils;
 
 import java.time.Duration;
 
@@ -16,7 +17,6 @@ import static java.time.Duration.ofSeconds;
  * @author Tobias Bressler
  * @version 1.0
  */
-@Deprecated
 public abstract class ClockCountDownSubscription extends AbstractMemorySubscription {
 
     /* The last clock count down received. */
@@ -34,22 +34,16 @@ public abstract class ClockCountDownSubscription extends AbstractMemorySubscript
     @Override
     protected final void handle(DataMemoryMessage msg) {
 
-        int sec = msg.getValue1();
-        int min = msg.getValue2();
-        int hrs = msg.getValue3();
+        int millis = msg.getValue1();
+        int sec = MessageUtils.intFromHighAndLow(msg.getValue3(), msg.getValue2());
 
-        Duration duration = ofSeconds(sec)
-                .plusMinutes(min)
-                .plusHours(hrs);
+        Duration duration = ofSeconds(sec).plusMillis(millis * 100);
 
         // If the received duration is the same as before,
         // don't send an update.
         if (duration.equals(lastClockCountDown))
             return;
         lastClockCountDown = duration;
-
-        // TODO Remove debug message!
-        Log.info("ClockCountDownSubscription ========= [ V3=" + msg.getValue3() + ", V2=" + msg.getValue2() + ", V1="+msg.getValue1() + " ] === " + duration.toMinutesPart() + ":" + duration.toSecondsPart());
 
         onClockCountDownUpdated(duration);
     }
