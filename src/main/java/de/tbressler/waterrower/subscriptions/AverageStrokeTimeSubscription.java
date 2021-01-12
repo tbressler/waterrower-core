@@ -66,9 +66,6 @@ public abstract class AverageStrokeTimeSubscription extends AbstractMemorySubscr
             return;
         lastAverageStrokeTime = averageStrokeTime;
 
-        // TODO Remove debug message!
-        Log.info("AverageStrokeTimeSubscription ========= [ ACH=" + msg.getValue1AsACH() + " ] === " + averageStrokeTime);
-
         onAverageStrokeTimeUpdated(averageStrokeTime);
     }
 

@@ -32,7 +32,7 @@ public class TestWithRealDevice {
         waterRower.addConnectionListener(new IWaterRowerConnectionListener() {
             @Override
             public void onConnected(ModelInformation modelInformation) {
-                Log.debug("Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
+                Log.info("Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
             }
             
             @Override
@@ -58,21 +58,18 @@ public class TestWithRealDevice {
         waterRower.subscribe(new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.WHOLE_STROKE) {
             @Override
             protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
-                Log.info("Average stroke time (Whole) = "+averageStrokeTime+"");
+                Log.info("Average stroke time (WHOLE) - Original = "+averageStrokeTime);
+                Log.info("Average stroke time (WHOLE) - V1 = "+ (60000 / (averageStrokeTime * 25)));
+                Log.info("Average stroke time (WHOLE) - V2 = "+ (60000 / averageStrokeTime));
             }
         });
 
         waterRower.subscribe(new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.PULL_ONLY) {
             @Override
             protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
-                Log.info("Average stroke time (Pull) = "+averageStrokeTime+"");
-            }
-        });
-
-        waterRower.subscribe(new TotalDistanceSubscription() {
-            @Override
-            protected void onDistanceUpdated(int distance) {
-                Log.info("Total distance = "+distance+" meter(s)");
+                Log.info("Average stroke time (PULL-ONLY) - Original = "+averageStrokeTime);
+                Log.info("Average stroke time (PULL-ONLY) - V1 = "+ (60000 / (averageStrokeTime * 25)));
+                Log.info("Average stroke time (PULL-ONLY) - V2 = "+ (60000 / averageStrokeTime));
             }
         });
 
@@ -84,7 +81,6 @@ public class TestWithRealDevice {
             }
 
         });
-
 
         discovery.start();
     }

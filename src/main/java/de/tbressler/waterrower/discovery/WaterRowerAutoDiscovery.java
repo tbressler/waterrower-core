@@ -188,6 +188,7 @@ public class WaterRowerAutoDiscovery {
         for(AvailablePort port : availablePorts) {
 
             String portName = port.getSystemPortName();
+
             // Ignore /dev/cu ports.
             if (portName.startsWith("/dev/cu."))
                 continue;
@@ -197,7 +198,7 @@ public class WaterRowerAutoDiscovery {
                 continue;
 
             if (port.isOpen()) {
-                Log.warn("Skipping serial port '"+portName+"', because it is currently owned by another thread or application.");
+                Log.warn("Skipping serial port '"+portName+"', because it is already open.");
                 continue;
             }
 
