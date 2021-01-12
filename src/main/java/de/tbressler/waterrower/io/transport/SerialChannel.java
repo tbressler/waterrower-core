@@ -124,12 +124,10 @@ public class SerialChannel extends OioByteStreamChannel {
     protected void doClose() throws Exception {
         open = false;
         try {
-            Log.info("Closing serial channel..."); // TODO Remove log!
            super.doClose();
         } finally {
             if (serialPort != null) {
                 serialPort.closePort();
-                Log.info("Serial channel was finally closed!"); // TODO Remove log!
                 serialPort = null;
             }
         }

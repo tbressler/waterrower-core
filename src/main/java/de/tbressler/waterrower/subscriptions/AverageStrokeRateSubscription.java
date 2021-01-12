@@ -12,7 +12,7 @@ import static de.tbressler.waterrower.model.MemoryLocation.STROKE_AVERAGE;
  * @author Tobias Bressler
  * @version 1.0
  */
-public abstract class StrokeRateSubscription extends AbstractMemorySubscription {
+public abstract class AverageStrokeRateSubscription extends AbstractMemorySubscription {
 
     /* The last stroke rate received. */
     private int lastStrokeRate = -1;
@@ -22,7 +22,7 @@ public abstract class StrokeRateSubscription extends AbstractMemorySubscription 
      * Subscription for the average stroke rate (strokes/min) of a whole stroke which is displayed in
      * the stroke rate window of the Performance Monitor.
      */
-    public StrokeRateSubscription() {
+    public AverageStrokeRateSubscription() {
         super(SINGLE_MEMORY, STROKE_AVERAGE);
     }
 
@@ -38,8 +38,14 @@ public abstract class StrokeRateSubscription extends AbstractMemorySubscription 
             return;
         lastStrokeRate = strokeRate;
 
-        double value = (60000D / (((double) strokeRate) * 25D));
-        onStrokeRateUpdated(value);
+        onStrokeRateUpdated(calculateAverageStrokeRate(strokeRate));
+    }
+
+    /* Calculate the average stroke rate. */
+    private double calculateAverageStrokeRate(int strokeRate) {
+        if (strokeRate == 0)
+            return 0D;
+        return (60000D / (((double) strokeRate) * 25D));
     }
 
 
