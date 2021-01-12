@@ -1,14 +1,12 @@
 package de.tbressler.waterrower.subscriptions;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
-import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.utils.MessageUtils;
 
 import java.time.Duration;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.CLOCK_DOWN_DEC;
-import static java.lang.Integer.parseInt;
 import static java.time.Duration.ofSeconds;
 
 /**

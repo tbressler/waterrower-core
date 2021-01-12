@@ -3,7 +3,6 @@ package de.tbressler.waterrower.subscriptions;
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
-import static de.tbressler.waterrower.model.MemoryLocation.M_S_LOW_AVERAGE;
 import static de.tbressler.waterrower.model.MemoryLocation.M_S_LOW_TOTAL;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 

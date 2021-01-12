@@ -4,14 +4,15 @@ import de.tbressler.waterrower.discovery.WaterRowerAutoDiscovery;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
-import de.tbressler.waterrower.model.StrokeType;
-import de.tbressler.waterrower.subscriptions.*;
+import de.tbressler.waterrower.model.WorkoutFlags;
+import de.tbressler.waterrower.subscriptions.AverageStrokeTimeSubscription;
+import de.tbressler.waterrower.subscriptions.ClockCountDownSubscription;
+import de.tbressler.waterrower.subscriptions.WorkoutFlagsSubscription;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.Executors;
 
-import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
 import static java.time.Duration.ofSeconds;
 
 /**
@@ -80,6 +81,16 @@ public class TestWithRealDevice {
                 Log.info("Clock count down = "+duration.toMinutesPart()+":"+duration.toSecondsPart());
             }
 
+        });
+
+        waterRower.subscribe(new WorkoutFlagsSubscription() {
+            @Override
+            protected void onWorkoutModeUpdated(WorkoutFlags flags) {
+                Log.info("Workout distance mode = " + flags.isWorkoutDistanceMode());
+                Log.info("Workout distance interval mode = " + flags.isWorkoutDistanceIntervalMode());
+                Log.info("Workout duration mode = " + flags.isWorkoutDurationMode());
+                Log.info("Workout duration interval mode = " + flags.isWorkoutDurationIntervalMode());
+            }
         });
 
         discovery.start();

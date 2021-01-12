@@ -1,7 +1,6 @@
 package de.tbressler.waterrower.subscriptions;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
-import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.MemoryLocation;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
