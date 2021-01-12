@@ -66,15 +66,17 @@ waterRower.subscribe(new StrokeSubscription() {
 
 The following value subscriptions are available:
 
-| subscription | notes |
+| Subscription | Description |
 |---|---|
 | ```DisplayedDistanceSubscription``` | Subscription for the *displayed distance* (in meters) on the distance window of the Performance Monitor. |
 | ```DisplayedDurationSubscription``` | Subscription for the *displayed duration* on the duration window of the Performance Monitor. The duration window displays the time covered (or time to be covered in a duration workout). |
-| ```TotalDistanceSubscription``` | Subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this is stored everytime the Performance Monitor is switched off. |
+| ```AverageVelocitySubscription``` | Subscription for the *displayed average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
 | ```StrokeSubscription``` |  A subscription for *stroke events*. The values will be send immediately by the Performance Monitor and will not be polled by the library. |
 | ```StrokeCountSubscription``` | Subscription for the *stroke count* value (number of strokes). |
+| ```TankVolumeSubscription``` | Subscription for the *tank volume* value (in liters). This is the value the user has set in the Performance Monitor (see manual). |
+| **Advanced subscriptions:** | | 
+| ```TotalDistanceSubscription``` | Subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this is stored everytime the Performance Monitor is switched off. |
 | ```PulseCountSubscription``` | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
-| ```TankVolumeSubscription``` | Subscription for the *tank volume* value (in liters). This is the value the user has set in the Performance Monitor (see manual). | 
 
 ### Configure workouts
 

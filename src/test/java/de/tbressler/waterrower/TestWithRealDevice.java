@@ -45,7 +45,7 @@ public class TestWithRealDevice {
                     // TODO Move this disconnect to the auto-discovery.
                     waterRower.disconnect();
                 } catch (IOException e) {
-                    Log.error("Couldn't disconnect! " + e.getMessage(), null);
+                    Log.error("Couldn't disconnect! " + e.getMessage(), e);
                 }
             }
             

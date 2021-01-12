@@ -32,7 +32,7 @@ public class TestClockCountDownSubscription {
     public void handle_withMessage_notifiesOnAverageStrokeTimeUpdated() {
         subscription = newClockCountDownSubscription();
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x01, 0x02, 0x03));
-        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x0102, 300)));
+        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x01, 0x02, 0x03)));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class TestClockCountDownSubscription {
         subscription = newClockCountDownSubscription();
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x03, 0x02, 0x01));
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x03, 0x02, 0x01));
-        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x0302, 100)));
+        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x03, 0x02, 0x01)));
     }
 
     @Test
@@ -48,8 +48,8 @@ public class TestClockCountDownSubscription {
         subscription = newClockCountDownSubscription();
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x01, 0x02, 0x09));
         subscription.handle(new DataMemoryMessage(CLOCK_DOWN_DEC.getLocation(), 0x03, 0x02, 0x01));
-        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x0102, 900)));
-        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x0302, 100)));
+        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x01, 0x02, 0x09)));
+        verify(internalSubscription, times(1)).onClockCountDownUpdated(argThat(matchesDuration(0x03, 0x02, 0x01)));
     }
 
     @Test
@@ -71,8 +71,8 @@ public class TestClockCountDownSubscription {
         };
     }
 
-    private DurationMatcher matchesDuration(int sec, int millis) {
-        return new DurationMatcher(ofSeconds(sec).plusMillis(millis));
+    private DurationMatcher matchesDuration(int hour, int min, int sec) {
+        return new DurationMatcher(ofSeconds(sec).plusMinutes(min).plusHours(hour));
     }
 
     private class DurationMatcher extends ArgumentMatcher<Duration> {

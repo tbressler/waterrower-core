@@ -7,9 +7,7 @@ import java.time.Duration;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.CLOCK_DOWN_DEC;
-import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 import static java.lang.Integer.parseInt;
-import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofSeconds;
 
 /**
@@ -36,9 +34,9 @@ public abstract class ClockCountDownSubscription extends AbstractMemorySubscript
     @Override
     protected final void handle(DataMemoryMessage msg) {
 
-        int sec = parseInt(msg.getValue1AsACH());
-        int min = parseInt(msg.getValue2AsACH());
-        int hrs = parseInt(msg.getValue3AsACH());
+        int sec = msg.getValue1();
+        int min = msg.getValue2();
+        int hrs = msg.getValue3();
 
         Duration duration = ofSeconds(sec)
                 .plusMinutes(min)
@@ -51,7 +49,7 @@ public abstract class ClockCountDownSubscription extends AbstractMemorySubscript
         lastClockCountDown = duration;
 
         // TODO Remove debug message!
-        Log.info("ClockCountDownSubscription ========= [ ACH3=" + msg.getValue3AsACH() + ", ACH2=" + msg.getValue2AsACH() + ", ACH1="+msg.getValue1AsACH() + " ] === " + duration.toMinutesPart() + ":" + duration.toSecondsPart());
+        Log.info("ClockCountDownSubscription ========= [ V3=" + msg.getValue3() + ", V2=" + msg.getValue2() + ", V1="+msg.getValue1() + " ] === " + duration.toMinutesPart() + ":" + duration.toSecondsPart());
 
         onClockCountDownUpdated(duration);
     }

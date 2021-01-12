@@ -19,7 +19,8 @@ public abstract class PulseCountSubscription implements ISubscription {
 
     @Override
     public final AbstractMessage poll() {
-        // No poll necessary! Pulse count will be send automatically by WaterRower monitor.
+        // No poll necessary! Pulse count will be send automatically by
+        // the WaterRower Performance Monitor.
         return null;
     }
 
