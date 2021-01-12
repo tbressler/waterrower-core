@@ -16,7 +16,6 @@
 package de.tbressler.waterrower.io.transport;
 
 import com.fazecast.jSerialComm.SerialPort;
-import de.tbressler.waterrower.log.Log;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.oio.OioByteStreamChannel;
