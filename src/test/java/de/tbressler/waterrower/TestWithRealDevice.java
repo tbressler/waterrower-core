@@ -82,10 +82,17 @@ public class TestWithRealDevice {
             }
         });
 
-        waterRower.subscribe(new DisplayedDistanceSubscription() {
+        waterRower.subscribe(new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.WHOLE_STROKE) {
             @Override
-            protected void onDistanceUpdated(int distance) {
-                Log.info("Displayed distance = "+distance+" meter(s)");
+            protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
+                Log.info("Average stroke time (Whole) = "+averageStrokeTime+"");
+            }
+        });
+
+        waterRower.subscribe(new AverageStrokeTimeSubscription(AverageStrokeTimeSubscription.StrokeType.PULL_ONLY) {
+            @Override
+            protected void onAverageStrokeTimeUpdated(int averageStrokeTime) {
+                Log.info("Average stroke time (Pull) = "+averageStrokeTime+"");
             }
         });
 
@@ -96,12 +103,6 @@ public class TestWithRealDevice {
             }
         });
 
-        waterRower.subscribe(new StrokeCountSubscription() {
-            @Override
-            protected void onStrokeCountUpdated(int strokes) {
-                Log.info("Stroke count = "+strokes+" stroke(s)");
-            }
-        });
 
         discovery.start();
     }
