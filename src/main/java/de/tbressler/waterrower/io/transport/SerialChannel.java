@@ -16,6 +16,7 @@
 package de.tbressler.waterrower.io.transport;
 
 import com.fazecast.jSerialComm.SerialPort;
+import de.tbressler.waterrower.log.Log;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.oio.OioByteStreamChannel;
@@ -123,10 +124,12 @@ public class SerialChannel extends OioByteStreamChannel {
     protected void doClose() throws Exception {
         open = false;
         try {
+            Log.info("Closing serial channel..."); // TODO Remove log!
            super.doClose();
         } finally {
             if (serialPort != null) {
                 serialPort.closePort();
+                Log.info("Serial channel was finnally closed."); // TODO Remove log!
                 serialPort = null;
             }
         }
