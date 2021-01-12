@@ -129,7 +129,7 @@ public class SerialChannel extends OioByteStreamChannel {
         } finally {
             if (serialPort != null) {
                 serialPort.closePort();
-                Log.info("Serial channel was finnally closed."); // TODO Remove log!
+                Log.info("Serial channel was finally closed!"); // TODO Remove log!
                 serialPort = null;
             }
         }
