@@ -372,7 +372,7 @@ public class WaterRower {
 
         WorkoutInterval interval = workoutIntervals.get(0);
 
-        int distance = interval.getDistance();
+        int distance = interval.getValue();
         WorkoutUnit unit = interval.getUnit();
 
         Log.debug("Sending single workout with " + distance + " " + unit + ".");
@@ -403,7 +403,7 @@ public class WaterRower {
 
             interval = workoutIntervals.get(i);
 
-            distance = interval.getDistance();
+            distance = interval.getValue();
             restInterval = (i == 0) ? -1 : interval.getRestInterval();
             unit = interval.getUnit();
 

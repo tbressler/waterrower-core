@@ -221,7 +221,7 @@ public class TestWorkout {
     // Helper methods:
 
     private void assertWorkoutInterval(int index, int restInterval, int distance, WorkoutUnit unit) {
-        assertEquals(distance, workout.getWorkoutIntervals().get(index).getDistance());
+        assertEquals(distance, workout.getWorkoutIntervals().get(index).getValue());
         assertEquals(unit, workout.getWorkoutIntervals().get(index).getUnit());
         assertEquals(restInterval, workout.getWorkoutIntervals().get(index).getRestInterval());
     }
