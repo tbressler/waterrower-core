@@ -263,12 +263,12 @@ public class TestWaterRower {
 
 
     @Test
-    public void callOnDisconnected_notifiesD() {
+    public void callOnDisconnected_notifiesDisconnect() {
         connectionListener.getValue().onDisconnected();
 
         verify(pingWatchdog, times(2)).stop();
-        verify(deviceVerificationWatchdog, times(2)).stop();
-        verify(subscriptionPollingService, times(2)).stop();
+        verify(deviceVerificationWatchdog, atLeast(1)).stop();
+        verify(subscriptionPollingService, atLeast(1)).stop();
         verify(waterRowerConnectionListener, times(1)).onDisconnected();
     }
 
