@@ -88,6 +88,8 @@ The library needs to poll for each value of each subscription synchronously. Thu
 
 ### Configure workouts
 
+Workouts can be a *single* or an *interval workout* (with rest intervals).
+
 ```Java
 
 // Send a single workout:
@@ -103,6 +105,15 @@ waterRower.startWorkout(workout);
 ...
 
 ```
+
+The unit given in the class `Workout` also determines the units of the intervals.
+
+Overall there are 2 types of workouts based on the unit:
+
+- Duration workout (time)
+- Distance workout (distance or strokes)
+
+The workout types or units can not be mixed up in an interval workout.
 
 ### Find available serial ports (manually)
 
