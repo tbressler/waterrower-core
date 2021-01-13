@@ -52,7 +52,7 @@ public abstract class AverageStrokeRateSubscription extends AbstractMemorySubscr
     /**
      * Is called if the value for the average stroke rate was updated.
      *
-     * @param strokeRate The new stroke rate.
+     * @param strokeRate The new stroke rate (in strokes per minute).
      */
     abstract protected void onStrokeRateUpdated(double strokeRate);
 

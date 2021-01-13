@@ -45,8 +45,8 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
      * Subscription for the workout interval values.
      *
      * @param intervalType The interval type (e.g. row or rest), must not be null.
-     * @param intervalIndex The index of the workout interval. Must be between 0 and 8 for
-     *                      interval type REST_INTERVAL and between 0 and 7 for interval type
+     * @param intervalIndex The index of the workout interval. Must be between 1 and 9 for
+     *                      interval type REST_INTERVAL and between 1 and 8 for interval type
      *                      ROW_INTERVAL.
      */
     public WorkoutIntervalSubscription(IntervalType intervalType, int intervalIndex) {
@@ -59,26 +59,26 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
     private static MemoryLocation getMemoryLocation(IntervalType intervalType, int intervalIndex) {
         switch (requireNonNull(intervalType)) {
             case ROW_INTERVAL:
-                if (intervalIndex == 0)  return WORKOUT_WORK1_L;
-                else if (intervalIndex == 1)  return WORKOUT_WORK2_L;
-                else if (intervalIndex == 2)  return WORKOUT_WORK3_L;
-                else if (intervalIndex == 3)  return WORKOUT_WORK4_L;
-                else if (intervalIndex == 4)  return WORKOUT_WORK5_L;
-                else if (intervalIndex == 5)  return WORKOUT_WORK6_L;
-                else if (intervalIndex == 6)  return WORKOUT_WORK7_L;
-                else if (intervalIndex == 7)  return WORKOUT_WORK8_L;
-                else if (intervalIndex == 8)  return WORKOUT_WORK9_L;
-                else throw new IllegalArgumentException("Interval index is out of range! Index must be between 0 and 8.");
+                if (intervalIndex == 1)  return WORKOUT_WORK1_L;
+                else if (intervalIndex == 2)  return WORKOUT_WORK2_L;
+                else if (intervalIndex == 3)  return WORKOUT_WORK3_L;
+                else if (intervalIndex == 4)  return WORKOUT_WORK4_L;
+                else if (intervalIndex == 5)  return WORKOUT_WORK5_L;
+                else if (intervalIndex == 6)  return WORKOUT_WORK6_L;
+                else if (intervalIndex == 7)  return WORKOUT_WORK7_L;
+                else if (intervalIndex == 8)  return WORKOUT_WORK8_L;
+                else if (intervalIndex == 9)  return WORKOUT_WORK9_L;
+                else throw new IllegalArgumentException("Interval index is out of range! Index must be between 1 and 9.");
             case REST_INTERVAL:
-                if (intervalIndex == 0)  return WORKOUT_REST1_L;
-                else if (intervalIndex == 1)  return WORKOUT_REST2_L;
-                else if (intervalIndex == 2)  return WORKOUT_REST3_L;
-                else if (intervalIndex == 3)  return WORKOUT_REST4_L;
-                else if (intervalIndex == 4)  return WORKOUT_REST5_L;
-                else if (intervalIndex == 5)  return WORKOUT_REST6_L;
-                else if (intervalIndex == 6)  return WORKOUT_REST7_L;
-                else if (intervalIndex == 7)  return WORKOUT_REST8_L;
-                else throw new IllegalArgumentException("Interval index is out of range! Index must be between 0 and 7.");
+                if (intervalIndex == 1)  return WORKOUT_REST1_L;
+                else if (intervalIndex == 2)  return WORKOUT_REST2_L;
+                else if (intervalIndex == 3)  return WORKOUT_REST3_L;
+                else if (intervalIndex == 4)  return WORKOUT_REST4_L;
+                else if (intervalIndex == 5)  return WORKOUT_REST5_L;
+                else if (intervalIndex == 6)  return WORKOUT_REST6_L;
+                else if (intervalIndex == 7)  return WORKOUT_REST7_L;
+                else if (intervalIndex == 8)  return WORKOUT_REST8_L;
+                else throw new IllegalArgumentException("Interval index is out of range! Index must be between 1 and 8.");
             default:
                 throw new IllegalStateException("Unhandled interval type!");
         }
