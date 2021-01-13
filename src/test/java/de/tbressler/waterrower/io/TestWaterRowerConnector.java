@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -24,7 +26,8 @@ public class TestWaterRowerConnector {
     private CommunicationService communicationService = mock(CommunicationService.class, "communicationService");
     private SerialDeviceAddress address = mock(SerialDeviceAddress.class, "address");
     private IConnectionListener connectionListener = mock(IConnectionListener.class, "connectionListener");
-    private AbstractMessage message = mock(AbstractMessage.class, "message");
+    private AbstractMessage message1 = mock(AbstractMessage.class, "message-1");
+    private AbstractMessage message2 = mock(AbstractMessage.class, "message-2");
 
 
     @Before
@@ -67,22 +70,43 @@ public class TestWaterRowerConnector {
 
     @Test(expected = NullPointerException.class)
     public void send_withNullMessage_throwsException() throws Exception {
-        connector.send(null);
+        connector.send((AbstractMessage) null);
     }
 
     @Test(expected = IOException.class)
     public void send_whenNotConnected_throwsException() throws Exception {
         when(communicationService.isConnected()).thenReturn(false);
-        connector.send(message);
+        connector.send(message1);
     }
 
     @Test
     public void send_withValidMessage_sendsMessage() throws Exception {
         when(communicationService.isConnected()).thenReturn(true);
 
-        connector.send(message);
+        connector.send(message1);
 
-        verify(communicationService, times(1)).send(message);
+        verify(communicationService, times(1)).send(message1);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void send2_withNullMessage_throwsException() throws Exception {
+        connector.send((List<AbstractMessage>) null);
+    }
+
+    @Test(expected = IOException.class)
+    public void send2_whenNotConnected_throwsException() throws Exception {
+        when(communicationService.isConnected()).thenReturn(false);
+        connector.send(Arrays.asList(message1));
+    }
+
+    @Test
+    public void send2_withMultipleMessage_sendsMessages() throws Exception {
+        when(communicationService.isConnected()).thenReturn(true);
+
+        connector.send(Arrays.asList(message1, message2));
+
+        verify(communicationService, times(1)).send(message1);
+        verify(communicationService, times(1)).send(message2);
     }
 
     // Disconnect:

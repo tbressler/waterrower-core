@@ -386,8 +386,8 @@ public class WaterRower {
         int distance;
         int restInterval;
         WorkoutUnit unit;
-        ConfigureWorkoutMessage msg;
 
+        final List<AbstractMessage> messages = new ArrayList<>();
         for(int i = 0; i < numberOfIntervals; i++) {
 
             interval = workoutIntervals.get(i);
@@ -397,19 +397,19 @@ public class WaterRower {
             unit = interval.getUnit();
 
             Log.debug("Sending interval: " + interval);
-
-            msg = new ConfigureWorkoutMessage((i == 0) ? START_INTERVAL_WORKOUT : ADD_INTERVAL_WORKOUT, distance, unit, restInterval);
-            connector.send(msg);
+            messages.add(new ConfigureWorkoutMessage((i == 0) ? START_INTERVAL_WORKOUT : ADD_INTERVAL_WORKOUT, distance, unit, restInterval));
 
             // If this is the last interval, send the end interval message.
             if (i == (numberOfIntervals - 1)) {
 
                 Log.debug("Sending the end message for interval workout.");
-
-                msg = new ConfigureWorkoutMessage(END_INTERVAL_WORKOUT, 0xFFFF, unit, 0xFFFF);
-                connector.send(msg);
+                messages.add(new ConfigureWorkoutMessage(END_INTERVAL_WORKOUT, 0xFFFF, unit, 0xFFFF));
             }
+
         }
+
+        // Send the messages.
+        connector.send(messages);
 
         Log.debug("Sending of interval workout finished.");
     }

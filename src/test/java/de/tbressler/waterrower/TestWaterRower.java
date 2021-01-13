@@ -2,6 +2,7 @@ package de.tbressler.waterrower;
 
 import de.tbressler.waterrower.io.IConnectionListener;
 import de.tbressler.waterrower.io.WaterRowerConnector;
+import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
 import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
@@ -20,9 +21,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
-import org.mockito.InOrder;
 
 import java.io.IOException;
+import java.util.List;
 
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
 import static de.tbressler.waterrower.model.ErrorCode.*;
@@ -367,13 +368,13 @@ public class TestWaterRower {
 
         waterRower.startWorkout(workout);
 
-        InOrder orderVerification = inOrder(connector);
-
-        orderVerification.verify(connector, times(1)).send(argThat(eqMsg(START_INTERVAL_WORKOUT, 1000, METERS, -1)));
-        orderVerification.verify(connector, times(1)).send(argThat(eqMsg(ADD_INTERVAL_WORKOUT, 2000, METERS, 10)));
-        orderVerification.verify(connector, times(1)).send(argThat(eqMsg(ADD_INTERVAL_WORKOUT, 2000, METERS, 20)));
-        orderVerification.verify(connector, times(1)).send(argThat(eqMsg(ADD_INTERVAL_WORKOUT, 1000, METERS, 30)));
-        orderVerification.verify(connector, times(1)).send(argThat(eqMsg(END_INTERVAL_WORKOUT, 0xFFFF, METERS, 0xFFFF)));
+        verify(connector, times(1)).send(argThat(eqMessages(
+                eqMsg(START_INTERVAL_WORKOUT, 1000, METERS, -1),
+                eqMsg(ADD_INTERVAL_WORKOUT, 2000, METERS, 10),
+                eqMsg(ADD_INTERVAL_WORKOUT, 2000, METERS, 20),
+                eqMsg(ADD_INTERVAL_WORKOUT, 1000, METERS, 30),
+                eqMsg(END_INTERVAL_WORKOUT, 0xFFFF, METERS, 0xFFFF)
+                )));
     }
 
 
@@ -435,8 +436,28 @@ public class TestWaterRower {
         return new MessageMatcher(type, distance, unit, restInterval);
     }
 
+    private ArgumentMatcher<List<AbstractMessage>> eqMessages(MessageMatcher...matchers) {
+        return new ArgumentMatcher<List<AbstractMessage>>() {
+            @Override
+            public boolean matches(Object argument) {
+                List<AbstractMessage> messages = (List<AbstractMessage>) argument;
 
-    public class MessageMatcher extends ArgumentMatcher<ConfigureWorkoutMessage> {
+                if (messages.size() != matchers.length)
+                    return false;
+
+                for(int i=0; i<messages.size(); i++) {
+                    AbstractMessage msg = messages.get(i);
+                    MessageMatcher matcher = matchers[i];
+                    if (!matcher.matches(msg))
+                        return false;
+                }
+                return true;
+            }
+        };
+    }
+
+
+    public class MessageMatcher extends ArgumentMatcher<AbstractMessage> {
 
         private MessageType type;
         private int distance;
