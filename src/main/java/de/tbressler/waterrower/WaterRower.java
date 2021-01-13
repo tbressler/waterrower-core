@@ -22,6 +22,7 @@ import de.tbressler.waterrower.workout.WorkoutInterval;
 import de.tbressler.waterrower.workout.WorkoutUnit;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,14 +103,24 @@ public class WaterRower {
      *
      * This class connects with the WaterRower and exchanges the information between PC and
      * WaterRower monitor.
-     *
-     * @param configurator
      */
-    public WaterRower(WaterRowerInitializer configurator) {
-        this(configurator.getWaterRowerConnector(),
-                configurator.getPingWatchdog(),
-                configurator.getDeviceVerificationWatchdog(),
-                configurator.getSubscriptionPollingService());
+    public WaterRower() {
+        this(new WaterRowerInitializer(Duration.ofSeconds(1), Duration.ofSeconds(5), 5));
+    }
+
+    /**
+     * The entry point of the WaterRower library.
+     *
+     * This class connects with the WaterRower and exchanges the information between PC and
+     * WaterRower monitor.
+     *
+     * @param initializer The WaterRower initializer (for configuration), must not be null.
+     */
+    public WaterRower(WaterRowerInitializer initializer) {
+        this(initializer.getWaterRowerConnector(),
+                initializer.getPingWatchdog(),
+                initializer.getDeviceVerificationWatchdog(),
+                initializer.getSubscriptionPollingService());
     }
 
     /**

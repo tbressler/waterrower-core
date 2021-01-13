@@ -28,8 +28,7 @@ public class TestWithRealDevice {
 
     public static void main(String...args) throws IOException {
 
-        WaterRowerInitializer initializer = new WaterRowerInitializer(ofSeconds(5), ofSeconds(5), 5);
-        WaterRower waterRower = new WaterRower(initializer);
+        WaterRower waterRower = new WaterRower();
         waterRower.addConnectionListener(new IWaterRowerConnectionListener() {
             @Override
             public void onConnected(ModelInformation modelInformation) {

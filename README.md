@@ -16,8 +16,7 @@ The usage of the library is very simple. Just start with the following examples:
 ```Java
 
 // Establish a connection:
-WaterRowerInitializer initializer = new WaterRowerInitializer(ofSeconds(2), ofSeconds(2), 5);
-WaterRower waterRower = new WaterRower(initializer);
+WaterRower waterRower = new WaterRower();
 waterRower.addConnectionListener(...);
 waterRower.connect(...);
 
