@@ -27,7 +27,7 @@ waterRower.disconnect();
 
 ```
 
-If you don't want to search for the correct port manually, you can use the class ```WaterRowerAutoDiscovery```. The auto-discovery automatically searches for the available ports and tries to connect the WaterRower.
+If you don't want to search for the port manually, you can use the class ```WaterRowerAutoDiscovery```. The auto-discovery automatically searches for available ports and tries to connect the WaterRower.
 In this case you don't need to connect the WaterRower yourself.
 
 ```Java
@@ -43,12 +43,13 @@ discovery.stop();
 
 ```
 
-If the connection to the WaterRower gets lost. The auto-discovery tries to reconnect automatically.
+If the connection to the WaterRower gets lost, the auto-discovery tries to reconnect automatically.
 
 Please note, you can use the interface ```IDiscoveryStore``` in order to improve the performance when searching for serial ports.
 
-
 ### Subscribe to values
+
+The core of the WaterRower library are the subscription. You can subscribe to the different values of the WaterRower Performance Monitor. There is a subscription for every signal available.
 
 A simple example:
 
@@ -65,7 +66,7 @@ waterRower.subscribe(new StrokeSubscription() {
 
 ```
 
-The following value subscriptions are available:
+The following subscriptions are available:
 
 | Subscription | Description |
 |---|---|
@@ -96,7 +97,7 @@ Workouts can be a *single* or an *interval workout* (with rest intervals).
 Workout workout = new Workout(2000, METERS);
 waterRower.startWorkout(workout);
 
-// Send an interval workout:
+// Or send an interval workout:
 Workout workout = new Workout(1000, METERS);
 workout.addInterval(30, 2000);
 workout.addInterval(30, 2000);
@@ -114,6 +115,14 @@ Overall there are 2 types of workouts based on the unit:
 - Distance workout (distance or strokes)
 
 The workout types or units can not be mixed up in an interval workout.
+
+For workouts the following subscriptions are available:
+
+| Subscription | Description |
+|---|---|
+| ```WorkoutFlagSubscription``` | A subscription to observe active workouts. The returned object has flags for each workout mode. |
+| ```WorkoutIntervalSubscription``` | A subscription to observe the values of the configured workout and workout intervals at the Performance Monitor. |
+| ```WorkoutTotalSubscription``` | A subscription for values of the workout total times, distances, strokes or limits. |
 
 ### Find available serial ports (manually)
 
