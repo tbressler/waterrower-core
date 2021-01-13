@@ -93,8 +93,8 @@ public class TestSubscriptionPollingService {
 
         pollTask.getValue().run();
 
-        verify(executorService, times(1)).schedule(sendTask1.capture(), eq((long) 50), eq(MILLISECONDS));
-        verify(executorService, times(1)).schedule(sendTask2.capture(), eq((long) 100), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(sendTask1.capture(), eq((long) 30), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(sendTask2.capture(), eq((long) 60), eq(MILLISECONDS));
 
         sendTask1.getValue().run();
         sendTask2.getValue().run();
@@ -196,8 +196,8 @@ public class TestSubscriptionPollingService {
 
         pollTask.getValue().run();
 
-        verify(executorService, times(1)).schedule(sendTask1.capture(), eq((long) 50), eq(MILLISECONDS));
-        verify(executorService, never()).schedule(any(Runnable.class), eq((long) 100), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(sendTask1.capture(), eq((long) 30), eq(MILLISECONDS));
+        verify(executorService, never()).schedule(any(Runnable.class), eq((long) 60), eq(MILLISECONDS));
 
         sendTask1.getValue().run();
 

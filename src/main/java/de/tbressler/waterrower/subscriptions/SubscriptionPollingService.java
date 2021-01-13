@@ -25,7 +25,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class SubscriptionPollingService {
 
     // TODO Maybe 25 ms or less is also possible?
-    private static final int SEND_INTERVAL = 50; // in ms
+    private static final int SEND_INTERVAL = 30; // in ms
 
 
     /* The polling interval. */
