@@ -50,6 +50,8 @@ Please note, you can use the interface ```IDiscoveryStore``` in order to improve
 
 ### Subscribe to values
 
+A simple example:
+
 ```Java
 
 // Subscribe to events:
@@ -79,6 +81,10 @@ The following value subscriptions are available:
 | **Advanced subscriptions:** | | 
 | ```PulseCountSubscription``` | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
 | ```TotalVelocitySubscription``` | A subscription for the *total velocity* (in meters per second). |
+
+Don't forget to unsubscribe, if you are no longer interested in a value. For example it makes sense to get the tank volume after the WaterRower was connected. But because it is very unlikely that the value will change during a session, you can unsubscribe this subscription after you got the value once.
+
+The library needs to poll for each value of each subscription synchronously. Thus a high number of subscriptions may lead to performance issues.  
 
 ### Configure workouts
 
