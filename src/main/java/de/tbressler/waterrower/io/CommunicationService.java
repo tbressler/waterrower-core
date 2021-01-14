@@ -179,7 +179,7 @@ public class CommunicationService {
      */
     public void close() throws IOException {
 
-        lock.lock();
+        // lock.lock();
 
         try {
 
@@ -197,7 +197,7 @@ public class CommunicationService {
             throw new IOException("Can not disconnect!", e);
         } finally {
             currentChannel = null;
-            lock.unlock();
+            // lock.unlock();
         }
     }
 
@@ -213,7 +213,7 @@ public class CommunicationService {
             Log.debug("Try to close channel.");
             close();
         } catch (IOException e) {
-            Log.warn("Channel can not be closed!");
+            Log.warn("Channel can not be closed! " + e.getMessage());
         }
     }
 

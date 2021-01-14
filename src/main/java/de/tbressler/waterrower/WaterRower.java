@@ -307,7 +307,7 @@ public class WaterRower {
             // Make sure the WaterRower gets disconnected.
             disconnect();
         } catch (IOException e) {
-            Log.warn("Couldn't disconnect!" + e.getMessage());
+            Log.warn("Couldn't disconnect! " + e.getMessage());
         }
 
         fireOnDisconnected();
