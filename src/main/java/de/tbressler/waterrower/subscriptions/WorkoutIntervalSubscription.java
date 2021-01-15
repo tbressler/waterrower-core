@@ -93,7 +93,6 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
         // don't send an update.
         if (lastValue == value)
             return;
-
         lastValue = value;
 
         onWorkoutIntervalUpdated(intervalType, intervalIndex, value);

@@ -6,6 +6,8 @@ import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.WorkoutFlags;
 import de.tbressler.waterrower.subscriptions.*;
+import de.tbressler.waterrower.workout.Workout;
+import de.tbressler.waterrower.workout.WorkoutUnit;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -34,6 +36,19 @@ public class TestWithRealDevice {
             @Override
             public void onConnected(ModelInformation modelInformation) {
                 Log.info("Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
+
+                Log.info("Try to start workout...");
+
+                Workout workout = new Workout(2000, WorkoutUnit.METERS);
+                workout.addInterval(60, 2000);
+                workout.addInterval(60, 2000);
+                workout.addInterval(60, 2000);
+
+                try {
+                    waterRower.startWorkout(workout);
+                } catch (IOException e) {
+                    Log.error("Couldn't start workout!", e);
+                }
             }
             
             @Override
@@ -50,13 +65,6 @@ public class TestWithRealDevice {
 
         WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
 
-        waterRower.subscribe(new AverageVelocitySubscription() {
-            @Override
-            protected void onVelocityUpdated(double velocity) {
-                Log.info("Velocity = " + velocity);
-            }
-        });
-
         waterRower.subscribe(new ClockCountDownSubscription() {
 
             @Override
@@ -64,6 +72,20 @@ public class TestWithRealDevice {
                 Log.info("Clock count down = "+duration.toMinutesPart()+":"+duration.toSecondsPart());
             }
 
+        });
+
+        waterRower.subscribe(new DisplayedDistanceSubscription() {
+            @Override
+            protected void onDistanceUpdated(int distance) {
+                Log.info("Distance = " + distance);
+            }
+        });
+
+        waterRower.subscribe(new DisplayedDurationSubscription() {
+            @Override
+            protected void onDurationUpdated(Duration duration) {
+                Log.info("Duration = " + duration.toMinutesPart() + ":" + duration.toMinutesPart());
+            }
         });
 
         waterRower.subscribe(new WorkoutFlagsSubscription() {
