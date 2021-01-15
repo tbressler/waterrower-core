@@ -16,8 +16,8 @@ import java.time.Duration;
 import java.util.concurrent.Executors;
 
 import static de.tbressler.waterrower.model.MemoryLocation.WORKOUT_INTER;
-import static de.tbressler.waterrower.subscriptions.WorkoutIntervalSubscription.IntervalType.REST_INTERVAL;
-import static de.tbressler.waterrower.subscriptions.WorkoutIntervalSubscription.IntervalType.ROW_INTERVAL;
+import static de.tbressler.waterrower.subscriptions.WorkoutIntervalValueSubscription.IntervalType.REST_INTERVAL;
+import static de.tbressler.waterrower.subscriptions.WorkoutIntervalValueSubscription.IntervalType.ROW_INTERVAL;
 import static de.tbressler.waterrower.subscriptions.WorkoutTotalSubscription.ValueType.*;
 import static java.time.Duration.ofSeconds;
 
@@ -101,25 +101,25 @@ public class TestWithRealDevice {
             }
         });
 
-        waterRower.subscribe(new WorkoutIntervalSubscription(ROW_INTERVAL, 1) {
+        waterRower.subscribe(new WorkoutIntervalValueSubscription(ROW_INTERVAL, 1) {
             @Override
             protected void onWorkoutIntervalUpdated(IntervalType intervalType, int intervalIndex, int value) {
                 Log.info("Workout interval = " + intervalType.name() + "-" + intervalIndex + " = " + value);
             }
         });
-        waterRower.subscribe(new WorkoutIntervalSubscription(REST_INTERVAL, 1) {
+        waterRower.subscribe(new WorkoutIntervalValueSubscription(REST_INTERVAL, 1) {
             @Override
             protected void onWorkoutIntervalUpdated(IntervalType intervalType, int intervalIndex, int value) {
                 Log.info("Workout interval = " + intervalType.name() + "-" + intervalIndex + " = " + value);
             }
         });
-        waterRower.subscribe(new WorkoutIntervalSubscription(ROW_INTERVAL, 2) {
+        waterRower.subscribe(new WorkoutIntervalValueSubscription(ROW_INTERVAL, 2) {
             @Override
             protected void onWorkoutIntervalUpdated(IntervalType intervalType, int intervalIndex, int value) {
                 Log.info("Workout interval = " + intervalType.name() + "-" + intervalIndex + " = " + value);
             }
         });
-        waterRower.subscribe(new WorkoutIntervalSubscription(REST_INTERVAL, 2) {
+        waterRower.subscribe(new WorkoutIntervalValueSubscription(REST_INTERVAL, 2) {
             @Override
             protected void onWorkoutIntervalUpdated(IntervalType intervalType, int intervalIndex, int value) {
                 Log.info("Workout interval = " + intervalType.name() + "-" + intervalIndex + " = " + value);

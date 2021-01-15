@@ -14,8 +14,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-@Deprecated
-public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscription {
+public abstract class WorkoutIntervalValueSubscription extends AbstractMemorySubscription {
 
     /**
      * The interval type (e.g. row or rest).
@@ -49,7 +48,7 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
      *                      interval type REST_INTERVAL and between 1 and 8 for interval type
      *                      ROW_INTERVAL.
      */
-    public WorkoutIntervalSubscription(IntervalType intervalType, int intervalIndex) {
+    public WorkoutIntervalValueSubscription(IntervalType intervalType, int intervalIndex) {
         super(DOUBLE_MEMORY, getMemoryLocation(intervalType, intervalIndex));
         this.intervalType = intervalType;
         this.intervalIndex = intervalIndex;

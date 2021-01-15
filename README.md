@@ -124,7 +124,7 @@ For workouts the following subscriptions are available:
 | ```TotalWorkoutTimeSubscription``` | A subscription for values of the total workout total times. |
 | ```TotalWorkoutStrokesSubscription``` | A subscription for values of the total workout total strokes. |
 | ```WorkoutIntervalsSubscription``` | Subscription for the number of configured workout intervals at the Performance Monitor. |
-| ```WorkoutIntervalSubscription``` | A subscription to observe the values of the configured workout and workout intervals at the Performance Monitor. |
+| ```WorkoutIntervalValueSubscription``` | A subscription to observe the values of the configured workout and workout intervals at the Performance Monitor. |
 
 ### Find available serial ports (manually)
 
