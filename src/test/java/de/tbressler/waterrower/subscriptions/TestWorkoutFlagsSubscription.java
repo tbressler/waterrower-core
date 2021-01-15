@@ -50,7 +50,7 @@ public class TestWorkoutFlagsSubscription {
         subscription.handle((AbstractMessage) msg);
 
         // TODO Matcher erstellen!
-        verify(internalSubscription, times(1)).onWorkoutModeUpdated(any(WorkoutFlags.class));
+        verify(internalSubscription, times(1)).onWorkoutFlagsUpdated(any(WorkoutFlags.class));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class TestWorkoutFlagsSubscription {
         subscription.handle((AbstractMessage) msg1);
         subscription.handle((AbstractMessage) msg2);
 
-        verify(internalSubscription, times(1)).onWorkoutModeUpdated(any(WorkoutFlags.class));
+        verify(internalSubscription, times(1)).onWorkoutFlagsUpdated(any(WorkoutFlags.class));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TestWorkoutFlagsSubscription {
         subscription.handle((AbstractMessage) msg1);
         subscription.handle((AbstractMessage) msg2);
 
-        verify(internalSubscription, times(2)).onWorkoutModeUpdated(any(WorkoutFlags.class));
+        verify(internalSubscription, times(2)).onWorkoutFlagsUpdated(any(WorkoutFlags.class));
     }
 
 
@@ -86,8 +86,8 @@ public class TestWorkoutFlagsSubscription {
     private WorkoutFlagsSubscription newWorkoutModeSubscription() {
         return new WorkoutFlagsSubscription() {
             @Override
-            protected void onWorkoutModeUpdated(WorkoutFlags flags) {
-                internalSubscription.onWorkoutModeUpdated(flags);
+            protected void onWorkoutFlagsUpdated(WorkoutFlags flags) {
+                internalSubscription.onWorkoutFlagsUpdated(flags);
             }
         };
     }

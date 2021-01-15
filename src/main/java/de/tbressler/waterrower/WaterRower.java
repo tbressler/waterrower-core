@@ -375,10 +375,12 @@ public class WaterRower {
         int distance = interval.getValue();
         WorkoutUnit unit = interval.getUnit();
 
-        Log.debug("Sending single workout with " + distance + " " + unit + ".");
+        Log.info("Sending single workout with " + distance + " " + unit + "...");
 
         ConfigureWorkoutMessage msg = new ConfigureWorkoutMessage(SINGLE_WORKOUT, distance, unit);
         connector.send(msg);
+
+        Log.info("Sending of workout finished.");
     }
 
     /* Sends an interval workout to the WaterRower. */
@@ -391,7 +393,7 @@ public class WaterRower {
         if (numberOfIntervals < 2)
             throw new IllegalStateException("An interval workout must have at least two workout interval!");
 
-        Log.debug("Sending interval workout with "+ numberOfIntervals +" intervals...");
+        Log.info("Sending interval workout with "+ numberOfIntervals +" intervals...");
 
         WorkoutInterval interval;
         int distance;
@@ -422,7 +424,7 @@ public class WaterRower {
         // Send the messages.
         connector.send(messages);
 
-        Log.debug("Sending of interval workout finished.");
+        Log.info("Sending of interval workout finished.");
     }
 
 

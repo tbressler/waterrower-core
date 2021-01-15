@@ -1,6 +1,8 @@
 package de.tbressler.waterrower;
 
 import de.tbressler.waterrower.discovery.WaterRowerAutoDiscovery;
+import de.tbressler.waterrower.io.msg.Memory;
+import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.Executors;
 
+import static de.tbressler.waterrower.model.MemoryLocation.WORKOUT_INTER;
 import static de.tbressler.waterrower.subscriptions.WorkoutIntervalSubscription.IntervalType.REST_INTERVAL;
 import static de.tbressler.waterrower.subscriptions.WorkoutIntervalSubscription.IntervalType.ROW_INTERVAL;
 import static de.tbressler.waterrower.subscriptions.WorkoutTotalSubscription.ValueType.*;
@@ -84,13 +87,13 @@ public class TestWithRealDevice {
         waterRower.subscribe(new DisplayedDurationSubscription() {
             @Override
             protected void onDurationUpdated(Duration duration) {
-                Log.info("Duration = " + duration.toMinutesPart() + ":" + duration.toMinutesPart());
+                Log.info("Duration = " + duration.toMinutesPart() + ":" + duration.toSecondsPart());
             }
         });
 
         waterRower.subscribe(new WorkoutFlagsSubscription() {
             @Override
-            protected void onWorkoutModeUpdated(WorkoutFlags flags) {
+            protected void onWorkoutFlagsUpdated(WorkoutFlags flags) {
                 Log.info("Workout distance mode = " + flags.isWorkoutDistanceMode());
                 Log.info("Workout distance interval mode = " + flags.isWorkoutDistanceIntervalMode());
                 Log.info("Workout duration mode = " + flags.isWorkoutDurationMode());
@@ -137,13 +140,23 @@ public class TestWithRealDevice {
         waterRower.subscribe(new WorkoutTotalSubscription(LIMIT) {
             @Override
             protected void onTotalWorkoutValueUpdated(ValueType valueType, int value) {
-                Log.info("Workout interval [" + valueType.name() + "] = " + value);
+                Log.info("Workout total interval [" + valueType.name() + "] = " + value);
             }
         });
         waterRower.subscribe(new WorkoutTotalSubscription(TIME) {
             @Override
             protected void onTotalWorkoutValueUpdated(ValueType valueType, int value) {
-                Log.info("Workout interval [" + valueType.name() + "] = " + value);
+                Log.info("Workout total interval [" + valueType.name() + "] = " + value);
+            }
+        });
+
+        waterRower.subscribe(new DebugSubscription(Memory.SINGLE_MEMORY, WORKOUT_INTER) {
+            int no = -1;
+            @Override
+            protected void handle(DataMemoryMessage msg) {
+                if (no != msg.getValue1())
+                    return;
+                Log.info("DEBUG = " + msg.getValue1() + " ["+msg.getValue1AsACH()+"]");
             }
         });
 

@@ -57,11 +57,11 @@ public abstract class WorkoutTotalSubscription extends AbstractMemorySubscriptio
     private static MemoryLocation getMemoryLocation(ValueType valueType) {
         switch (requireNonNull(valueType)) {
             case TIME:
-                return WORKOUT_TIMEL;
+                return WORKOUT_TIMEL; // total workout duration in seconds
             case INTENSITY:
-                return WORKOUT_MS_L;
+                return WORKOUT_MS_L; // total workout distance in meters
             case STROKES:
-                return WORKOUT_STROKEL;
+                return WORKOUT_STROKEL; // total workout strokes
             case LIMIT:
                 return WORKOUT_LIMIT_H;
             default:
