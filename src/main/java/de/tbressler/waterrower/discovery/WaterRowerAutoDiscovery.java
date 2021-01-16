@@ -68,6 +68,9 @@ public class WaterRowerAutoDiscovery {
 
         @Override
         public void onConnected(ModelInformation modelInformation) {
+
+            Log.debug("WaterRower successfully connected.");
+
             // Remember the last successful serial port, in order
             // to speed up connection next time.
             discoveryStore.setLastSuccessfulSerialPort(currentSerialPort);
@@ -193,7 +196,11 @@ public class WaterRowerAutoDiscovery {
             if (portName.startsWith("/dev/cu."))
                 continue;
 
-            // Ignore bluetooth ports.
+            // Ignore cu ports.
+            if (portName.startsWith("cu."))
+                continue;
+
+            // Ignore bluetooth ports on macOS.
             if (portName.contains("Bluetooth") || portName.contains("BT"))
                 continue;
 

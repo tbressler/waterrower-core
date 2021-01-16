@@ -3,13 +3,13 @@ package de.tbressler.waterrower.subscriptions;
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.model.MemoryLocation;
-import de.tbressler.waterrower.subscriptions.WorkoutIntervalSubscription.IntervalType;
+import de.tbressler.waterrower.subscriptions.WorkoutIntervalValueSubscription.IntervalType;
 import org.junit.Test;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.*;
-import static de.tbressler.waterrower.subscriptions.WorkoutIntervalSubscription.IntervalType.REST_INTERVAL;
-import static de.tbressler.waterrower.subscriptions.WorkoutIntervalSubscription.IntervalType.ROW_INTERVAL;
+import static de.tbressler.waterrower.subscriptions.WorkoutIntervalValueSubscription.IntervalType.REST_INTERVAL;
+import static de.tbressler.waterrower.subscriptions.WorkoutIntervalValueSubscription.IntervalType.ROW_INTERVAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -20,13 +20,13 @@ import static org.mockito.Mockito.*;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class TestWorkoutIntervalSubscription {
+public class TestWorkoutIntervalValueSubscription {
 
     // Class under test.
-    private WorkoutIntervalSubscription subscription;
+    private WorkoutIntervalValueSubscription subscription;
 
     // Mocks:
-    private WorkoutIntervalSubscription internalSubscription = mock(WorkoutIntervalSubscription.class, "internalSubscription");
+    private WorkoutIntervalValueSubscription internalSubscription = mock(WorkoutIntervalValueSubscription.class, "internalSubscription");
 
 
     // Constructor:
@@ -156,8 +156,8 @@ public class TestWorkoutIntervalSubscription {
 
     // Helper methods:
 
-    private WorkoutIntervalSubscription newWorkoutIntervalSubscription(IntervalType intervalType, int intervalIndex) {
-        return new WorkoutIntervalSubscription(intervalType, intervalIndex) {
+    private WorkoutIntervalValueSubscription newWorkoutIntervalSubscription(IntervalType intervalType, int intervalIndex) {
+        return new WorkoutIntervalValueSubscription(intervalType, intervalIndex) {
             @Override
             protected void onWorkoutIntervalUpdated(IntervalType intervalType, int intervalIndex, int value) {
                 internalSubscription.onWorkoutIntervalUpdated(intervalType, intervalIndex, value);

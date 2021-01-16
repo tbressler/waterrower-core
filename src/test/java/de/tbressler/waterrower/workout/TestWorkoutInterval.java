@@ -131,13 +131,13 @@ public class TestWorkoutInterval {
     @Test
     public void getDistance1_returnsValue() {
         interval = new WorkoutInterval(1234, 1, METERS);
-        assertEquals(1, interval.getDistance());
+        assertEquals(1, interval.getValue());
     }
 
     @Test
     public void getDistance4321_returnsValue() {
         interval = new WorkoutInterval(1234, 4321, METERS);
-        assertEquals(4321, interval.getDistance());
+        assertEquals(4321, interval.getValue());
     }
 
     @Test

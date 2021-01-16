@@ -76,7 +76,7 @@ public class TestSubscriptionPollingService {
     @Test
     public void start_schedulesTask() {
         pollingService.start();
-        verify(executorService, times(1)).schedule(any(Runnable.class), eq((long)2000), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(any(Runnable.class), eq((long) 0), eq(MILLISECONDS));
     }
 
     // Task execution:
@@ -89,7 +89,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long)2000), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
 
         pollTask.getValue().run();
 
@@ -111,7 +111,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long)2000), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
 
         pollingService.stop();
 
@@ -129,7 +129,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long)2000), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
 
         pollTask.getValue().run();
     }
@@ -144,7 +144,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long)2000), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
 
         listener.getValue().onMessageReceived(someMessage3);
 
@@ -160,7 +160,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long)2000), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
 
         pollingService.stop();
 
@@ -192,7 +192,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.unsubscribe(subscription1);
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 2000), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
 
         pollTask.getValue().run();
 

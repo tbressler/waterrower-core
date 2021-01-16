@@ -14,8 +14,8 @@ public class WorkoutInterval {
     /* The rest interval. */
     private final int restInterval;
 
-    /* The distance or duration. */
-    private final int distance;
+    /* The distance or duration (depending on the unit). */
+    private final int value;
 
     /* The unit of the workout distance/duration. */
     private final WorkoutUnit unit;
@@ -24,15 +24,15 @@ public class WorkoutInterval {
     /**
      * A workout interval.
      *
-     * @param distance The distance (in meters/strokes) or duration (in seconds) of the workout. When unit = METERS,
+     * @param value The distance (in meters/strokes) or duration (in seconds) of the workout. When unit = METERS,
      *                 MILES or KMS: this value is in Meters, the display value for miles is a conversion and valid
      *                 values are 0x0001 to 0xFA00. When unit = STROKES this value is the number of strokes and valid
      *                 values are 0x0001 to 0x1388. When unit = SECONDS this value is in seconds. Valid values are 0x0001
      *                 to 0x4650. This value is limited to 5 Hours, which is 18,000 seconds.
      * @param unit The unit of the workout distance/duration, must not be null.
      */
-    public WorkoutInterval(int distance, WorkoutUnit unit) {
-        this(0, distance, unit);
+    public WorkoutInterval(int value, WorkoutUnit unit) {
+        this(0, value, unit);
     }
 
 
@@ -42,17 +42,17 @@ public class WorkoutInterval {
      * @param restInterval The rest interval (in seconds) or 0 if no rest interval must be
      *                     set. Usually for single workouts or the first interval of an interval
      *                     workout. Valid values are 0x0000 to 0x0E10.
-     * @param distance The distance (in meters/strokes) or duration (in seconds) of the workout. When unit = METERS,
+     * @param value The distance (in meters/strokes) or duration (in seconds) of the workout. When unit = METERS,
      *                 MILES or KMS: this value is in Meters, the display value for miles is a conversion and valid
      *                 values are 0x0001 to 0xFA00. When unit = STROKES this value is the number of strokes and valid
      *                 values are 0x0001 to 0x1388. When unit = SECONDS this value is in seconds. Valid values are 0x0001
      *                 to 0x4650. This value is limited to 5 Hours, which is 18,000 seconds.
      * @param unit The unit of the workout distance/duration, must not be null.
      */
-    public WorkoutInterval(int restInterval, int distance, WorkoutUnit unit) {
+    public WorkoutInterval(int restInterval, int value, WorkoutUnit unit) {
         this.restInterval = checkRestInterval(restInterval);
         this.unit = requireNonNull(unit);
-        this.distance = checkDistance(distance, unit);
+        this.value = checkValue(value, unit);
     }
 
     /* Checks if the rest interval is in range. */
@@ -62,8 +62,8 @@ public class WorkoutInterval {
         return restInterval;
     }
 
-    /* Checks if distance is in range. */
-    private int checkDistance(int distance, WorkoutUnit unit) {
+    /* Checks if distance or duration is in range. */
+    private int checkValue(int distance, WorkoutUnit unit) {
         switch(unit) {
             case METERS:
             case MILES:
@@ -111,8 +111,8 @@ public class WorkoutInterval {
      *
      * @return The distance or duration.
      */
-    public int getDistance() {
-        return distance;
+    public int getValue() {
+        return value;
     }
 
 
@@ -130,7 +130,7 @@ public class WorkoutInterval {
     public String toString() {
         return toStringHelper(this)
                 .add("restInterval", restInterval)
-                .add("distance", distance)
+                .add("value", value)
                 .add("unit", unit)
                 .toString();
     }

@@ -27,16 +27,16 @@ public class Workout {
     /**
      * A workout configuration.
      *
-     * @param distance The distance (in meters/strokes) or duration (in seconds) of the workout. When unit = METERS,
+     * @param value The distance (in meters/strokes) or duration (in seconds) of the workout. When unit = METERS,
      *                 MILES or KMS: this value is in Meters, the display value for miles is a conversion and valid
      *                 values are 0x0001 to 0xFA00. When unit = STROKES this value is the number of strokes and valid
      *                 values are 0x0001 to 0x1388. When unit = SECONDS this value is in seconds. Valid values are 0x0001
      *                 to 0x4650. This value is limited to 5 Hours, which is 18,000 seconds.
      * @param unit The unit for the distance/duration of the single or interval workout.
      */
-    public Workout(int distance, WorkoutUnit unit) {
+    public Workout(int value, WorkoutUnit unit) {
         this.unit = requireNonNull(unit);
-        intervals.add(new WorkoutInterval(distance, unit));
+        intervals.add(new WorkoutInterval(value, unit));
     }
 
 
@@ -44,7 +44,7 @@ public class Workout {
      * Adds an interval to the workout. 8 additional intervals can be added.
      *
      * @param restInterval The rest interval (in seconds). Valid values are 0x0001 to 0x0E10.
-     * @param distance The distance/duration of the interval, using the same workout unit from the
+     * @param value The distance/duration of the interval, using the same workout unit from the
      *                 first interval (constructor). When unit = METERS, MILES or KMS: this value
      *                 is in Meters, the display value for miles is a conversion and valid values
      *                 are 0x0001 to 0xFA00. When unit = STROKES this value is the number of
@@ -52,13 +52,13 @@ public class Workout {
      *                 value is in seconds. Valid values are 0x0001 to 0x4650. This value is
      *                 limited to 5 Hours, which is 18,000 seconds.
      */
-    public void addInterval(int restInterval, int distance) {
+    public void addInterval(int restInterval, int value) {
         if (intervals.size() > 8)
             throw new IllegalStateException("Only 8 additional intervals allowed!");
         if (restInterval < 1)
             throw new IllegalArgumentException("Rest interval must be greater than 0!");
         isSingleWorkout = false;
-        intervals.add(new WorkoutInterval(restInterval, distance, unit));
+        intervals.add(new WorkoutInterval(restInterval, value, unit));
     }
 
 

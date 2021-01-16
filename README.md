@@ -16,8 +16,7 @@ The usage of the library is very simple. Just start with the following examples:
 ```Java
 
 // Establish a connection:
-WaterRowerInitializer initializer = new WaterRowerInitializer(ofSeconds(2), ofSeconds(2), 5);
-WaterRower waterRower = new WaterRower(initializer);
+WaterRower waterRower = new WaterRower();
 waterRower.addConnectionListener(...);
 waterRower.connect(...);
 
@@ -28,7 +27,7 @@ waterRower.disconnect();
 
 ```
 
-If you don't want to search for the correct port manually, you can use the class ```WaterRowerAutoDiscovery```. The auto-discovery automatically searches for the available ports and tries to connect the WaterRower.
+If you don't want to search for the port manually, you can use the class ```WaterRowerAutoDiscovery```. The auto-discovery automatically searches for available ports and tries to connect the WaterRower.
 In this case you don't need to connect the WaterRower yourself.
 
 ```Java
@@ -44,12 +43,15 @@ discovery.stop();
 
 ```
 
-If the connection to the WaterRower gets lost. The auto-discovery tries to reconnect automatically.
+If the connection to the WaterRower gets lost, the auto-discovery tries to reconnect automatically.
 
 Please note, you can use the interface ```IDiscoveryStore``` in order to improve the performance when searching for serial ports.
 
-
 ### Subscribe to values
+
+The core of the WaterRower library are the subscription. You can subscribe to the different values of the WaterRower Performance Monitor. There is a subscription for every signal available.
+
+A simple example:
 
 ```Java
 
@@ -64,7 +66,7 @@ waterRower.subscribe(new StrokeSubscription() {
 
 ```
 
-The following value subscriptions are available:
+The following subscriptions are available:
 
 | Subscription | Description |
 |---|---|
@@ -81,7 +83,13 @@ The following value subscriptions are available:
 | ```PulseCountSubscription``` | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
 | ```TotalVelocitySubscription``` | A subscription for the *total velocity* (in meters per second). |
 
+Don't forget to unsubscribe, if you are no longer interested in a value. For example it makes sense to get the tank volume after the WaterRower was connected. But because it is very unlikely that the value will change during a session, you can unsubscribe this subscription after you got the value once.
+
+The library needs to poll for each value of each subscription synchronously. Thus a high number of subscriptions may lead to performance issues.  
+
 ### Configure workouts
+
+Workouts can be a *single* or an *interval workout* (with rest intervals).
 
 ```Java
 
@@ -89,7 +97,7 @@ The following value subscriptions are available:
 Workout workout = new Workout(2000, METERS);
 waterRower.startWorkout(workout);
 
-// Send an interval workout:
+// Or send an interval workout:
 Workout workout = new Workout(1000, METERS);
 workout.addInterval(30, 2000);
 workout.addInterval(30, 2000);
@@ -98,6 +106,27 @@ waterRower.startWorkout(workout);
 ...
 
 ```
+
+The unit given in the class `Workout` also determines the units of the intervals.
+
+Overall there are 2 types of workouts based on the unit:
+
+- Duration workout (time)
+- Distance workout (distance or strokes)
+
+The workout types or units can not be mixed up in an interval workout.
+
+For workouts the following subscriptions are available:
+
+| Subscription | Description |
+|---|---|
+| ```WorkoutFlagSubscription``` | A subscription to observe active workouts. The returned object has flags for each workout mode. |
+| ```TotalWorkoutTimeSubscription``` | A subscription for values of the total workout total times. |
+| ```TotalWorkoutDistanceSubscription``` | A subscription for values of the total workout total distance. |
+| ```TotalWorkoutStrokesSubscription``` | A subscription for values of the total workout total strokes. |
+| ```TotalWorkoutLimitSubscription``` | A subscription for values of the total workout total limit. |
+| ```WorkoutIntervalsSubscription``` | Subscription for the number of configured workout intervals at the Performance Monitor. |
+| ```WorkoutIntervalValueSubscription``` | A subscription to observe the values of the configured workout and workout intervals at the Performance Monitor. |
 
 ### Find available serial ports (manually)
 

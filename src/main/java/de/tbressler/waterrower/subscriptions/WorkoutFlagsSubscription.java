@@ -22,7 +22,6 @@ import static de.tbressler.waterrower.model.MemoryLocation.FEXTENDED;
  * @author Tobias Bressler
  * @version 1.0
  */
-@Deprecated
 public abstract class WorkoutFlagsSubscription extends AbstractMemorySubscription {
 
     /* The last received workout flags. */
@@ -46,18 +45,17 @@ public abstract class WorkoutFlagsSubscription extends AbstractMemorySubscriptio
         // don't send an update.
         if (flags.equals(lastWorkoutFlags))
             return;
-
         lastWorkoutFlags = flags;
 
-        onWorkoutModeUpdated(flags);
+        onWorkoutFlagsUpdated(flags);
     }
 
 
     /**
-     * Is called, when an update of the workout mode flag (FEXTENDED) was received.
+     * Is called, when an update of the workout mode flags was received.
      *
      * @param flags The flags of the workout mode, never null.
      */
-    abstract protected void onWorkoutModeUpdated(WorkoutFlags flags);
+    abstract protected void onWorkoutFlagsUpdated(WorkoutFlags flags);
 
 }

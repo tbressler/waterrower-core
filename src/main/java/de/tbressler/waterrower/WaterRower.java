@@ -22,6 +22,7 @@ import de.tbressler.waterrower.workout.WorkoutInterval;
 import de.tbressler.waterrower.workout.WorkoutUnit;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,14 +103,24 @@ public class WaterRower {
      *
      * This class connects with the WaterRower and exchanges the information between PC and
      * WaterRower monitor.
-     *
-     * @param configurator
      */
-    public WaterRower(WaterRowerInitializer configurator) {
-        this(configurator.getWaterRowerConnector(),
-                configurator.getPingWatchdog(),
-                configurator.getDeviceVerificationWatchdog(),
-                configurator.getSubscriptionPollingService());
+    public WaterRower() {
+        this(new WaterRowerInitializer(Duration.ofSeconds(1), Duration.ofSeconds(5), 5));
+    }
+
+    /**
+     * The entry point of the WaterRower library.
+     *
+     * This class connects with the WaterRower and exchanges the information between PC and
+     * WaterRower monitor.
+     *
+     * @param initializer The WaterRower initializer (for configuration), must not be null.
+     */
+    public WaterRower(WaterRowerInitializer initializer) {
+        this(initializer.getWaterRowerConnector(),
+                initializer.getPingWatchdog(),
+                initializer.getDeviceVerificationWatchdog(),
+                initializer.getSubscriptionPollingService());
     }
 
     /**
@@ -361,13 +372,15 @@ public class WaterRower {
 
         WorkoutInterval interval = workoutIntervals.get(0);
 
-        int distance = interval.getDistance();
+        int distance = interval.getValue();
         WorkoutUnit unit = interval.getUnit();
 
-        Log.debug("Sending single workout with " + distance + " " + unit + ".");
+        Log.info("Sending single workout with " + distance + " " + unit + "...");
 
         ConfigureWorkoutMessage msg = new ConfigureWorkoutMessage(SINGLE_WORKOUT, distance, unit);
         connector.send(msg);
+
+        Log.info("Sending of workout finished.");
     }
 
     /* Sends an interval workout to the WaterRower. */
@@ -380,38 +393,38 @@ public class WaterRower {
         if (numberOfIntervals < 2)
             throw new IllegalStateException("An interval workout must have at least two workout interval!");
 
-        Log.debug("Sending interval workout with "+ numberOfIntervals +" intervals...");
+        Log.info("Sending interval workout with "+ numberOfIntervals +" intervals...");
 
         WorkoutInterval interval;
         int distance;
         int restInterval;
         WorkoutUnit unit;
-        ConfigureWorkoutMessage msg;
 
+        final List<AbstractMessage> messages = new ArrayList<>();
         for(int i = 0; i < numberOfIntervals; i++) {
 
             interval = workoutIntervals.get(i);
 
-            distance = interval.getDistance();
+            distance = interval.getValue();
             restInterval = (i == 0) ? -1 : interval.getRestInterval();
             unit = interval.getUnit();
 
             Log.debug("Sending interval: " + interval);
-
-            msg = new ConfigureWorkoutMessage((i == 0) ? START_INTERVAL_WORKOUT : ADD_INTERVAL_WORKOUT, distance, unit, restInterval);
-            connector.send(msg);
+            messages.add(new ConfigureWorkoutMessage((i == 0) ? START_INTERVAL_WORKOUT : ADD_INTERVAL_WORKOUT, distance, unit, restInterval));
 
             // If this is the last interval, send the end interval message.
             if (i == (numberOfIntervals - 1)) {
 
                 Log.debug("Sending the end message for interval workout.");
-
-                msg = new ConfigureWorkoutMessage(END_INTERVAL_WORKOUT, 0xFFFF, unit, 0xFFFF);
-                connector.send(msg);
+                messages.add(new ConfigureWorkoutMessage(END_INTERVAL_WORKOUT, 0xFFFF, unit, 0xFFFF));
             }
+
         }
 
-        Log.debug("Sending of interval workout finished.");
+        // Send the messages.
+        connector.send(messages);
+
+        Log.info("Sending of interval workout finished.");
     }
 
 

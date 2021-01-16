@@ -14,8 +14,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-@Deprecated
-public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscription {
+public abstract class WorkoutIntervalValueSubscription extends AbstractMemorySubscription {
 
     /**
      * The interval type (e.g. row or rest).
@@ -49,7 +48,7 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
      *                      interval type REST_INTERVAL and between 1 and 8 for interval type
      *                      ROW_INTERVAL.
      */
-    public WorkoutIntervalSubscription(IntervalType intervalType, int intervalIndex) {
+    public WorkoutIntervalValueSubscription(IntervalType intervalType, int intervalIndex) {
         super(DOUBLE_MEMORY, getMemoryLocation(intervalType, intervalIndex));
         this.intervalType = intervalType;
         this.intervalIndex = intervalIndex;
@@ -93,7 +92,6 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
         // don't send an update.
         if (lastValue == value)
             return;
-
         lastValue = value;
 
         onWorkoutIntervalUpdated(intervalType, intervalIndex, value);
@@ -105,7 +103,7 @@ public abstract class WorkoutIntervalSubscription extends AbstractMemorySubscrip
      *
      * @param intervalType The interval type (e.g. row or rest), never null.
      * @param intervalIndex The index of the workout interval.
-     * @param value The new value.
+     * @param value The new value (the unit depends on the interval and workout type).
      */
     abstract protected void onWorkoutIntervalUpdated(IntervalType intervalType, int intervalIndex, int value);
 

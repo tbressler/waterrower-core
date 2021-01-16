@@ -95,7 +95,7 @@ public class WaterRowerConnector {
 
 
     /**
-     * Sends given message asynchronous.
+     * Sends a single message.
      *
      * @param msg The message to be sent, must not be null.
      */
@@ -104,12 +104,40 @@ public class WaterRowerConnector {
 
         lock.lock();
 
+        if (!isConnected())
+            throw new IOException("Not connected! Can not send message to WaterRower.");
+
         try {
 
-            if (!isConnected())
-                throw new IOException("Not connected! Can not send message to WaterRower.");
-
             communicationService.send(msg);
+            Thread.sleep(25); // Wait 25ms, this gives the rowing computer time to process.
+
+        } catch (InterruptedException e) {
+            Log.error("Error while sending message!", e);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+
+    /**
+     * Sends multiple messages at once.
+     *
+     * @param messages The messages to be sent, must not be null.
+     */
+    public void send(List<AbstractMessage> messages) throws IOException {
+        requireNonNull(messages);
+
+        lock.lock();
+
+        if (!isConnected())
+            throw new IOException("Not connected! Can not send message to WaterRower.");
+
+        try {
+
+            for(AbstractMessage msg : messages) {
+                send(msg);
+            }
 
         } finally {
             lock.unlock();

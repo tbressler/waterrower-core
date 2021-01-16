@@ -24,7 +24,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public class SubscriptionPollingService {
 
-    // TODO Maybe 25 ms or less is also possible?
     private static final int SEND_INTERVAL = 50; // in ms
 
 
@@ -85,12 +84,12 @@ public class SubscriptionPollingService {
         Log.debug("Start subscription polling service.");
 
         isActive.set(true);
-        schedulePollingTask();
+        schedulePollingTask(0); // Execute the polling immediately.
     }
 
-    /* Schedule the polling task for execution. */
-    private void schedulePollingTask() {
-        executorService.schedule(this::executePolling, interval.toMillis(), MILLISECONDS);
+    /* Schedule the polling task for execution (with a delay in millis). */
+    private void schedulePollingTask(long delay) {
+        executorService.schedule(this::executePolling, delay, MILLISECONDS);
     }
 
     /* Execute the polling task. */
@@ -112,7 +111,7 @@ public class SubscriptionPollingService {
         }
 
         if (isActive.get())
-            schedulePollingTask();
+            schedulePollingTask(interval.toMillis()); // Execute the next polling with the delay.
     }
 
     /* Schedule the send task for execution. */

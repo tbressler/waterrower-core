@@ -105,8 +105,8 @@ public enum MemoryLocation {
     WORKOUT_MS_H(0x1eb),
     WORKOUT_STROKEL(0x1ec),     // total workout strokes
     WORKOUT_STROKEH(0x1ed),
-    WORKOUT_LIMIT_H(0x1ee),     // this is the limit value for workouts
-    WORKOUT_LIMIT_L(0x1ef),
+    WORKOUT_LIMIT_L(0x1ee),     // this is the limit value for workouts
+    WORKOUT_LIMIT_H(0x1ef),
 
     /*
      * Interval's:
