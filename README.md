@@ -122,7 +122,9 @@ For workouts the following subscriptions are available:
 |---|---|
 | ```WorkoutFlagSubscription``` | A subscription to observe active workouts. The returned object has flags for each workout mode. |
 | ```TotalWorkoutTimeSubscription``` | A subscription for values of the total workout total times. |
+| ```TotalWorkoutDistanceSubscription``` | A subscription for values of the total workout total distance. |
 | ```TotalWorkoutStrokesSubscription``` | A subscription for values of the total workout total strokes. |
+| ```TotalWorkoutLimitSubscription``` | A subscription for values of the total workout total limit. |
 | ```WorkoutIntervalsSubscription``` | Subscription for the number of configured workout intervals at the Performance Monitor. |
 | ```WorkoutIntervalValueSubscription``` | A subscription to observe the values of the configured workout and workout intervals at the Performance Monitor. |
 

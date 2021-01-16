@@ -65,8 +65,8 @@ public class TestMemoryLocation {
     @Test public void workout_ms_h() { assertMemoryLocation(WORKOUT_MS_H, "1EB"); }
     @Test public void workout_strokel() { assertMemoryLocation(WORKOUT_STROKEL, "1EC"); }
     @Test public void workout_strokeh() { assertMemoryLocation(WORKOUT_STROKEH, "1ED"); }
-    @Test public void workout_limit_h() { assertMemoryLocation(WORKOUT_LIMIT_H, "1EE"); }
-    @Test public void workout_limit_l() { assertMemoryLocation(WORKOUT_LIMIT_L, "1EF"); }
+    @Test public void workout_limit_l() { assertMemoryLocation(WORKOUT_LIMIT_L, "1EE"); }
+    @Test public void workout_limit_h() { assertMemoryLocation(WORKOUT_LIMIT_H, "1EF"); }
 
     @Test public void workout_work1_l() { assertMemoryLocation(WORKOUT_WORK1_L, "1B0"); };
     @Test public void workout_work1_h() { assertMemoryLocation(WORKOUT_WORK1_H, "1B1"); };
