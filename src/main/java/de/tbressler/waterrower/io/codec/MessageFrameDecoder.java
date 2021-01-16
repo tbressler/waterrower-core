@@ -56,7 +56,7 @@ public class MessageFrameDecoder extends ByteToMessageDecoder {
         // Decode the message.
          AbstractMessage decodedMessage = parser.decode(byteArray);
          if (decodedMessage == null) {
-             Log.debug("Couldn't decode bytes to message! Skipping it.");
+             Log.warn("Couldn't decode bytes to message! Skipping it.");
              return;
          }
 
