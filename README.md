@@ -120,12 +120,12 @@ For workouts the following subscriptions are available:
 
 | Subscription | Description |
 |---|---|
-| ```WorkoutFlagSubscription``` | A subscription to observe active workouts. The returned object has flags for each workout mode. |
-| ```TotalWorkoutTimeSubscription``` | A subscription for values of the total workout total times. |
-| ```TotalWorkoutDistanceSubscription``` | A subscription for values of the total workout total distance. |
-| ```TotalWorkoutStrokesSubscription``` | A subscription for values of the total workout total strokes. |
-| ```TotalWorkoutLimitSubscription``` | A subscription for values of the total workout total limit. |
+| ```WorkoutFlagsSubscription``` | A subscription to observe active workouts. The returned object has flags for each workout mode. |
 | ```WorkoutIntervalsSubscription``` | Subscription for the number of configured workout intervals at the Performance Monitor. |
+| ```TotalWorkoutTimeSubscription``` | A subscription for values of the total workout total times. The time is updated by the WaterRower after each workout interval. |
+| ```TotalWorkoutDistanceSubscription``` | A subscription for values of the total workout total distance. The distance is updated by the WaterRower after each workout interval. |
+| ```TotalWorkoutStrokesSubscription``` | A subscription for values of the total workout total strokes. The stroke value is updated by the WaterRower after each workout interval. |
+| ```TotalWorkoutLimitSubscription``` | A subscription for values of the total workout total limit. |
 | ```WorkoutIntervalValueSubscription``` | A subscription to observe the values of the configured workout and workout intervals at the Performance Monitor. |
 
 ### Find available serial ports (manually)

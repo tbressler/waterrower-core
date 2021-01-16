@@ -83,6 +83,20 @@ public class TestWithRealDevice {
             }
         });
 
+        waterRower.subscribe(new AverageStrokeRateSubscription() {
+            @Override
+            protected void onStrokeRateUpdated(double strokeRate) {
+                Log.info("Stroke rate = " + strokeRate + "strokes/min");
+            }
+        });
+
+        waterRower.subscribe(new AverageVelocitySubscription() {
+            @Override
+            protected void onVelocityUpdated(double velocity) {
+                Log.info("Velocity = " + velocity + " m/sec");
+            }
+        });
+
         waterRower.subscribe(new WorkoutFlagsSubscription() {
             @Override
             protected void onWorkoutFlagsUpdated(WorkoutFlags flags) {

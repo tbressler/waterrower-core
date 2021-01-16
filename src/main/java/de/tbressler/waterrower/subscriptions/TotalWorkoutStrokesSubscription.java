@@ -8,6 +8,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
  * Subscription for values of the total workout strokes.
+ * The stroke value is updated by the WaterRower after each workout interval.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -20,6 +21,7 @@ public abstract class TotalWorkoutStrokesSubscription extends AbstractMemorySubs
 
     /**
      * Subscription for values of the total workout strokes.
+     * The stroke value is updated by the WaterRower after each workout interval.
      */
     public TotalWorkoutStrokesSubscription() {
         super(DOUBLE_MEMORY, WORKOUT_STROKEL);

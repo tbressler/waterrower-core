@@ -10,6 +10,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
  * Subscription for values of the total workout times.
+ * The time is updated by the WaterRower after each workout interval.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -22,6 +23,7 @@ public abstract class TotalWorkoutTimeSubscription extends AbstractMemorySubscri
 
     /**
      * Subscription for values of the total workout times.
+     * The time is updated by the WaterRower after each workout interval.
      */
     public TotalWorkoutTimeSubscription() {
         super(DOUBLE_MEMORY, WORKOUT_TIMEL);

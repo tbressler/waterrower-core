@@ -8,6 +8,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
  * Subscription for values of the total workout distance.
+ * The distance is updated by the WaterRower after each workout interval.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -20,6 +21,7 @@ public abstract class TotalWorkoutDistanceSubscription extends AbstractMemorySub
 
     /**
      * Subscription for values of the total workout distance.
+     * The distance is updated by the WaterRower after each workout interval.
      */
     public TotalWorkoutDistanceSubscription() {
         super(DOUBLE_MEMORY, WORKOUT_MS_L);
