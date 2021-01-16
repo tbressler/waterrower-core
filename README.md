@@ -73,19 +73,21 @@ The following subscriptions are available:
 | ```DisplayedDistanceSubscription``` | A subscription for the *displayed distance* (in meters) on the distance window of the Performance Monitor. The value is set to zero if the Performance Monitor was reset. |
 | ```DisplayedDurationSubscription``` | A subscription for the *displayed duration* on the duration window of the Performance Monitor. The duration window displays the time covered (or time to be covered in a duration workout). |
 | ```AverageVelocitySubscription``` | A subscription for the *displayed average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
-| ```StrokeSubscription``` |  A subscription for *stroke events*. The values will be send immediately by the Performance Monitor and will not be polled by the library. |
+| ```StrokeSubscription```* |  A subscription for *stroke events*. The values will be send immediately by the Performance Monitor and will not be polled by the library. |
 | ```StrokeCountSubscription``` | A subscription for the *stroke count* value (number of strokes). |
 | ```AverageStrokeRateSubscription``` | A subscription for the *displayed stroke rate* (strokes/min) of a whole stroke which is displayed in the stroke rate window of the Performance Monitor. |
 | ```TankVolumeSubscription``` | A subscription for the *tank volume* value (in liters). This is the value the user has set in the Performance Monitor (see manual). |
 | ```ClockCountDownSubscription``` | A subscription for *clock count down* values. This value is transmitted if a count down is programmed in the Performance Monitor. |
 | ```TotalDistanceSubscription``` | A subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this value will be reset to zero when the Performance Monitor is switched off. |
 | **Advanced subscriptions:** | | 
-| ```PulseCountSubscription``` | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
+| ```PulseCountSubscription```* | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
 | ```TotalVelocitySubscription``` | A subscription for the *total velocity* (in meters per second). |
 
 Don't forget to unsubscribe, if you are no longer interested in a value. For example it makes sense to get the tank volume after the WaterRower was connected. But because it is very unlikely that the value will change during a session, you can unsubscribe this subscription after you got the value once.
 
-The library needs to poll for each value of each subscription synchronously. Thus a high number of subscriptions may lead to performance issues.  
+The library needs to poll for each value of each subscription synchronously. Thus a high number of subscriptions may lead to performance issues. 
+
+*The two subscriptions ```PulseCountSubscription``` and ```StrokeSubscription``` are transmitted by the WaterRower without polling.*
 
 ### Configure workouts
 
