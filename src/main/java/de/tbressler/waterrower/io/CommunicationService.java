@@ -162,7 +162,7 @@ public class CommunicationService {
 
             Log.debug("Sending message '" + msg.toString() + "'.");
 
-            currentChannel.write(msg);
+            currentChannel.writeAndFlush(msg);
 
         } catch (Exception e) {
             throw new IOException("Can not send message '"+msg+"'!", e);

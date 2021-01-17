@@ -7,6 +7,8 @@ import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.MemoryLocation;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
@@ -24,6 +26,10 @@ abstract class AbstractMemorySubscription implements ISubscription {
     /* The memory location. */
     private final MemoryLocation location;
 
+    /* TODO: (Debug-only) Because of missing incoming messages, count the outgoing messages
+        until an incoming message was received. */
+    private AtomicInteger counterLatch = new AtomicInteger(0);
+
 
     /**
      * An abstract subscription for memory locations.
@@ -38,6 +44,7 @@ abstract class AbstractMemorySubscription implements ISubscription {
 
     @Override
     public final AbstractMessage poll() {
+        counterLatch.incrementAndGet();
         return new ReadMemoryMessage(memory, location.getLocation());
     }
 
@@ -54,6 +61,11 @@ abstract class AbstractMemorySubscription implements ISubscription {
         if (dataMemoryMessage.getMemory() != memory) {
             Log.warn("Received message has memory type '"+dataMemoryMessage.getMemory()+"', but expected is '"+memory+"'!");
             return;
+        }
+
+        int counter = this.counterLatch.getAndSet(0);
+        if (counter != 0) {
+            Log.warn("Not all messages were answered by the WaterRower! Missing "+counter+" incoming message(s) from subscription "+this.getClass().getEnclosingClass().getName()+".");
         }
 
         handle(dataMemoryMessage);
