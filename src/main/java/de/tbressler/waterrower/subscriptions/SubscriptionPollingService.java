@@ -22,6 +22,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * @author Tobias Bressler
  * @version 1.0
  */
+@Deprecated
 public class SubscriptionPollingService implements ISubscriptionPollingService {
 
     private static final int SEND_INTERVAL = 50; // in ms
