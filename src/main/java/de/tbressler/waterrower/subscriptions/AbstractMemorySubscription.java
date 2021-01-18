@@ -29,8 +29,8 @@ public abstract class AbstractMemorySubscription implements ISubscription {
     /* The memory location. */
     private final MemoryLocation location;
 
-    /* TODO: (Debug-only) Because of missing incoming messages, count the outgoing messages
-        until an incoming message was received. */
+    /* Because of missing incoming messages, count the outgoing messages
+       until an incoming message was received. */
     private AtomicInteger counterLatch = new AtomicInteger(0);
 
 
@@ -74,8 +74,10 @@ public abstract class AbstractMemorySubscription implements ISubscription {
         }
 
         int counter = this.counterLatch.getAndSet(0);
-        if (counter != 0) {
-            Log.warn("Not all messages were answered by the WaterRower! Missing "+counter+" incoming message(s) from subscription "+this.getClass().getEnclosingClass().getName()+".");
+        if (counter > 1) {
+            // If the counter is greater than 1, some polling messages were not answered by
+            // the WaterRower. This seems to happen when the paddle is not moving.
+            Log.warn("Not all messages were answered by the WaterRower! Missing "+(counter - 1)+" incoming message(s)."); // TODO: Change to debug.
         }
 
         handle(dataMemoryMessage);

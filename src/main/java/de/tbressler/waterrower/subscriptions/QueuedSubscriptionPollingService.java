@@ -7,7 +7,6 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -79,7 +78,7 @@ public class QueuedSubscriptionPollingService implements ISubscriptionPollingSer
      * @param connector The connector to the WaterRower, must not be null.
      * @param executorService The executor service for the subscription polling, must not be null.
      */
-    public QueuedSubscriptionPollingService(Duration interval, WaterRowerConnector connector, ScheduledExecutorService executorService) {
+    public QueuedSubscriptionPollingService(WaterRowerConnector connector, ScheduledExecutorService executorService) {
         this.connector = requireNonNull(connector);
         this.connector.addConnectionListener(listener);
         this.executorService = requireNonNull(executorService);

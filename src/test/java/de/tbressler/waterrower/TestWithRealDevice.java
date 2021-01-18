@@ -34,11 +34,9 @@ public class TestWithRealDevice {
             public void onConnected(ModelInformation modelInformation) {
                 Log.info("Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
 
-//                Log.info("Try to start workout...");
-//
+                Log.info("Try to start workout...");
+
 //                Workout workout = new Workout(2000, WorkoutUnit.METERS);
-//                workout.addInterval(60, 2000);
-//                workout.addInterval(60, 2000);
 //                workout.addInterval(60, 2000);
 //                workout.addInterval(60, 2000);
 //

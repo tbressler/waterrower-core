@@ -191,6 +191,7 @@ public class WaterRowerAutoDiscovery {
         for(AvailablePort port : availablePorts) {
 
             String portName = port.getSystemPortName();
+            String portDescription = port.getDescription();
 
             // Ignore /dev/cu ports.
             if (portName.startsWith("/dev/cu."))
@@ -211,7 +212,7 @@ public class WaterRowerAutoDiscovery {
 
             this.availablePorts.push(new SerialDeviceAddress(portName));
 
-            Log.info("Serial port found: " + portName);
+            Log.info("Serial port found: " + portName + " [" + portDescription + "]");
         }
 
         putLastSuccessfulPortFirst();

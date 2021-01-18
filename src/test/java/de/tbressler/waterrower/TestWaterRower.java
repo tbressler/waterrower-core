@@ -11,7 +11,7 @@ import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType;
 import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.subscriptions.ISubscription;
-import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
+import de.tbressler.waterrower.subscriptions.ISubscriptionPollingService;
 import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
 import de.tbressler.waterrower.watchdog.ITimeoutListener;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
@@ -52,7 +52,7 @@ public class TestWaterRower {
     private WaterRowerConnector connector = mock(WaterRowerConnector.class, "connector");
     private PingWatchdog pingWatchdog = mock(PingWatchdog.class, "pingWatchdog");
     private DeviceVerificationWatchdog deviceVerificationWatchdog = mock(DeviceVerificationWatchdog.class, "deviceVerificationWatchdog");
-    private SubscriptionPollingService subscriptionPollingService = mock(SubscriptionPollingService.class, "subscriptionPollingService");
+    private ISubscriptionPollingService subscriptionPollingService = mock(ISubscriptionPollingService.class, "subscriptionPollingService");
     private SerialDeviceAddress address = mock(SerialDeviceAddress.class, "address");
     private IWaterRowerConnectionListener waterRowerConnectionListener = mock(IWaterRowerConnectionListener.class, "waterRowerConnectionListener");
     private ISubscription subscription = mock(ISubscription.class, "subscription");

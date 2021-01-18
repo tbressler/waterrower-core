@@ -20,24 +20,19 @@ public class TestWaterRowerInitializer {
 
     @Before
     public void setUp() throws Exception {
-        initializer = new WaterRowerInitializer(ofSeconds(1), ofSeconds(2), 5);
+        initializer = new WaterRowerInitializer(ofSeconds(2), 5);
     }
 
     // Constructor:
 
     @Test(expected = NullPointerException.class)
-    public void new_withNullPollingInterval_throwsNPE() {
-        new WaterRowerInitializer(null, ofSeconds(1), 5);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void new_withNullTimeoutInterval_throwsNPE() {
-        new WaterRowerInitializer(ofSeconds(1), null, 5);
+        new WaterRowerInitializer(null, 5);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void new_withNullThreadPool0_throwsNPE() {
-        new WaterRowerInitializer(ofSeconds(1), ofSeconds(1), 0);
+        new WaterRowerInitializer(ofSeconds(1), 0);
     }
 
     // Methods:

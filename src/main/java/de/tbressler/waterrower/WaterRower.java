@@ -105,7 +105,7 @@ public class WaterRower {
      * WaterRower monitor.
      */
     public WaterRower() {
-        this(new WaterRowerInitializer(Duration.ofSeconds(1), Duration.ofSeconds(5), 5));
+        this(new WaterRowerInitializer(Duration.ofSeconds(5), 5));
     }
 
     /**

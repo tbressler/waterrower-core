@@ -3,9 +3,8 @@ package de.tbressler.waterrower;
 import de.tbressler.waterrower.io.ChannelInitializer;
 import de.tbressler.waterrower.io.CommunicationService;
 import de.tbressler.waterrower.io.WaterRowerConnector;
-import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.subscriptions.ISubscriptionPollingService;
-import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
+import de.tbressler.waterrower.subscriptions.QueuedSubscriptionPollingService;
 import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
 import io.netty.bootstrap.Bootstrap;
@@ -41,8 +40,6 @@ public class WaterRowerInitializer {
     /**
      * Initializes the dependencies of the WaterRower class based on the given parameters.
      *
-     * @param pollingInterval The polling interval for the subscriptions, must not be null.
-     *                        Recommended = 1 second.
      * @param timeoutInterval The timeout interval for messages, if a message was not received from the WaterRower
      *                        during this interval a timeout error will get fired, must not be null.
      *                        Recommended = 5 second.
@@ -50,24 +47,17 @@ public class WaterRowerInitializer {
      *                       service even if they are idle.
      *                       Recommended = 5.
      */
-    public WaterRowerInitializer(Duration pollingInterval, Duration timeoutInterval, int threadPoolSize) {
-        requireNonNull(pollingInterval); /* TODO Polling interval maybe not needed anymore. */
+    public WaterRowerInitializer(Duration timeoutInterval, int threadPoolSize) {
         requireNonNull(timeoutInterval);
         if (threadPoolSize < 1)
-            throw new IllegalArgumentException("The number of thread must be at least 1!");
-
-        // Log a warning if the polling interval is below 1 second.
-        if (pollingInterval.toMillis() < 1000)
-            Log.warn("Recommendation: The polling interval should be greater or equal to 1 second in order to avoid performance issues.");
+            throw new IllegalArgumentException("The number of threads must be at least 1!");
 
         Bootstrap bootstrap = new Bootstrap();
-
         CommunicationService communicationService = new CommunicationService(bootstrap, new ChannelInitializer());
-
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(threadPoolSize);
 
         connector = new WaterRowerConnector(communicationService);
-        subscriptionPolling = new SubscriptionPollingService(pollingInterval, connector, executorService);
+        subscriptionPolling = new QueuedSubscriptionPollingService(connector, executorService);
         pingWatchdog = new PingWatchdog(timeoutInterval, executorService);
         deviceVerificationWatchdog = new DeviceVerificationWatchdog(timeoutInterval, executorService);
     }

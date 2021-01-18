@@ -36,6 +36,15 @@ public class AvailablePort {
     }
 
     /**
+     * The description of the port.
+     *
+     * @return The description of the port.
+     */
+    public String getDescription() {
+        return serialPort.getPortDescription();
+    }
+
+    /**
      * Returns true if the port is open.
      *
      * @return True if the port is open.
