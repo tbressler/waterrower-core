@@ -51,7 +51,7 @@ public class WaterRowerInitializer {
      *                       Recommended = 5.
      */
     public WaterRowerInitializer(Duration pollingInterval, Duration timeoutInterval, int threadPoolSize) {
-        requireNonNull(pollingInterval);
+        requireNonNull(pollingInterval); /* TODO Polling interval maybe not needed anymore. */
         requireNonNull(timeoutInterval);
         if (threadPoolSize < 1)
             throw new IllegalArgumentException("The number of thread must be at least 1!");

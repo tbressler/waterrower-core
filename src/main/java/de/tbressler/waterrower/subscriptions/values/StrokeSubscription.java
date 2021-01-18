@@ -4,6 +4,7 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.StrokeMessage;
 import de.tbressler.waterrower.model.StrokeType;
 import de.tbressler.waterrower.subscriptions.ISubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -20,6 +21,11 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  * @version 1.0
  */
 public abstract class StrokeSubscription implements ISubscription {
+
+    @Override
+    public Priority getPriority() {
+        return Priority.NO_POLLING;
+    }
 
     @Override
     public final AbstractMessage poll() {

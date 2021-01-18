@@ -5,6 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.DISTANCE_LOW;
+import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
@@ -25,7 +26,7 @@ public abstract class DisplayedDistanceSubscription extends AbstractMemorySubscr
          * Subscription to the displayed distance values.
          */
         public DisplayedDistanceSubscription() {
-            super(DOUBLE_MEMORY, DISTANCE_LOW);
+            super(HIGH, DOUBLE_MEMORY, DISTANCE_LOW);
         }
 
         @Override

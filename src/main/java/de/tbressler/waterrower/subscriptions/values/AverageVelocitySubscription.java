@@ -5,6 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.M_S_LOW_AVERAGE;
+import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
@@ -25,7 +26,7 @@ public abstract class AverageVelocitySubscription extends AbstractMemorySubscrip
      * of the Performance Monitor.
      */
     public AverageVelocitySubscription() {
-        super(DOUBLE_MEMORY, M_S_LOW_AVERAGE);
+        super(HIGH, DOUBLE_MEMORY, M_S_LOW_AVERAGE);
     }
 
 

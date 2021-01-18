@@ -7,6 +7,7 @@ import java.time.Duration;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.WORKOUT_TIMEL;
+import static de.tbressler.waterrower.subscriptions.Priority.LOW;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
@@ -27,7 +28,7 @@ public abstract class TotalWorkoutTimeSubscription extends AbstractMemorySubscri
      * The time is updated by the WaterRower after each workout interval.
      */
     public TotalWorkoutTimeSubscription() {
-        super(DOUBLE_MEMORY, WORKOUT_TIMEL);
+        super(LOW, DOUBLE_MEMORY, WORKOUT_TIMEL);
     }
 
 

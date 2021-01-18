@@ -8,6 +8,7 @@ import java.time.Duration;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.CLOCK_DOWN_DEC;
+import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 import static java.time.Duration.ofSeconds;
 
 /**
@@ -26,7 +27,7 @@ public abstract class ClockCountDownSubscription extends AbstractMemorySubscript
      * Subscription to the distance value.
      */
     public ClockCountDownSubscription() {
-        super(TRIPLE_MEMORY, CLOCK_DOWN_DEC);
+        super(HIGH, TRIPLE_MEMORY, CLOCK_DOWN_DEC);
     }
 
 

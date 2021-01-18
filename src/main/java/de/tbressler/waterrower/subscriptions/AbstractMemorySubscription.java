@@ -20,6 +20,9 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AbstractMemorySubscription implements ISubscription {
 
+    /* The priority. */
+    private final Priority priority;
+
     /* Single, double or triple memory. */
     private final Memory memory;
 
@@ -34,12 +37,19 @@ public abstract class AbstractMemorySubscription implements ISubscription {
     /**
      * An abstract subscription for memory locations.
      *
+     * @param priority The priority, must not be null.
      * @param memory Single, double or triple memory. Must not be null.
      * @param location The memory location, must not be null.
      */
-    public AbstractMemorySubscription(Memory memory, MemoryLocation location) {
+    public AbstractMemorySubscription(Priority priority, Memory memory, MemoryLocation location) {
+        this.priority = requireNonNull(priority);
         this.memory = requireNonNull(memory);
         this.location = requireNonNull(location);
+    }
+
+    @Override
+    public Priority getPriority() {
+        return priority;
     }
 
     @Override
@@ -82,6 +92,7 @@ public abstract class AbstractMemorySubscription implements ISubscription {
     @Override
     public String toString() {
         return toStringHelper(this)
+                .add("priority", priority)
                 .add("memory", memory)
                 .add("location", location)
                 .toString();

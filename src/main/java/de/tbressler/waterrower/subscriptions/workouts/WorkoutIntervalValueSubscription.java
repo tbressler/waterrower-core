@@ -6,6 +6,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.*;
+import static de.tbressler.waterrower.subscriptions.Priority.LOW;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 import static java.util.Objects.requireNonNull;
 
@@ -50,7 +51,7 @@ public abstract class WorkoutIntervalValueSubscription extends AbstractMemorySub
      *                      ROW_INTERVAL.
      */
     public WorkoutIntervalValueSubscription(IntervalType intervalType, int intervalIndex) {
-        super(DOUBLE_MEMORY, getMemoryLocation(intervalType, intervalIndex));
+        super(LOW, DOUBLE_MEMORY, getMemoryLocation(intervalType, intervalIndex));
         this.intervalType = intervalType;
         this.intervalIndex = intervalIndex;
     }

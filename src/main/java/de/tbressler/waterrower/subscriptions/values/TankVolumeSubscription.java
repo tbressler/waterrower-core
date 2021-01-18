@@ -5,6 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.TANK_VOLUME;
+import static de.tbressler.waterrower.subscriptions.Priority.LOW;
 
 /**
  * Subscription for the tank volume value (in liters).
@@ -22,7 +23,7 @@ public abstract class TankVolumeSubscription extends AbstractMemorySubscription 
      * Subscription for the tank volume value.
      */
     public TankVolumeSubscription() {
-        super(SINGLE_MEMORY, TANK_VOLUME);
+        super(LOW, SINGLE_MEMORY, TANK_VOLUME);
     }
 
 

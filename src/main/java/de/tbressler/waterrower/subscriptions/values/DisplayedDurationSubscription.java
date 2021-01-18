@@ -7,6 +7,7 @@ import java.time.Duration;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.DISPLAY_SEC;
+import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 import static java.lang.Integer.parseInt;
 import static java.time.Duration.ofSeconds;
 
@@ -29,7 +30,7 @@ public abstract class DisplayedDurationSubscription extends AbstractMemorySubscr
      * Subscription to the displayed duration value.
      */
     public DisplayedDurationSubscription() {
-        super(TRIPLE_MEMORY, DISPLAY_SEC);
+        super(HIGH, TRIPLE_MEMORY, DISPLAY_SEC);
     }
 
 

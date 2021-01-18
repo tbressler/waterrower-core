@@ -6,6 +6,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.FEXTENDED;
+import static de.tbressler.waterrower.subscriptions.Priority.LOW;
 
 /**
  * Subscription for working and workout control flags (FEXTENDED).
@@ -33,7 +34,7 @@ public abstract class WorkoutFlagsSubscription extends AbstractMemorySubscriptio
      * Subscription for working and workout control flags (FEXTENDED).
      */
     public WorkoutFlagsSubscription() {
-        super(SINGLE_MEMORY, FEXTENDED);
+        super(LOW, SINGLE_MEMORY, FEXTENDED);
     }
 
 

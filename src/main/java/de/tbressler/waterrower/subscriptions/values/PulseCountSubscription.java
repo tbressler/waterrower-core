@@ -3,6 +3,7 @@ package de.tbressler.waterrower.subscriptions.values;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
 import de.tbressler.waterrower.subscriptions.ISubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -19,6 +20,11 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  * @version 1.0
  */
 public abstract class PulseCountSubscription implements ISubscription {
+
+    @Override
+    public Priority getPriority() {
+        return Priority.NO_POLLING;
+    }
 
     @Override
     public final AbstractMessage poll() {

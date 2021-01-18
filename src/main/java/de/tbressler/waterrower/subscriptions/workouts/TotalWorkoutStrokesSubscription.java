@@ -5,6 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.WORKOUT_STROKEL;
+import static de.tbressler.waterrower.subscriptions.Priority.LOW;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
@@ -25,7 +26,7 @@ public abstract class TotalWorkoutStrokesSubscription extends AbstractMemorySubs
      * The stroke value is updated by the WaterRower after each workout interval.
      */
     public TotalWorkoutStrokesSubscription() {
-        super(DOUBLE_MEMORY, WORKOUT_STROKEL);
+        super(LOW, DOUBLE_MEMORY, WORKOUT_STROKEL);
     }
 
 

@@ -5,6 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.M_S_LOW_TOTAL;
+import static de.tbressler.waterrower.subscriptions.Priority.LOW;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
@@ -24,7 +25,7 @@ public abstract class TotalVelocitySubscription extends AbstractMemorySubscripti
      * Subscription for the total velocity.
      */
     public TotalVelocitySubscription() {
-        super(DOUBLE_MEMORY, M_S_LOW_TOTAL);
+        super(LOW, DOUBLE_MEMORY, M_S_LOW_TOTAL);
     }
 
 

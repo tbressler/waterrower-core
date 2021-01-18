@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.*;
+import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -34,13 +35,18 @@ public class TestAbstractMemorySubscription {
     // Constructor:
 
     @Test(expected = NullPointerException.class)
+    public void new_withNullPriority_throwsNPE() {
+        newAbstractMemorySubscription(null, DOUBLE_MEMORY, M_S_PROJH_AVG);
+    }
+
+    @Test(expected = NullPointerException.class)
     public void new_withNullMemory_throwsNPE() {
-        newAbstractMemorySubscription(null, M_S_PROJH_AVG);
+        newAbstractMemorySubscription(HIGH, null, M_S_PROJH_AVG);
     }
 
     @Test(expected = NullPointerException.class)
     public void new_withNullMemoryLocation_throwsNPE() {
-        newAbstractMemorySubscription(SINGLE_MEMORY, null);
+        newAbstractMemorySubscription(HIGH, SINGLE_MEMORY, null);
     }
 
 
@@ -48,7 +54,7 @@ public class TestAbstractMemorySubscription {
 
     @Test
     public void poll_withSingleMemoryAndFEXTENDED_returnsValidMessage() {
-        subscription = newAbstractMemorySubscription(SINGLE_MEMORY, FEXTENDED);
+        subscription = newAbstractMemorySubscription(HIGH, SINGLE_MEMORY, FEXTENDED);
 
         ReadMemoryMessage msg = (ReadMemoryMessage) subscription.poll();
         assertEquals(SINGLE_MEMORY, msg.getMemory());
@@ -57,7 +63,7 @@ public class TestAbstractMemorySubscription {
 
     @Test
     public void poll_withDoubleMemoryAndM_S_PROJH_AVG_returnsValidMessage() {
-        subscription = newAbstractMemorySubscription(DOUBLE_MEMORY, M_S_PROJH_AVG);
+        subscription = newAbstractMemorySubscription(HIGH, DOUBLE_MEMORY, M_S_PROJH_AVG);
 
         ReadMemoryMessage msg = (ReadMemoryMessage) subscription.poll();
         assertEquals(DOUBLE_MEMORY, msg.getMemory());
@@ -69,7 +75,7 @@ public class TestAbstractMemorySubscription {
 
     @Test
     public void handle_withOtherMessageType_doesntNotifyInternalHandler() {
-        subscription = newAbstractMemorySubscription(SINGLE_MEMORY, DISPLAY_MIN);
+        subscription = newAbstractMemorySubscription(HIGH, SINGLE_MEMORY, DISPLAY_MIN);
 
         ErrorMessage msg = new ErrorMessage();
         subscription.handle(msg);
@@ -79,7 +85,7 @@ public class TestAbstractMemorySubscription {
 
     @Test
     public void handle_withValidMessage_notifiesInternalHandler() {
-        subscription = newAbstractMemorySubscription(SINGLE_MEMORY, DISPLAY_MIN);
+        subscription = newAbstractMemorySubscription(HIGH, SINGLE_MEMORY, DISPLAY_MIN);
         when(dataMemoryMessage.getMemory()).thenReturn(SINGLE_MEMORY);
         when(dataMemoryMessage.getLocation()).thenReturn(DISPLAY_MIN.getLocation());
 
@@ -90,7 +96,7 @@ public class TestAbstractMemorySubscription {
 
     @Test
     public void handle_withNonSingledMessage_doesntNotifiesInternalHandler() {
-        subscription = newAbstractMemorySubscription(SINGLE_MEMORY, DISPLAY_MIN);
+        subscription = newAbstractMemorySubscription(HIGH, SINGLE_MEMORY, DISPLAY_MIN);
         when(dataMemoryMessage.getMemory()).thenReturn(DOUBLE_MEMORY);
         when(dataMemoryMessage.getLocation()).thenReturn(DISPLAY_MIN.getLocation());
 
@@ -101,7 +107,7 @@ public class TestAbstractMemorySubscription {
 
     @Test
     public void handle_withOtherLocationMessage_doesntNotifiesInternalHandler() {
-        subscription = newAbstractMemorySubscription(DOUBLE_MEMORY, DISPLAY_MIN);
+        subscription = newAbstractMemorySubscription(HIGH, DOUBLE_MEMORY, DISPLAY_MIN);
         when(dataMemoryMessage.getMemory()).thenReturn(DOUBLE_MEMORY);
         when(dataMemoryMessage.getLocation()).thenReturn(FEXTENDED.getLocation());
 
@@ -113,8 +119,8 @@ public class TestAbstractMemorySubscription {
 
     // Helper methods:
 
-    private AbstractMemorySubscription newAbstractMemorySubscription(Memory memory, MemoryLocation location) {
-        return new AbstractMemorySubscription(memory, location) {
+    private AbstractMemorySubscription newAbstractMemorySubscription(Priority priority, Memory memory, MemoryLocation location) {
+        return new AbstractMemorySubscription(priority, memory, location) {
             @Override
             protected void handle(DataMemoryMessage msg) {
                 internalSubscription.handle(msg);

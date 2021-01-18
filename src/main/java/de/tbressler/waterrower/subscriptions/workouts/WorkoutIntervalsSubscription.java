@@ -5,6 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.WORKOUT_INTER;
+import static de.tbressler.waterrower.subscriptions.Priority.LOW;
 
 /**
  * Subscription for the number of configured workout intervals at the
@@ -24,7 +25,7 @@ public abstract class WorkoutIntervalsSubscription extends AbstractMemorySubscri
      * Performance Monitor.
      */
     public WorkoutIntervalsSubscription() {
-        super(SINGLE_MEMORY, WORKOUT_INTER);
+        super(LOW, SINGLE_MEMORY, WORKOUT_INTER);
     }
 
 

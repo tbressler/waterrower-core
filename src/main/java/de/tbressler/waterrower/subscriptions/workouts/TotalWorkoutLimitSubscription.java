@@ -5,6 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.WORKOUT_LIMIT_L;
+import static de.tbressler.waterrower.subscriptions.Priority.LOW;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
@@ -23,7 +24,7 @@ public abstract class TotalWorkoutLimitSubscription extends AbstractMemorySubscr
      * Subscription for values of the total workout limit.
      */
     public TotalWorkoutLimitSubscription() {
-        super(DOUBLE_MEMORY, WORKOUT_LIMIT_L);
+        super(LOW, DOUBLE_MEMORY, WORKOUT_LIMIT_L);
     }
 
 
