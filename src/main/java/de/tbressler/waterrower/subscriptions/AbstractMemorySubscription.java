@@ -18,7 +18,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-abstract class AbstractMemorySubscription implements ISubscription {
+public abstract class AbstractMemorySubscription implements ISubscription {
 
     /* Single, double or triple memory. */
     private final Memory memory;

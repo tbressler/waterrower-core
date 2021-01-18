@@ -5,9 +5,11 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.WorkoutFlags;
-import de.tbressler.waterrower.subscriptions.*;
-import de.tbressler.waterrower.workout.Workout;
-import de.tbressler.waterrower.workout.WorkoutUnit;
+import de.tbressler.waterrower.subscriptions.values.*;
+import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutDistanceSubscription;
+import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutStrokesSubscription;
+import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutTimeSubscription;
+import de.tbressler.waterrower.subscriptions.workouts.WorkoutFlagsSubscription;
 
 import java.io.IOException;
 import java.time.Duration;

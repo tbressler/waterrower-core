@@ -148,7 +148,7 @@ public class TestCommunicationService {
 
         communicationService.send(message);
 
-        verify(channel, times(1)).write(message);
+        verify(channel, times(1)).writeAndFlush(message);
     }
 
     @Test(expected = IOException.class)

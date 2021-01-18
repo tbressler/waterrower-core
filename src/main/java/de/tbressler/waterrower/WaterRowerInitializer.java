@@ -4,6 +4,7 @@ import de.tbressler.waterrower.io.ChannelInitializer;
 import de.tbressler.waterrower.io.CommunicationService;
 import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.log.Log;
+import de.tbressler.waterrower.subscriptions.ISubscriptionPollingService;
 import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
 import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
@@ -27,7 +28,7 @@ public class WaterRowerInitializer {
     private final WaterRowerConnector connector;
 
     /* Polls and handles subscriptions. */
-    private final SubscriptionPollingService subscriptionPolling;
+    private final ISubscriptionPollingService subscriptionPolling;
 
     /* Watchdog that checks if a ping is received periodically. */
     private final PingWatchdog pingWatchdog;
@@ -105,7 +106,7 @@ public class WaterRowerInitializer {
      *
      * @return The subscription polling service, never null.
      */
-    SubscriptionPollingService getSubscriptionPollingService() {
+    ISubscriptionPollingService getSubscriptionPollingService() {
         return subscriptionPolling;
     }
 

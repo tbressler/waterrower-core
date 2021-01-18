@@ -17,12 +17,12 @@ import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * The subscription polling manager.
+ * The implementation of the subscription polling service.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class SubscriptionPollingService {
+public class SubscriptionPollingService implements ISubscriptionPollingService {
 
     private static final int SEND_INTERVAL = 50; // in ms
 
@@ -79,6 +79,7 @@ public class SubscriptionPollingService {
     /**
      * Start the subscription polling service.
      */
+    @Override
     public void start() {
 
         Log.debug("Start subscription polling service.");
@@ -140,6 +141,7 @@ public class SubscriptionPollingService {
     /**
      * Stop the subscription polling service.
      */
+    @Override
     public void stop() {
 
         Log.debug("Stop subscription polling service.");
@@ -153,6 +155,7 @@ public class SubscriptionPollingService {
      *
      * @param subscription The subscription and callback, must not be null.
      */
+    @Override
     public void subscribe(ISubscription subscription) {
         subscriptions.add(requireNonNull(subscription));
         Log.debug("Added subscription: " + subscription);
@@ -163,6 +166,7 @@ public class SubscriptionPollingService {
      *
      * @param subscription The subscription, must not be null.
      */
+    @Override
     public void unsubscribe(ISubscription subscription) {
         subscriptions.remove(requireNonNull(subscription));
         Log.debug("Removed subscription: " + subscription);
