@@ -2,6 +2,7 @@ package de.tbressler.waterrower.utils;
 
 import com.fazecast.jSerialComm.SerialPort;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -38,10 +39,10 @@ public class AvailablePort {
     /**
      * The description of the port.
      *
-     * @return The description of the port.
+     * @return The description of the port, never null.
      */
     public String getDescription() {
-        return serialPort.getPortDescription();
+        return firstNonNull(serialPort.getPortDescription(), "");
     }
 
     /**

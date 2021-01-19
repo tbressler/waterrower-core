@@ -5,6 +5,8 @@ import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
 import org.junit.Before;
 import org.junit.Test;
 
+import static de.tbressler.waterrower.subscriptions.Priority.NO_POLLING;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
@@ -31,6 +33,14 @@ public class TestPulseCountSubscription {
                 internalSubscription.onPulseCount(pulsesCount);
             }
         };
+    }
+
+
+    // Priority:
+
+    @Test
+    public void getPriority_returnsNO_POLLING() {
+        assertEquals(NO_POLLING, subscription.getPriority());
     }
 
 

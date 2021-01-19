@@ -50,6 +50,15 @@ public class TestAbstractMemorySubscription {
     }
 
 
+    // getPriority:
+
+    @Test
+    public void getPriority_returnsValueFromConstructor() {
+        subscription = newAbstractMemorySubscription(HIGH, SINGLE_MEMORY, FEXTENDED);
+        assertEquals(HIGH, subscription.getPriority());
+    }
+
+
     // Poll:
 
     @Test

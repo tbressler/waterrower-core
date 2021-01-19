@@ -10,6 +10,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
  * Subscription for values of the total workout limit.
+ * TODO The interpretation of this value is unknown at the moment.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -39,7 +40,7 @@ public abstract class TotalWorkoutLimitSubscription extends AbstractMemorySubscr
             return;
         lastValue = value;
 
-        onTotalWorkoutLimitUpdated(value);
+        onLimitUpdated(value);
     }
 
 
@@ -48,6 +49,6 @@ public abstract class TotalWorkoutLimitSubscription extends AbstractMemorySubscr
      *
      * @param limit The new workout limit.
      */
-    abstract protected void onTotalWorkoutLimitUpdated(int limit);
+    abstract protected void onLimitUpdated(int limit);
 
 }

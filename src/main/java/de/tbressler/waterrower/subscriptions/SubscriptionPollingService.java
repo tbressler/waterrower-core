@@ -25,7 +25,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class QueuedSubscriptionPollingService implements ISubscriptionPollingService {
+public class SubscriptionPollingService implements ISubscriptionPollingService {
 
     /* The interval between two poll messages (in ms). */
     private static final int SEND_INTERVAL = 200;
@@ -74,11 +74,10 @@ public class QueuedSubscriptionPollingService implements ISubscriptionPollingSer
     /**
      * The subscription polling manager.
      *
-     * @param interval The polling interval (in milliseconds), must not be null.
      * @param connector The connector to the WaterRower, must not be null.
      * @param executorService The executor service for the subscription polling, must not be null.
      */
-    public QueuedSubscriptionPollingService(WaterRowerConnector connector, ScheduledExecutorService executorService) {
+    public SubscriptionPollingService(WaterRowerConnector connector, ScheduledExecutorService executorService) {
         this.connector = requireNonNull(connector);
         this.connector.addConnectionListener(listener);
         this.executorService = requireNonNull(executorService);
@@ -125,7 +124,8 @@ public class QueuedSubscriptionPollingService implements ISubscriptionPollingSer
 
             boolean addedToQueue = messageQueue.offer(msg);
 
-            // If the message couldn't be added to queue, show a warning.
+            // If the message couldn't be added to queue, show a warning. This is the case
+            // when too many subscriptions are subscribed.
             if (!addedToQueue) {
                 Log.warn("Can not add more messages, the message queue is full! Skipping remaining messages in current cycle (#"+cycle+").");
                 return;

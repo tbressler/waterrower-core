@@ -61,19 +61,24 @@ public class TestWithRealDevice {
 
         WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
 
-        waterRower.subscribe(new ClockCountDownSubscription() {
-
+        waterRower.subscribe(new WattsSubscription() {
             @Override
-            protected void onClockCountDownUpdated(Duration duration) {
-                Log.info("Clock count down = "+duration.toMinutesPart()+":"+duration.toSecondsPart());
+            protected void onWattsUpdated(int watt) {
+                Log.info("Watts = " + watt + " W");
             }
+        });
 
+        waterRower.subscribe(new TotalCaloriesSubscription() {
+            @Override
+            protected void onCaloriesUpdated(int cal) {
+                Log.info("Calories = " + cal + " cal");
+            }
         });
 
         waterRower.subscribe(new DisplayedDistanceSubscription() {
             @Override
             protected void onDistanceUpdated(int distance) {
-                Log.info("Distance = " + distance);
+                Log.info("Distance = " + distance + " m");
             }
         });
 
@@ -87,7 +92,7 @@ public class TestWithRealDevice {
         waterRower.subscribe(new AverageStrokeRateSubscription() {
             @Override
             protected void onStrokeRateUpdated(double strokeRate) {
-                Log.info("Stroke rate = " + strokeRate + "strokes/min");
+                Log.info("Stroke rate = " + strokeRate + " strokes/min");
             }
         });
 
@@ -110,21 +115,21 @@ public class TestWithRealDevice {
 
         waterRower.subscribe(new TotalWorkoutTimeSubscription() {
             @Override
-            protected void onTotalWorkoutTimeUpdated(Duration time) {
+            protected void onTimeUpdated(Duration time) {
                 Log.info("Total workout time = "+time.toMinutesPart()+":"+time.toSecondsPart());
             }
         });
         waterRower.subscribe(new TotalWorkoutStrokesSubscription() {
             @Override
-            protected void onTotalWorkoutStrokesUpdated(int strokes) {
+            protected void onStrokesUpdated(int strokes) {
                 Log.info("Total workout strokes = "+strokes);
             }
         });
 
         waterRower.subscribe(new TotalWorkoutDistanceSubscription() {
             @Override
-            protected void onTotalWorkoutDistanceUpdated(int distance) {
-                Log.info("Total workout distance = " + distance);
+            protected void onDistanceUpdated(int distance) {
+                Log.info("Total workout distance = " + distance + " m");
             }
         });
 

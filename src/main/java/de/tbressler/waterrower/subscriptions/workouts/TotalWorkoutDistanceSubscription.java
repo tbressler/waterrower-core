@@ -41,7 +41,7 @@ public abstract class TotalWorkoutDistanceSubscription extends AbstractMemorySub
             return;
         lastValue = value;
 
-        onTotalWorkoutDistanceUpdated(value);
+        onDistanceUpdated(value);
     }
 
 
@@ -50,6 +50,6 @@ public abstract class TotalWorkoutDistanceSubscription extends AbstractMemorySub
      *
      * @param distance The new workout distance.
      */
-    abstract protected void onTotalWorkoutDistanceUpdated(int distance);
+    abstract protected void onDistanceUpdated(int distance);
 
 }

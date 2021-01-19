@@ -4,7 +4,7 @@ import de.tbressler.waterrower.io.ChannelInitializer;
 import de.tbressler.waterrower.io.CommunicationService;
 import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.subscriptions.ISubscriptionPollingService;
-import de.tbressler.waterrower.subscriptions.QueuedSubscriptionPollingService;
+import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
 import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
 import io.netty.bootstrap.Bootstrap;
@@ -57,7 +57,7 @@ public class WaterRowerInitializer {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(threadPoolSize);
 
         connector = new WaterRowerConnector(communicationService);
-        subscriptionPolling = new QueuedSubscriptionPollingService(connector, executorService);
+        subscriptionPolling = new SubscriptionPollingService(connector, executorService);
         pingWatchdog = new PingWatchdog(timeoutInterval, executorService);
         deviceVerificationWatchdog = new DeviceVerificationWatchdog(timeoutInterval, executorService);
     }

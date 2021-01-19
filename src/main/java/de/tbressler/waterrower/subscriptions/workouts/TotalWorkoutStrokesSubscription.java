@@ -41,7 +41,7 @@ public abstract class TotalWorkoutStrokesSubscription extends AbstractMemorySubs
             return;
         lastValue = value;
 
-        onTotalWorkoutStrokesUpdated(value);
+        onStrokesUpdated(value);
     }
 
 
@@ -50,6 +50,6 @@ public abstract class TotalWorkoutStrokesSubscription extends AbstractMemorySubs
      *
      * @param strokes The new value for strokes.
      */
-    abstract protected void onTotalWorkoutStrokesUpdated(int strokes);
+    abstract protected void onStrokesUpdated(int strokes);
 
 }

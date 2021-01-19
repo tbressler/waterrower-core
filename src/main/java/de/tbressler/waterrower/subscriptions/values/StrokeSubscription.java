@@ -6,8 +6,6 @@ import de.tbressler.waterrower.model.StrokeType;
 import de.tbressler.waterrower.subscriptions.ISubscription;
 import de.tbressler.waterrower.subscriptions.Priority;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
-
 /**
  * A subscription for stroke events.
  *
@@ -49,12 +47,5 @@ public abstract class StrokeSubscription implements ISubscription {
      * @param strokeType The type of stroke (e.g. start or end), never null.
      */
     abstract protected void onStroke(StrokeType strokeType);
-
-
-    @Override
-    public String toString() {
-        return toStringHelper(this)
-                .toString();
-    }
 
 }

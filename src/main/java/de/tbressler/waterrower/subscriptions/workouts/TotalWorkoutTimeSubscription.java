@@ -43,7 +43,7 @@ public abstract class TotalWorkoutTimeSubscription extends AbstractMemorySubscri
             return;
         lastValue = value;
 
-        onTotalWorkoutTimeUpdated(Duration.ofSeconds(value));
+        onTimeUpdated(Duration.ofSeconds(value));
     }
 
 
@@ -52,6 +52,6 @@ public abstract class TotalWorkoutTimeSubscription extends AbstractMemorySubscri
      *
      * @param time The new workout time.
      */
-    abstract protected void onTotalWorkoutTimeUpdated(Duration time);
+    abstract protected void onTimeUpdated(Duration time);
 
 }

@@ -40,7 +40,7 @@ public abstract class WorkoutIntervalsSubscription extends AbstractMemorySubscri
             return;
         lastValue = value;
 
-        onWorkoutIntervalsUpdated(value);
+        onIntervalsUpdated(value);
     }
 
 
@@ -49,6 +49,6 @@ public abstract class WorkoutIntervalsSubscription extends AbstractMemorySubscri
      *
      * @param intervals The new value.
      */
-    abstract protected void onWorkoutIntervalsUpdated(int intervals);
+    abstract protected void onIntervalsUpdated(int intervals);
 
 }

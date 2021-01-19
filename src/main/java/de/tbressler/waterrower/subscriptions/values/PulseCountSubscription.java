@@ -5,8 +5,6 @@ import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
 import de.tbressler.waterrower.subscriptions.ISubscription;
 import de.tbressler.waterrower.subscriptions.Priority;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
-
 /**
  * A subscription for pulse count events.
  *
@@ -49,12 +47,5 @@ public abstract class PulseCountSubscription implements ISubscription {
      * @param pulsesCount The number of pulse’s counted during the last 25mS period.
      */
     abstract protected void onPulseCount(int pulsesCount);
-
-
-    @Override
-    public String toString() {
-        return toStringHelper(this)
-                .toString();
-    }
 
 }

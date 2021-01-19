@@ -3,7 +3,7 @@ package de.tbressler.waterrower.subscriptions;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 
 /**
- * The interface for subscriptions.
+ * A generic interface for subscriptions.
  *
  * @author Tobias Bressler
  * @version 1.0

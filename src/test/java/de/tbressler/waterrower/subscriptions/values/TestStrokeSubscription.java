@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
 import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
+import static de.tbressler.waterrower.subscriptions.Priority.NO_POLLING;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
@@ -34,6 +36,14 @@ public class TestStrokeSubscription {
                 internalSubscription.onStroke(strokeType);
             }
         };
+    }
+
+
+    // Priority:
+
+    @Test
+    public void getPriority_returnsNO_POLLING() {
+        assertEquals(NO_POLLING, subscription.getPriority());
     }
 
 
