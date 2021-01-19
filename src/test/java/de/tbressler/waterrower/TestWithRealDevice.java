@@ -10,6 +10,8 @@ import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutDistanceSubscr
 import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutStrokesSubscription;
 import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutTimeSubscription;
 import de.tbressler.waterrower.subscriptions.workouts.WorkoutFlagsSubscription;
+import de.tbressler.waterrower.workout.Workout;
+import de.tbressler.waterrower.workout.WorkoutUnit;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -32,19 +34,21 @@ public class TestWithRealDevice {
         waterRower.addConnectionListener(new IWaterRowerConnectionListener() {
             @Override
             public void onConnected(ModelInformation modelInformation) {
-                Log.info("Connected to: " + modelInformation.getMonitorType().name() + ", " + modelInformation.getFirmwareVersion());
+                Log.info("Connected to: " + modelInformation.getMonitorType().name() + " (" + modelInformation.getFirmwareVersion() + ")");
 
-                Log.info("Try to start workout...");
+                Log.info("Send workout...");
 
-//                Workout workout = new Workout(2000, WorkoutUnit.METERS);
-//                workout.addInterval(60, 2000);
-//                workout.addInterval(60, 2000);
-//
-//                try {
-//                    waterRower.startWorkout(workout);
-//                } catch (IOException e) {
-//                    Log.error("Couldn't start workout!", e);
-//                }
+                Workout workout = new Workout(2000, WorkoutUnit.METERS);
+                workout.addInterval(60, 2000);
+                workout.addInterval(60, 2000);
+                workout.addInterval(60, 2000);
+                workout.addInterval(60, 2000);
+
+                try {
+                    waterRower.startWorkout(workout);
+                } catch (IOException e) {
+                    Log.error("Couldn't start workout!", e);
+                }
             }
             
             @Override
