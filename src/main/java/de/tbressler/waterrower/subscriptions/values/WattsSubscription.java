@@ -5,7 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.KCAL_WATTS_LOW;
-import static de.tbressler.waterrower.subscriptions.Priority.MEDIUM;
+import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
@@ -24,7 +24,7 @@ public abstract class WattsSubscription extends AbstractMemorySubscription {
      * Subscription for the watt value.
      */
     public WattsSubscription() {
-        super(MEDIUM, DOUBLE_MEMORY, KCAL_WATTS_LOW);
+        super(HIGH, DOUBLE_MEMORY, KCAL_WATTS_LOW);
     }
 
 

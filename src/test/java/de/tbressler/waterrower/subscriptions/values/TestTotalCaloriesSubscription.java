@@ -5,7 +5,7 @@ import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import org.junit.Test;
 
-import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
+import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.TOTAL_KCAL_LOW;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -33,7 +33,7 @@ public class TestTotalCaloriesSubscription {
         subscription = newTotalCaloriesSubscription();
 
         ReadMemoryMessage msg = (ReadMemoryMessage) subscription.poll();
-        assertEquals(DOUBLE_MEMORY, msg.getMemory());
+        assertEquals(TRIPLE_MEMORY, msg.getMemory());
         assertEquals(TOTAL_KCAL_LOW.getLocation(), msg.getLocation());
     }
 
@@ -44,7 +44,7 @@ public class TestTotalCaloriesSubscription {
     public void handle_with0x0102_notifiesOnCaloriesUpdated() {
         subscription = newTotalCaloriesSubscription();
 
-        DataMemoryMessage msg = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0x01, 0x02);
+        DataMemoryMessage msg = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0x00, 0x01, 0x02);
 
         subscription.handle((AbstractMessage) msg);
 
@@ -55,27 +55,27 @@ public class TestTotalCaloriesSubscription {
     public void handle_twoTimesWithSameMessages_onlyNotifiesOneTime() {
         subscription = newTotalCaloriesSubscription();
 
-        DataMemoryMessage msg1 = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0x01, 0x02);
-        DataMemoryMessage msg2 = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0x01, 0x02);
+        DataMemoryMessage msg1 = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0xAE, 0x8B, 0x20);
+        DataMemoryMessage msg2 = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0xAE, 0x8B, 0x20);
 
         subscription.handle((AbstractMessage) msg1);
         subscription.handle((AbstractMessage) msg2);
 
-        verify(internalSubscription, times(1)).onCaloriesUpdated(eq(258));
+        verify(internalSubscription, times(1)).onCaloriesUpdated(eq(11438880));
     }
 
     @Test
     public void handle_twoTimesWithNotSameMessages_notifiesTwoTime() {
         subscription = newTotalCaloriesSubscription();
 
-        DataMemoryMessage msg1 = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0x01, 0x02);
-        DataMemoryMessage msg2 = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0x02, 0x01);
+        DataMemoryMessage msg1 = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0x00, 0x01, 0x02);
+        DataMemoryMessage msg2 = new DataMemoryMessage(TOTAL_KCAL_LOW.getLocation(), 0xFF, 0xFF, 0xFF);
 
         subscription.handle((AbstractMessage) msg1);
         subscription.handle((AbstractMessage) msg2);
 
         verify(internalSubscription, times(1)).onCaloriesUpdated(eq(258));
-        verify(internalSubscription, times(1)).onCaloriesUpdated(eq(513));
+        verify(internalSubscription, times(1)).onCaloriesUpdated(eq(16777215));
     }
 
 
