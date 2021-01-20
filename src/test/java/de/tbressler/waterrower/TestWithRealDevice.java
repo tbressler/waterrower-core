@@ -64,7 +64,7 @@ public class TestWithRealDevice {
 
         });
 
-        WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
+        WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower);
 
         waterRower.subscribe(new WattsSubscription() {
             @Override

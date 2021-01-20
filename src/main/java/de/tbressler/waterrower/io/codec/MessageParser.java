@@ -34,16 +34,16 @@ public class MessageParser {
     /* Add all message interpreters to this parser. */
     private void createAndAddMessageInterpreters() {
         interpreters.add(new InformationRequestMessageInterpreter());
-        interpreters.add(new ConfigureWorkoutMessageInterpreter());
-        interpreters.add(new PingMessageInterpreter());
+        interpreters.add(new PulseCountMessageInterpreter());
         interpreters.add(new StrokeMessageInterpreter());
+        interpreters.add(new PingMessageInterpreter());
         interpreters.add(new AcknowledgeMessageInterpreter());
         interpreters.add(new ErrorMessageInterpreter());
-        interpreters.add(new PulseCountMessageInterpreter());
         interpreters.add(new HardwareTypeMessageInterpreter());
-        interpreters.add(new ExitCommunicationMessageInterpreter());
         interpreters.add(new ResetMessageInterpreter());
+        interpreters.add(new ConfigureWorkoutMessageInterpreter());
         interpreters.add(new StartCommunicationMessageInterpreter());
+        interpreters.add(new ExitCommunicationMessageInterpreter());
     }
 
     /* For testing purposes only! Returns all interpreters. */

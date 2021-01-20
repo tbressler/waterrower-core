@@ -33,7 +33,7 @@ In this case you don't need to connect the WaterRower yourself.
 ```Java
 
 // Initialize and start the auto-discovery:
-WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower, Executors.newSingleThreadScheduledExecutor());
+WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower);
 discovery.start();
 
 ...

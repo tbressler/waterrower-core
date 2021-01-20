@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
@@ -79,6 +80,16 @@ public class WaterRowerAutoDiscovery {
         public void onError(ErrorCode errorCode) {}
 
     };
+
+
+    /**
+     * Handles the auto-discovery of the WaterRower.
+     *
+     * @param waterRower The WaterRower, must not be null.
+     */
+    public WaterRowerAutoDiscovery(WaterRower waterRower) {
+        this(waterRower, Executors.newSingleThreadScheduledExecutor(), new SerialPortWrapper());
+    }
 
 
     /**
