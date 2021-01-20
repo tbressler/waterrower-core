@@ -19,6 +19,11 @@ import static java.util.Objects.requireNonNull;
  */
 public class WaterRowerConnector {
 
+    /* ms to wait after a message was send, in order to give the WaterRower time to
+       process the message. */
+    private final static int MINIMUM_SEND_INTERVAL = 30;
+
+
     /* The serial communication service. */
     private final CommunicationService communicationService;
 
@@ -110,7 +115,7 @@ public class WaterRowerConnector {
         try {
 
             communicationService.send(msg);
-            Thread.sleep(25); // Wait 25ms, this gives the rowing computer time to process.
+            Thread.sleep(MINIMUM_SEND_INTERVAL); // Wait, this gives the rowing computer time to process.
 
         } catch (InterruptedException e) {
             Log.error("Error while sending message!", e);

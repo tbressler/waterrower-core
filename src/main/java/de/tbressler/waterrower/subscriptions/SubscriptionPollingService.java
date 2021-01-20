@@ -7,28 +7,32 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
+import static de.tbressler.waterrower.subscriptions.Priority.*;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * The subscription polling manager.
+ * The implementation of the subscription polling service.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public class SubscriptionPollingService {
+public class SubscriptionPollingService implements ISubscriptionPollingService {
 
-    private static final int SEND_INTERVAL = 50; // in ms
+    /* The interval between two poll messages (in ms). */
+    private static final int SEND_INTERVAL = 200;
 
+    /* The maximum size of messages in the queue. */
+    private static final int MESSAGE_QUEUE_SIZE = 20;
 
-    /* The polling interval. */
-    private final Duration interval;
 
     /* List of subscriptions. */
     private final List<ISubscription> subscriptions = new ArrayList<>();
@@ -36,11 +40,19 @@ public class SubscriptionPollingService {
     /* The connector to the WaterRower. */
     private final WaterRowerConnector connector;
 
+
     /* The executor service for polling of subscriptions. */
     private final ScheduledExecutorService executorService;
 
     /* True if subscription polling is active. */
     private final AtomicBoolean isActive = new AtomicBoolean(false);
+
+
+    /* Counter for the polling cycles. */
+    private final AtomicLong pollCycle = new AtomicLong(0);
+
+    /* Message queue for the current polling cycle. */
+    private final BlockingQueue<AbstractMessage> messageQueue = new ArrayBlockingQueue<>(MESSAGE_QUEUE_SIZE, true);
 
 
     /* Listener for the connection to the WaterRower, which handles the received messages*/
@@ -62,16 +74,12 @@ public class SubscriptionPollingService {
     /**
      * The subscription polling manager.
      *
-     * @param interval The polling interval (in milliseconds), must not be null.
      * @param connector The connector to the WaterRower, must not be null.
      * @param executorService The executor service for the subscription polling, must not be null.
      */
-    public SubscriptionPollingService(Duration interval, WaterRowerConnector connector, ScheduledExecutorService executorService) {
-        this.interval = requireNonNull(interval);
-
+    public SubscriptionPollingService(WaterRowerConnector connector, ScheduledExecutorService executorService) {
         this.connector = requireNonNull(connector);
         this.connector.addConnectionListener(listener);
-
         this.executorService = requireNonNull(executorService);
     }
 
@@ -79,21 +87,21 @@ public class SubscriptionPollingService {
     /**
      * Start the subscription polling service.
      */
+    @Override
     public void start() {
 
         Log.debug("Start subscription polling service.");
 
         isActive.set(true);
-        schedulePollingTask(0); // Execute the polling immediately.
+
+        collectMessagesForNextPollingInterval();
+
+        scheduleSendMessageTask();
     }
 
-    /* Schedule the polling task for execution (with a delay in millis). */
-    private void schedulePollingTask(long delay) {
-        executorService.schedule(this::executePolling, delay, MILLISECONDS);
-    }
 
-    /* Execute the polling task. */
-    private void executePolling() {
+    /* Collect messages from the current subscriptions for polling. */
+    private void collectMessagesForNextPollingInterval() {
 
         // If not active skip execution.
         if (!isActive.get())
@@ -101,45 +109,67 @@ public class SubscriptionPollingService {
 
         Log.debug("Schedule polling for "+subscriptions.size()+" subscription(s)...");
 
-        int delay = SEND_INTERVAL;
+        long cycle = pollCycle.getAndIncrement();
+        boolean pollMedium = cycle % 2 == 0;
+        boolean pollLow = cycle % 5 == 0;
+
         for (ISubscription subscription : subscriptions) {
 
+            if ((subscription.getPriority() == NO_POLLING)
+               || (subscription.getPriority() == MEDIUM && !pollMedium)
+               || (subscription.getPriority() == LOW && !pollLow))
+                continue;
+
             AbstractMessage msg = subscription.poll();
-            scheduleSendMessageTask(msg, delay);
 
-            delay += SEND_INTERVAL;
+            boolean addedToQueue = messageQueue.offer(msg);
+
+            // If the message couldn't be added to queue, show a warning. This is the case
+            // when too many subscriptions are subscribed.
+            if (!addedToQueue) {
+                Log.warn("Can not add more messages, the message queue is full! Skipping remaining messages in current cycle (#"+cycle+").");
+                return;
+            }
         }
-
-        if (isActive.get())
-            schedulePollingTask(interval.toMillis()); // Execute the next polling with the delay.
     }
+
 
     /* Schedule the send task for execution. */
-    private void scheduleSendMessageTask(AbstractMessage msg, int delay) {
-        executorService.schedule(() -> sendMessage(msg), delay, MILLISECONDS);
+    private void scheduleSendMessageTask() {
+        executorService.schedule(() -> sendNextMessage(), SEND_INTERVAL, MILLISECONDS);
     }
 
-    /* Send the given message to the WaterRower. */
-    private void sendMessage(AbstractMessage msg) {
+    /* Send the first message from the message queue to the WaterRower. */
+    private void sendNextMessage() {
+
         try {
 
             // If not active skip execution.
             if (!isActive.get())
                 return;
 
-            Log.debug("Send scheduled polling message >" + msg.toString() + "<");
+            AbstractMessage msg = messageQueue.poll();
 
-            connector.send(msg);
+            if (msg != null) {
+                Log.debug("Send scheduled polling message >" + msg.toString() + "<");
+                connector.send(msg);
+            }
 
         } catch (IOException e) {
-            Log.error("Couldn't send polling message!", e);
+            Log.error("Couldn't send polling message due to an error!", e);
         }
+
+        if (messageQueue.isEmpty())
+            collectMessagesForNextPollingInterval();
+
+        scheduleSendMessageTask();
     }
 
 
     /**
      * Stop the subscription polling service.
      */
+    @Override
     public void stop() {
 
         Log.debug("Stop subscription polling service.");
@@ -153,6 +183,7 @@ public class SubscriptionPollingService {
      *
      * @param subscription The subscription and callback, must not be null.
      */
+    @Override
     public void subscribe(ISubscription subscription) {
         subscriptions.add(requireNonNull(subscription));
         Log.debug("Added subscription: " + subscription);
@@ -163,6 +194,7 @@ public class SubscriptionPollingService {
      *
      * @param subscription The subscription, must not be null.
      */
+    @Override
     public void unsubscribe(ISubscription subscription) {
         subscriptions.remove(requireNonNull(subscription));
         Log.debug("Removed subscription: " + subscription);

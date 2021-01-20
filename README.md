@@ -45,8 +45,6 @@ discovery.stop();
 
 If the connection to the WaterRower gets lost, the auto-discovery tries to reconnect automatically.
 
-Please note, you can use the interface ```IDiscoveryStore``` in order to improve the performance when searching for serial ports.
-
 ### Subscribe to values
 
 The core of the WaterRower library are the subscription. You can subscribe to the different values of the WaterRower Performance Monitor. There is a subscription for every signal available.
@@ -56,8 +54,8 @@ A simple example:
 ```Java
 
 // Subscribe to events:
-waterRower.subscribe(new StrokeSubscription() {
-    public void onStroke(StrokeType strokeType) {
+waterRower.subscribe(new DisplayedDistanceSubscription() {
+    public void onDistanceUpdated(int distance) {
         // ... do your stuff here!
     }
 }
@@ -70,15 +68,17 @@ The following subscriptions are available:
 
 | Subscription | Description |
 |---|---|
-| ```DisplayedDistanceSubscription``` | A subscription for the *displayed distance* (in meters) on the distance window of the Performance Monitor. The value is set to zero if the Performance Monitor was reset. |
-| ```DisplayedDurationSubscription``` | A subscription for the *displayed duration* on the duration window of the Performance Monitor. The duration window displays the time covered (or time to be covered in a duration workout). |
-| ```AverageVelocitySubscription``` | A subscription for the *displayed average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
-| ```StrokeSubscription```* |  A subscription for *stroke events*. The values will be send immediately by the Performance Monitor and will not be polled by the library. |
-| ```StrokeCountSubscription``` | A subscription for the *stroke count* value (number of strokes). |
-| ```AverageStrokeRateSubscription``` | A subscription for the *displayed stroke rate* (strokes/min) of a whole stroke which is displayed in the stroke rate window of the Performance Monitor. |
-| ```TankVolumeSubscription``` | A subscription for the *tank volume* value (in liters). This is the value the user has set in the Performance Monitor (see manual). |
-| ```ClockCountDownSubscription``` | A subscription for *clock count down* values. This value is transmitted if a count down is programmed in the Performance Monitor. |
-| ```TotalDistanceSubscription``` | A subscription for the *total distance* values of the Performance Monitor. The value represents the total distance meter counter - this value will be reset to zero when the Performance Monitor is switched off. |
+| ```DisplayedDistanceSubscription``` | Subscribes to the displayed *distance* (in meters), which is displayed in the distance window of the Performance Monitor. The value is set to zero when the Performance Monitor was reset. |
+| ```DisplayedDurationSubscription``` | Subscribes to the displayed *duration*, which is the time covered (or the time to be covered in a duration workout) and shown in the duration window of the Performance Monitor. |
+| ```AverageVelocitySubscription``` | Subscribes to the displayed *average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
+| ```StrokeSubscription```* |  Subscribes to the *stroke events* (start of stroke or end of stroke). The values will be send immediately by the Performance Monitor and will not be polled by the library. |
+| ```StrokeCountSubscription``` | Subscribes to the *stroke count* value (the number of strokes). |
+| ```AverageStrokeRateSubscription``` | Subscribes to the displayed *stroke rate* (strokes/min) of a whole stroke which is displayed in the stroke rate window of the Performance Monitor. |
+| ```TankVolumeSubscription``` | Subscribes to the *tank volume* (in liters). This is the value the user has set in the Performance Monitor (see manual). |
+| ```ClockCountDownSubscription``` | Subscribes to the *clock count down*. This value is transmitted if a count down is programmed in the Performance Monitor. |
+| ```TotalDistanceSubscription``` | Subscribes to the *total distance*. The value represents the total distance meter counter - this value will be reset to zero when the Performance Monitor is switched off. |
+| ```WattsSubscription``` | Subscribes to the current *power value* (in watt). |
+| ```TotalCaloriesSubscription``` | Subscribes to the *total calories* (in cal) burned. |
 | **Advanced subscriptions:** | | 
 | ```PulseCountSubscription```* | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
 | ```TotalVelocitySubscription``` | A subscription for the *total velocity* (in meters per second). |
@@ -122,15 +122,17 @@ For workouts the following subscriptions are available:
 
 | Subscription | Description |
 |---|---|
-| ```WorkoutFlagsSubscription``` | A subscription to observe active workouts. The returned object has flags for each workout mode. |
-| ```WorkoutIntervalsSubscription``` | Subscription for the number of configured workout intervals at the Performance Monitor. |
-| ```TotalWorkoutTimeSubscription``` | A subscription for values of the total workout total times. The time is updated by the WaterRower after each workout interval. |
-| ```TotalWorkoutDistanceSubscription``` | A subscription for values of the total workout total distance. The distance is updated by the WaterRower after each workout interval. |
-| ```TotalWorkoutStrokesSubscription``` | A subscription for values of the total workout total strokes. The stroke value is updated by the WaterRower after each workout interval. |
-| ```TotalWorkoutLimitSubscription``` | A subscription for values of the total workout total limit. |
-| ```WorkoutIntervalValueSubscription``` | A subscription to observe the values of the configured workout and workout intervals at the Performance Monitor. |
+| ```WorkoutFlagsSubscription``` | Subscribes to the *workout flags*. The returned object has flags for the different workout modes. |
+| ```WorkoutIntervalsSubscription``` | Subscribes to the *number of configured workout intervals* at the Performance Monitor. |
+| ```TotalWorkoutTimeSubscription``` | Subscribes to the *total workout time*. The time is updated by the Performance Monitor after each workout interval and at the end of the workout. |
+| ```TotalWorkoutDistanceSubscription``` | Subscribes to the *total workout distance*. The distance is updated by the Performance Monitor after each workout interval and at the end of the workout. |
+| ```TotalWorkoutStrokesSubscription``` | Subscribes to the *total workout strokes* (number of strokes). The stroke value is updated by the Performance Monitor after each workout interval and at the end of the workout. |
+| ```TotalWorkoutLimitSubscription``` | Subscribes to the *total workout limit*. |
+| ```WorkoutIntervalValueSubscription``` | Subscribes to the values of the *configured workout* and *workout intervals*. |
 
 ### Find available serial ports (manually)
+
+Not recommended, but for the sake of completeness:
 
 ```Java
 

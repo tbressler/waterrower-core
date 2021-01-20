@@ -121,4 +121,18 @@ public class MessageUtils {
         return (high << 8) + low;
     }
 
+    /**
+     * Returns the integer from the two byte values.
+     *
+     * @param up The up byte.
+     * @param high The high byte.
+     * @param low The low byte.
+     * @return The integer as combination of up, high and low bytes.
+     */
+    public static int intFromUpHighAndLow(int up, int high, int low) {
+        if ((up < 0x00) || (up > 0xFF) || (high < 0x00) || (high > 0xFF) || (low < 0x00) || (low > 0xFF))
+            throw new IllegalArgumentException("The low, high or up value is out of range!");
+        return ((up << 16) + (high << 8) + low);
+    }
+
 }

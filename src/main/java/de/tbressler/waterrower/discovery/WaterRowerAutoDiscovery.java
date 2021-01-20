@@ -20,6 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import static java.time.Duration.ofSeconds;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Handles the auto-discovery of the WaterRower.
@@ -39,9 +40,6 @@ public class WaterRowerAutoDiscovery {
 
     /* The WaterRower. */
     private final WaterRower waterRower;
-
-    /* The discovery store. */
-    private final IDiscoveryStore discoveryStore;
 
     /* The executor service. */
     private final ScheduledExecutorService executorService;
@@ -68,12 +66,7 @@ public class WaterRowerAutoDiscovery {
 
         @Override
         public void onConnected(ModelInformation modelInformation) {
-
             Log.debug("WaterRower successfully connected.");
-
-            // Remember the last successful serial port, in order
-            // to speed up connection next time.
-            discoveryStore.setLastSuccessfulSerialPort(currentSerialPort);
         }
 
         @Override
@@ -92,45 +85,23 @@ public class WaterRowerAutoDiscovery {
      * Handles the auto-discovery of the WaterRower.
      *
      * @param waterRower The WaterRower, must not be null.
-     * @param discoveryStore The store for successful serial ports.
-     * @param executorService The executor service, must not be null.
-     */
-    public WaterRowerAutoDiscovery(WaterRower waterRower, IDiscoveryStore discoveryStore, ScheduledExecutorService executorService) {
-        this(waterRower, discoveryStore, executorService, new SerialPortWrapper());
-    }
-
-    /**
-     * Handles the auto-discovery of the WaterRower.
-     *
-     * @param waterRower The WaterRower, must not be null.
      * @param executorService The executor service, must not be null.
      */
     public WaterRowerAutoDiscovery(WaterRower waterRower, ScheduledExecutorService executorService) {
-        this(waterRower, new IDiscoveryStore() {
-
-            @Override
-            public void setLastSuccessfulSerialPort(String serialPort) {}
-
-            @Override
-            public String getLastSuccessfulSerialPort() {
-                return null;
-            }
-
-        }, executorService);
+        this(waterRower, executorService, new SerialPortWrapper());
     }
+
 
     /**
      * Handles the auto-discovery of the WaterRower.
      *
      * @param waterRower The WaterRower, must not be null.
-     * @param discoveryStore The store for successful serial ports.
      * @param executorService The executor service, must not be null.
      * @param serialPortWrapper The serial port wrapper, must not be null.
      */
-    WaterRowerAutoDiscovery(WaterRower waterRower, IDiscoveryStore discoveryStore, ScheduledExecutorService executorService, SerialPortWrapper serialPortWrapper) {
+    WaterRowerAutoDiscovery(WaterRower waterRower, ScheduledExecutorService executorService, SerialPortWrapper serialPortWrapper) {
         this.waterRower = requireNonNull(waterRower);
         this.waterRower.addConnectionListener(connectionListener);
-        this.discoveryStore = requireNonNull(discoveryStore);
         this.executorService = requireNonNull(executorService);
         this.serialPortWrapper = requireNonNull(serialPortWrapper);
     }
@@ -144,6 +115,7 @@ public class WaterRowerAutoDiscovery {
         isActive.set(true);
         executorService.submit(() -> tryNextConnectionAttempt());
     }
+
 
     /* Try the next connection attempt. */
     private void tryNextConnectionAttempt() {
@@ -185,53 +157,28 @@ public class WaterRowerAutoDiscovery {
 
         Log.debug("Updating list of available serial ports.");
 
-        // Get all available serial ports:
-        List<AvailablePort> availablePorts = serialPortWrapper.getAvailablePorts();
-
-        for(AvailablePort port : availablePorts) {
-
+        // Get all available serial ports. Additionally filter out every useless port and
+        // sort promising ports to the top of the list. Thus the performance of the
+        // auto-discovery is increased.
+        List<AvailablePort> availablePorts = serialPortWrapper.getAvailablePorts().stream().filter((port) -> {
             String portName = port.getSystemPortName();
+            return (!portName.startsWith("/dev/cu.") && !portName.startsWith("cu.")
+                    && !portName.contains("Bluetooth") && !portName.contains("BT")
+                    && !port.isOpen());
+        }).sorted((port1, port2) -> {
+            boolean description1 = port1.getDescription().contains("WR-S") || port1.getDescription().contains("Microchip Technology");
+            boolean description2 = port2.getDescription().contains("WR-S") || port2.getDescription().contains("Microchip Technology");
+            if (description1 && description2) return 0;
+            if (description1) return 1;
+            if (description2) return -1;
+            return 0;
+        }).collect(toList());
 
-            // Ignore /dev/cu ports.
-            if (portName.startsWith("/dev/cu."))
-                continue;
-
-            // Ignore cu ports.
-            if (portName.startsWith("cu."))
-                continue;
-
-            // Ignore bluetooth ports on macOS.
-            if (portName.contains("Bluetooth") || portName.contains("BT"))
-                continue;
-
-            if (port.isOpen()) {
-                Log.warn("Skipping serial port '"+portName+"', because it is already open.");
-                continue;
-            }
-
-            this.availablePorts.push(new SerialDeviceAddress(portName));
-
-            Log.info("Serial port found: " + portName);
-        }
-
-        putLastSuccessfulPortFirst();
-    }
-
-    /* Add the last successful serial port, in order to speed up connection. */
-    private void putLastSuccessfulPortFirst() {
-
-        String lastSuccessfulPort = discoveryStore.getLastSuccessfulSerialPort();
-
-        if (lastSuccessfulPort == null)
-            return;
-
-        SerialDeviceAddress lastAddress = new SerialDeviceAddress(lastSuccessfulPort);
-
-        boolean wasRemoved = availablePorts.removeIf(address -> address.value().equals(lastSuccessfulPort));
-        if (!wasRemoved)
-            return;
-
-        availablePorts.push(lastAddress);
+        // Add the new ports to the top of the available port stack (only these ports
+        // are used for auto-discovery).
+        this.availablePorts.addAll(availablePorts.stream()
+                .map((port) -> new SerialDeviceAddress(port.getSystemPortName()))
+                .collect(toList()));
     }
 
 

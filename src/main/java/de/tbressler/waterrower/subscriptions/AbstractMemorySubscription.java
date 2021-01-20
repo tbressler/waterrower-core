@@ -7,6 +7,8 @@ import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.MemoryLocation;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
@@ -16,7 +18,10 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-abstract class AbstractMemorySubscription implements ISubscription {
+public abstract class AbstractMemorySubscription implements ISubscription {
+
+    /* The priority. */
+    private final Priority priority;
 
     /* Single, double or triple memory. */
     private final Memory memory;
@@ -24,20 +29,32 @@ abstract class AbstractMemorySubscription implements ISubscription {
     /* The memory location. */
     private final MemoryLocation location;
 
+    /* Because of missing incoming messages, count the outgoing messages
+       until an incoming message was received. */
+    private AtomicInteger counterLatch = new AtomicInteger(0);
+
 
     /**
      * An abstract subscription for memory locations.
      *
+     * @param priority The priority, must not be null.
      * @param memory Single, double or triple memory. Must not be null.
      * @param location The memory location, must not be null.
      */
-    public AbstractMemorySubscription(Memory memory, MemoryLocation location) {
+    public AbstractMemorySubscription(Priority priority, Memory memory, MemoryLocation location) {
+        this.priority = requireNonNull(priority);
         this.memory = requireNonNull(memory);
         this.location = requireNonNull(location);
     }
 
     @Override
+    public Priority getPriority() {
+        return priority;
+    }
+
+    @Override
     public final AbstractMessage poll() {
+        counterLatch.incrementAndGet();
         return new ReadMemoryMessage(memory, location.getLocation());
     }
 
@@ -56,6 +73,13 @@ abstract class AbstractMemorySubscription implements ISubscription {
             return;
         }
 
+        int counter = this.counterLatch.getAndSet(0);
+        if (counter > 1) {
+            // If the counter is greater than 1, some polling messages were not answered by
+            // the WaterRower. This seems to happen when the paddle is not moving.
+            Log.warn("Not all messages were answered by the WaterRower! Missing "+(counter - 1)+" incoming message(s)."); // TODO: Change to debug.
+        }
+
         handle(dataMemoryMessage);
     }
 
@@ -70,6 +94,7 @@ abstract class AbstractMemorySubscription implements ISubscription {
     @Override
     public String toString() {
         return toStringHelper(this)
+                .add("priority", priority)
                 .add("memory", memory)
                 .add("location", location)
                 .toString();

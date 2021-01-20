@@ -50,25 +50,20 @@ public class TestSubscriptionPollingService {
 
     @Before
     public void setUp() {
-        pollingService = new SubscriptionPollingService(duration, connector, executorService);
+        pollingService = new SubscriptionPollingService(connector, executorService);
         verify(connector).addConnectionListener(listener.capture());
     }
 
     // Constructor:
 
     @Test(expected = NullPointerException.class)
-    public void new_withNullDuration_throwsNPE() {
-        new SubscriptionPollingService(null, connector, executorService);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void new_withNullConnector_throwsNPE() {
-        new SubscriptionPollingService(duration, null, executorService);
+        new SubscriptionPollingService(null, executorService);
     }
 
     @Test(expected = NullPointerException.class)
     public void new_withNullExecutorService_throwsNPE() {
-        new SubscriptionPollingService(duration, connector, null);
+        new SubscriptionPollingService(connector, null);
     }
 
     // Start:
@@ -76,7 +71,7 @@ public class TestSubscriptionPollingService {
     @Test
     public void start_schedulesTask() {
         pollingService.start();
-        verify(executorService, times(1)).schedule(any(Runnable.class), eq((long) 0), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(any(Runnable.class), eq((long) 200), eq(MILLISECONDS));
     }
 
     // Task execution:
@@ -89,15 +84,13 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 200), eq(MILLISECONDS));
 
         pollTask.getValue().run();
 
-        verify(executorService, times(1)).schedule(sendTask1.capture(), eq((long) 50), eq(MILLISECONDS));
-        verify(executorService, times(1)).schedule(sendTask2.capture(), eq((long) 100), eq(MILLISECONDS));
+        verify(executorService, times(2)).schedule(sendTask1.capture(), eq((long) 200), eq(MILLISECONDS));
 
         sendTask1.getValue().run();
-        sendTask2.getValue().run();
 
         verify(connector, times(1)).send(someMessage1);
         verify(connector, times(1)).send(someMessage2);
@@ -111,7 +104,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 200), eq(MILLISECONDS));
 
         pollingService.stop();
 
@@ -129,7 +122,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 200), eq(MILLISECONDS));
 
         pollTask.getValue().run();
     }
@@ -144,7 +137,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 200), eq(MILLISECONDS));
 
         listener.getValue().onMessageReceived(someMessage3);
 
@@ -160,7 +153,7 @@ public class TestSubscriptionPollingService {
 
         pollingService.start();
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 200), eq(MILLISECONDS));
 
         pollingService.stop();
 
@@ -188,18 +181,13 @@ public class TestSubscriptionPollingService {
         subscribe(subscription1, someMessage1);
         subscribe(subscription2, someMessage2);
 
-        pollingService.start();
-
         pollingService.unsubscribe(subscription1);
 
-        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 0), eq(MILLISECONDS));
+        pollingService.start();
+
+        verify(executorService, times(1)).schedule(pollTask.capture(), eq((long) 200), eq(MILLISECONDS));
 
         pollTask.getValue().run();
-
-        verify(executorService, times(1)).schedule(sendTask1.capture(), eq((long) 50), eq(MILLISECONDS));
-        verify(executorService, never()).schedule(any(Runnable.class), eq((long) 100), eq(MILLISECONDS));
-
-        sendTask1.getValue().run();
 
         verify(connector, never()).send(someMessage1);
         verify(connector, times(1)).send(someMessage2);

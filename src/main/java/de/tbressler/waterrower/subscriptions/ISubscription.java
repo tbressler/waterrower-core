@@ -3,12 +3,19 @@ package de.tbressler.waterrower.subscriptions;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 
 /**
- * An interface for subscriptions.
+ * A generic interface for subscriptions.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
 public interface ISubscription {
+
+    /**
+     * Returns the priority of the subscription.
+     *
+     * @return The priority, never null.
+     */
+    Priority getPriority();
 
     /**
      * Returns the message that must be send to the WaterRower S4/S5 monitor to send the current value

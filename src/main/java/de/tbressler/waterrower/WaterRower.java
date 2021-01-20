@@ -13,7 +13,7 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.subscriptions.ISubscription;
-import de.tbressler.waterrower.subscriptions.SubscriptionPollingService;
+import de.tbressler.waterrower.subscriptions.ISubscriptionPollingService;
 import de.tbressler.waterrower.watchdog.DeviceVerificationWatchdog;
 import de.tbressler.waterrower.watchdog.ITimeoutListener;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
@@ -47,7 +47,7 @@ public class WaterRower {
     private final WaterRowerConnector connector;
 
     /* Polls and handles subscriptions. */
-    private final SubscriptionPollingService subscriptionPollingService;
+    private final ISubscriptionPollingService subscriptionPollingService;
 
     /* Watchdog that checks if a ping is received periodically. */
     private final PingWatchdog pingWatchdog;
@@ -105,7 +105,7 @@ public class WaterRower {
      * WaterRower monitor.
      */
     public WaterRower() {
-        this(new WaterRowerInitializer(Duration.ofSeconds(1), Duration.ofSeconds(5), 5));
+        this(new WaterRowerInitializer(Duration.ofSeconds(5), 5));
     }
 
     /**
@@ -141,7 +141,7 @@ public class WaterRower {
     WaterRower(WaterRowerConnector connector,
                   PingWatchdog pingWatchdog,
                   DeviceVerificationWatchdog deviceVerificationWatchdog,
-                  SubscriptionPollingService subscriptionPollingService) {
+                  ISubscriptionPollingService subscriptionPollingService) {
 
         this.connector = requireNonNull(connector);
         this.connector.addConnectionListener(connectionListener);

@@ -14,8 +14,8 @@ public abstract class DebugSubscription extends AbstractMemorySubscription {
     /**
      * For test purposes only!
      */
-    public DebugSubscription(Memory memory, MemoryLocation location) {
-        super(memory, location);
+    public DebugSubscription(Priority priority, Memory memory, MemoryLocation location) {
+        super(priority, memory, location);
     }
 
 }

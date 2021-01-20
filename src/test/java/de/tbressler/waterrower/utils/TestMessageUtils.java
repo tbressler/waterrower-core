@@ -304,4 +304,61 @@ public class TestMessageUtils {
         assertEquals(0xFFFF, intFromHighAndLow(0xFF, 0xFF));
     }
 
+
+    // Int from LOW, HIGH and UP:
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getIntFromUpHighAndLow_withTooLowUpValue_throwsIAE() {
+        intFromUpHighAndLow(-1, 0x00, 0x00);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getIntFromUpHighAndLow_withTooHighUpValue_throwsIAE() {
+        intFromUpHighAndLow(0x100, 0x00, 0x00);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getIntFromUpHighAndLow_withTooLowHighValue_throwsIAE() {
+        intFromUpHighAndLow(0x00, -1, 0x00);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getIntFromUpHighAndLow_withTooHighHighValue_throwsIAE() {
+        intFromUpHighAndLow(0x00, 0x100, 0x00);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getIntFromUpHighAndLow_withTooLowLowValue_throwsIAE() {
+        intFromUpHighAndLow(0x00, 0x00, -1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getIntFromUpHighAndLow_withTooHighLowValue_throwsIAE() {
+        intFromUpHighAndLow(0x00, 0x00, 0x100);
+    }
+
+    @Test
+    public void getIntUpFromUpHighAndLow_with0x00and0x00and0x00_returns0() {
+        assertEquals(0, intFromUpHighAndLow(0x00, 0x00, 0x00));
+    }
+
+    @Test
+    public void getIntFromUpHighAndLow_with0x00and0x00and0x01_returns1() {
+        assertEquals(1, intFromUpHighAndLow(0x00, 0x00, 0x01));
+    }
+
+    @Test
+    public void getIntFromHighAndLow_with0x00and0x43and0x21_returns0x004321() {
+        assertEquals(0x004321, intFromUpHighAndLow(0x00, 0x43, 0x21));
+    }
+
+    @Test
+    public void getIntUpFromHighAndLow_with0xEBand0x95and0xA5_returns0xEB95A5() {
+        assertEquals(15439269, intFromUpHighAndLow(0xEB, 0x95, 0xA5));
+    }
+
+    @Test
+    public void getIntFromUpHighAndLow_with0xFFand0xFFand0xFF_returns0xFFFFFF() {
+        assertEquals(16777215, intFromUpHighAndLow(0xFF, 0xFF, 0xFF));
+    }
 }
