@@ -77,7 +77,7 @@ public abstract class AbstractMemorySubscription implements ISubscription {
         if (counter > 1) {
             // If the counter is greater than 1, some polling messages were not answered by
             // the WaterRower. This seems to happen when the paddle is not moving.
-            Log.warn("Not all messages were answered by the WaterRower! Missing "+(counter - 1)+" incoming message(s)."); // TODO: Change to debug.
+            Log.debug("Not all messages were answered by the WaterRower! Missing "+(counter - 1)+" incoming message(s).");
         }
 
         handle(dataMemoryMessage);
