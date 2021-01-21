@@ -40,7 +40,7 @@ public class WaterRowerInitializer {
     /**
      * Initializes the dependencies of the WaterRower class based on the given parameters.
      *
-     * @param timeoutInterval The timeout interval for messages, if a message was not received from the WaterRower
+     *  @param timeoutInterval The timeout interval for messages, if a message was not received from the WaterRower
      *                        during this interval a timeout error will get fired, must not be null.
      *                        Recommended = 5 second.
      * @param threadPoolSize The number of threads to keep in the pool, which should be used by the WaterRower
@@ -48,6 +48,22 @@ public class WaterRowerInitializer {
      *                       Recommended = 5.
      */
     public WaterRowerInitializer(Duration timeoutInterval, int threadPoolSize) {
+        this(Duration.ofMillis(200), timeoutInterval, threadPoolSize);
+    }
+
+    /**
+     * Initializes the dependencies of the WaterRower class based on the given parameters.
+     *
+     * @param messageInterval The interval between the polling messages.
+     *                        Recommended = 200 ms.
+     * @param timeoutInterval The timeout interval for messages, if a message was not received from the WaterRower
+     *                        during this interval a timeout error will get fired, must not be null.
+     *                        Recommended = 5 second.
+     * @param threadPoolSize The number of threads to keep in the pool, which should be used by the WaterRower
+     *                       service even if they are idle.
+     *                       Recommended = 5.
+     */
+    public WaterRowerInitializer(Duration messageInterval, Duration timeoutInterval, int threadPoolSize) {
         requireNonNull(timeoutInterval);
         if (threadPoolSize < 1)
             throw new IllegalArgumentException("The number of threads must be at least 1!");
@@ -57,7 +73,7 @@ public class WaterRowerInitializer {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(threadPoolSize);
 
         connector = new WaterRowerConnector(communicationService);
-        subscriptionPolling = new SubscriptionPollingService(connector, executorService);
+        subscriptionPolling = new SubscriptionPollingService(connector, executorService, messageInterval);
         pingWatchdog = new PingWatchdog(timeoutInterval, executorService);
         deviceVerificationWatchdog = new DeviceVerificationWatchdog(timeoutInterval, executorService);
     }

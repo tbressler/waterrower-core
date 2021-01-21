@@ -102,8 +102,6 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
 
             // Parse value from single memory location:
 
-            // TODO Do not convert ACH to int here!
-
             int location = achToInt(msg.substring(3, 6));
             int value1 = achToInt(msg.substring(6, 8));
 
@@ -112,8 +110,6 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
         } else if (msg.startsWith("IDD")) {
 
             // Parse values from double memory locations:
-
-            // TODO Do not convert ACH to int here!
 
             int location = achToInt(msg.substring(3, 6));
             int value2 = achToInt(msg.substring(6, 8));
@@ -124,8 +120,6 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
         } else if (msg.startsWith("IDT")) {
 
             // Parse values from triple memory locations:
-
-            // TODO Do not convert ACH to int here!
 
             int location = achToInt(msg.substring(3, 6));
             int value3 = achToInt(msg.substring(6, 8));

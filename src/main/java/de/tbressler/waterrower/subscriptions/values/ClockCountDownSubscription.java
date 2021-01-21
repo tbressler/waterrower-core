@@ -14,6 +14,9 @@ import static java.time.Duration.ofSeconds;
 /**
  * Subscription for clock count down values.
  *
+ * This value is only set if a count down is running. The count down is also transmitted with the
+ * DisplayedDurationSubscription when the count down is active.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */

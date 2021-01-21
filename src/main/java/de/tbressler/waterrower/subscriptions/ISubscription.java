@@ -11,7 +11,8 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 public interface ISubscription {
 
     /**
-     * Returns the priority of the subscription.
+     * Returns the priority of the subscription. The priority determines how
+     * often a subscription will be polled.
      *
      * @return The priority, never null.
      */

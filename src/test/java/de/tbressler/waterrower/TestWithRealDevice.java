@@ -15,7 +15,9 @@ import de.tbressler.waterrower.workout.WorkoutUnit;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.concurrent.Executors;
+
+import static java.time.Duration.ofMillis;
+import static java.time.Duration.ofSeconds;
 
 /**
  * A small application which connects to the WaterRower Performance Monitor and
@@ -30,7 +32,12 @@ public class TestWithRealDevice {
 
     public static void main(String...args) throws IOException {
 
-        WaterRower waterRower = new WaterRower();
+        // Custom setting for the connection to the WaterRower.
+        WaterRowerInitializer initializer = new WaterRowerInitializer(ofMillis(100), ofSeconds(5), 5);
+
+        WaterRower waterRower = new WaterRower(initializer);
+
+        // Add a connection listener, listening for connect, disconnect or errors.
         waterRower.addConnectionListener(new IWaterRowerConnectionListener() {
             @Override
             public void onConnected(ModelInformation modelInformation) {
@@ -39,15 +46,20 @@ public class TestWithRealDevice {
 
                 Log.info("Sending workout to the WaterRower.");
 
-                Workout workout = new Workout(2000, WorkoutUnit.METERS);
-                workout.addInterval(60, 2000);
-                workout.addInterval(60, 2000);
-                workout.addInterval(60, 2000);
+                // When connected send an interval workout to the
+                // Performance Monitor:
 
                 try {
+
+                    Workout workout = new Workout(2000, WorkoutUnit.METERS);
+                    workout.addInterval(60, 2000);
+                    workout.addInterval(60, 2000);
+                    workout.addInterval(60, 2000);
+
                     waterRower.startWorkout(workout);
+
                 } catch (IOException e) {
-                    Log.error("Couldn't start workout!", e);
+                    Log.error("Couldn't send the workout!", e);
                 }
             }
             
@@ -63,7 +75,9 @@ public class TestWithRealDevice {
 
         });
 
-        WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower);
+
+        // Subscribe to the different values and output
+        // the updates to the log:
 
         waterRower.subscribe(new WattsSubscription() {
             @Override
@@ -75,7 +89,7 @@ public class TestWithRealDevice {
         waterRower.subscribe(new TotalCaloriesSubscription() {
             @Override
             protected void onCaloriesUpdated(int cal) {
-                Log.info("Calories = " + cal + " cal");
+                Log.info("Calories = " + (cal / 1000) + " kcal");
             }
         });
 
@@ -103,7 +117,13 @@ public class TestWithRealDevice {
         waterRower.subscribe(new AverageVelocitySubscription() {
             @Override
             protected void onVelocityUpdated(double velocity) {
+
                 Log.info("Velocity = " + velocity + " m/sec");
+
+                Duration split = Duration.ZERO;
+                if (velocity > 0)
+                    split = ofSeconds((long) (500D / velocity));
+                Log.info("Split (500m) = " + split.toMinutesPart() + ":" + split.toSecondsPart());
             }
         });
 
@@ -137,6 +157,9 @@ public class TestWithRealDevice {
             }
         });
 
+
+        // Initialize and start the auto-discovery:
+        WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower);
         discovery.start();
     }
 

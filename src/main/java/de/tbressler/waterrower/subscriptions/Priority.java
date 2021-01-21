@@ -6,6 +6,15 @@ package de.tbressler.waterrower.subscriptions;
  * The priority determines in which interval the subscription is polled by
  * the subscription polling serve.
  *
+ * |------------|-------------------------------------------|
+ * | Priority   | Cycles (1=poll, 0=no poll)                |
+ * |------------|-------------------------------------------|
+ * | HIGH       | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+ * | MEDIUM     | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 |
+ * | LOW        | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
+ * | NO_POLLING | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+ * |------------|-------------------------------------------|
+ *
  * @author Tobias Breßler
  * @version 1.0
  */

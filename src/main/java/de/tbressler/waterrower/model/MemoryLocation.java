@@ -90,6 +90,12 @@ public enum MemoryLocation {
     M_S_PROJL_AVG(0x14d),       // all average for projected distance/duration maths
     M_S_PROJH_AVG(0x14e),       // all average for projected distance/duration maths
 
+
+    /* stored values for the zone maths (these are pre display values): */
+
+    ZONE_HR_VAL(0x1a0),         // heart rate stored value
+    // ...
+
     /* Used to generate the display clock: */
 
     DISPLAY_SEC_DEC(0x1e0),     // seconds 0.0-0.9

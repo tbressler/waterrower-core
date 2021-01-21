@@ -50,7 +50,7 @@ public class TestSubscriptionPollingService {
 
     @Before
     public void setUp() {
-        pollingService = new SubscriptionPollingService(connector, executorService);
+        pollingService = new SubscriptionPollingService(connector, executorService, Duration.ofMillis(200));
         verify(connector).addConnectionListener(listener.capture());
     }
 
@@ -58,12 +58,17 @@ public class TestSubscriptionPollingService {
 
     @Test(expected = NullPointerException.class)
     public void new_withNullConnector_throwsNPE() {
-        new SubscriptionPollingService(null, executorService);
+        new SubscriptionPollingService(null, executorService, Duration.ofMillis(200));
     }
 
     @Test(expected = NullPointerException.class)
     public void new_withNullExecutorService_throwsNPE() {
-        new SubscriptionPollingService(connector, null);
+        new SubscriptionPollingService(connector, null, Duration.ofMillis(200));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void new_withNullInterval_throwsNPE() {
+        new SubscriptionPollingService(connector, executorService, null);
     }
 
     // Start:

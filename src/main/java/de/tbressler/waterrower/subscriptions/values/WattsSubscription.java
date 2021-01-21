@@ -11,6 +11,9 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 /**
  * Subscription for the watt value.
  *
+ * During a stroke pull the value is greater than 0 W (accelerating). In the relax
+ * and the release phase the value is 0 W.
+ *
  * @author Tobias Bressler
  * @version 1.0
  */

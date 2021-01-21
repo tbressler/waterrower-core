@@ -7,6 +7,7 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.log.Log;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -27,12 +28,12 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public class SubscriptionPollingService implements ISubscriptionPollingService {
 
-    /* The interval between two poll messages (in ms). */
-    private static final int SEND_INTERVAL = 200;
-
     /* The maximum size of messages in the queue. */
     private static final int MESSAGE_QUEUE_SIZE = 20;
 
+
+    /* The interval between two poll messages (in ms). */
+    private final long interval;
 
     /* List of subscriptions. */
     private final List<ISubscription> subscriptions = new ArrayList<>();
@@ -76,8 +77,11 @@ public class SubscriptionPollingService implements ISubscriptionPollingService {
      *
      * @param connector The connector to the WaterRower, must not be null.
      * @param executorService The executor service for the subscription polling, must not be null.
+     * @param interval The interval between messages, must not be null.
+     *                 Recommended = 200 ms.
      */
-    public SubscriptionPollingService(WaterRowerConnector connector, ScheduledExecutorService executorService) {
+    public SubscriptionPollingService(WaterRowerConnector connector, ScheduledExecutorService executorService, Duration interval) {
+        this.interval = requireNonNull(interval).toMillis();
         this.connector = requireNonNull(connector);
         this.connector.addConnectionListener(listener);
         this.executorService = requireNonNull(executorService);
@@ -125,9 +129,9 @@ public class SubscriptionPollingService implements ISubscriptionPollingService {
             boolean addedToQueue = messageQueue.offer(msg);
 
             // If the message couldn't be added to queue, show a warning. This is the case
-            // when too many subscriptions are subscribed.
+            // when too many subscriptions are subscribed. The size of the queue = MESSAGE_QUEUE_SIZE.
             if (!addedToQueue) {
-                Log.warn("Can not add more messages, the message queue is full! Skipping remaining messages in current cycle (#"+cycle+").");
+                Log.warn("Can not add more messages, the message queue is full! Skipping remaining messages in current cycle.");
                 return;
             }
         }
@@ -136,7 +140,7 @@ public class SubscriptionPollingService implements ISubscriptionPollingService {
 
     /* Schedule the send task for execution. */
     private void scheduleSendMessageTask() {
-        executorService.schedule(() -> sendNextMessage(), SEND_INTERVAL, MILLISECONDS);
+        executorService.schedule(() -> sendNextMessage(), interval, MILLISECONDS);
     }
 
     /* Send the first message from the message queue to the WaterRower. */
