@@ -3,8 +3,10 @@ package de.tbressler.waterrower.subscriptions.workouts;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
+import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import de.tbressler.waterrower.model.WorkoutFlags;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.FEXTENDED;
@@ -45,12 +47,11 @@ public class TestWorkoutFlagsSubscription {
     public void handle_withFEXTENDEDAnd0x01_notifiesOnWorkoutModeUpdated() {
         subscription = newWorkoutModeSubscription();
 
-        DataMemoryMessage msg = new DataMemoryMessage(FEXTENDED.getLocation(), 0x01);
+        DataMemoryMessage msg = new DataMemoryMessage(FEXTENDED.getLocation(), 0xB6);
 
         subscription.handle((AbstractMessage) msg);
 
-        // TODO Matcher erstellen!
-        verify(internalSubscription, times(1)).onWorkoutFlagsUpdated(any(WorkoutFlags.class));
+        verify(internalSubscription, times(1)).onWorkoutFlagsUpdated(argThat(matchesFlags(false, true, true, false, true, true, false, true)));
     }
 
     @Test
@@ -63,7 +64,7 @@ public class TestWorkoutFlagsSubscription {
         subscription.handle((AbstractMessage) msg1);
         subscription.handle((AbstractMessage) msg2);
 
-        verify(internalSubscription, times(1)).onWorkoutFlagsUpdated(any(WorkoutFlags.class));
+        verify(internalSubscription, times(1)).onWorkoutFlagsUpdated(argThat(matchesFlags(true, false, false, false, false, false, false, false)));
     }
 
     @Test
@@ -71,12 +72,20 @@ public class TestWorkoutFlagsSubscription {
         subscription = newWorkoutModeSubscription();
 
         DataMemoryMessage msg1 = new DataMemoryMessage(FEXTENDED.getLocation(), 0x01);
-        DataMemoryMessage msg2 = new DataMemoryMessage(FEXTENDED.getLocation(), 0x10);
+        DataMemoryMessage msg2 = new DataMemoryMessage(FEXTENDED.getLocation(), 0x80);
 
         subscription.handle((AbstractMessage) msg1);
         subscription.handle((AbstractMessage) msg2);
 
-        verify(internalSubscription, times(2)).onWorkoutFlagsUpdated(any(WorkoutFlags.class));
+        verify(internalSubscription, times(1)).onWorkoutFlagsUpdated(argThat(matchesFlags(true, false, false, false, false, false, false, false)));
+        verify(internalSubscription, times(1)).onWorkoutFlagsUpdated(argThat(matchesFlags(false, false, false, false, false, false, false, true)));
+    }
+
+    @Test
+    public void handle_withOtherMessage_doesntNotifyOnClockCountDownUpdated() {
+        subscription = newWorkoutModeSubscription();
+        subscription.handle(new StartCommunicationMessage());
+        verify(internalSubscription, never()).onWorkoutFlagsUpdated(any(WorkoutFlags.class));
     }
 
 
@@ -88,6 +97,26 @@ public class TestWorkoutFlagsSubscription {
             @Override
             protected void onWorkoutFlagsUpdated(WorkoutFlags flags) {
                 internalSubscription.onWorkoutFlagsUpdated(flags);
+            }
+        };
+    }
+
+
+    private ArgumentMatcher<WorkoutFlags> matchesFlags(boolean heartRateZone, boolean intensityZone, boolean strokeRateZone, boolean prognosticsActive, boolean workoutDistanceMode, boolean workoutDurationMode, boolean workoutDistanceIntervalMode, boolean workoutDurationIntervalMode) {
+        return new ArgumentMatcher<>() {
+            @Override
+            public boolean matches(Object argument) {
+                if (!(argument instanceof WorkoutFlags))
+                    return false;
+                WorkoutFlags flags = (WorkoutFlags) argument;
+                return (flags.isWorkingInHeartRateZone() == heartRateZone)
+                        && (flags.isWorkingInIntensityZone() == intensityZone)
+                        && (flags.isWorkingInStrokeRateZone() == strokeRateZone)
+                        && (flags.isPrognosticsActive() == prognosticsActive)
+                        && (flags.isWorkoutDistanceMode() == workoutDistanceMode)
+                        && (flags.isWorkoutDurationMode() == workoutDurationMode)
+                        && (flags.isWorkoutDistanceIntervalMode() == workoutDistanceIntervalMode)
+                        && (flags.isWorkoutDurationIntervalMode() == workoutDurationIntervalMode);
             }
         };
     }
