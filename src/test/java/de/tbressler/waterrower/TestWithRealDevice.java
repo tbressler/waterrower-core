@@ -55,6 +55,7 @@ public class TestWithRealDevice {
                     workout.addInterval(60, 2000);
                     workout.addInterval(60, 2000);
                     workout.addInterval(60, 2000);
+                    workout.addInterval(60, 1000);
 
                     waterRower.startWorkout(workout);
 
