@@ -13,6 +13,9 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestDataMemoryMessage {
 
+
+    // Constructors:
+
     @Test(expected = IllegalArgumentException.class)
     public void new_withLocationLowerThan0_throwsIAE() {
         new DataMemoryMessage(-1, 1);
@@ -33,6 +36,28 @@ public class TestDataMemoryMessage {
         new DataMemoryMessage(1, 256);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void new_withValue2LowerThan0_throwsIAE() {
+        new DataMemoryMessage(1, -1, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void new_withValue2GreaterThan255_throwsIAE() {
+        new DataMemoryMessage(1, 256, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void new_withValue3LowerThan0_throwsIAE() {
+        new DataMemoryMessage(1, -1, 0, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void new_withValue3GreaterThan255_throwsIAE() {
+        new DataMemoryMessage(1, 256, 0, 0);
+    }
+
+
+    // getLocations:
 
     @Test
     public void getLocation_whenConstructedWith100_returns100() {
@@ -53,6 +78,8 @@ public class TestDataMemoryMessage {
     }
 
 
+    // getValue1:
+
     @Test
     public void getValue1_whenConstructedWith100_returns100() {
         DataMemoryMessage msg = new DataMemoryMessage(1, 100);
@@ -71,9 +98,68 @@ public class TestDataMemoryMessage {
         assertEquals(255, msg.getValue1());
     }
 
+    @Test
+    public void getValue1AsACH_whenConstructedWith255_returns91() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 145);
+        assertEquals("91", msg.getValue1AsACH());
+    }
 
-    // TODO Test other constructors!
 
+    // getValue2:
+
+    @Test
+    public void getValue2_whenConstructedWith100_returns100() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 200, 100);
+        assertEquals(200, msg.getValue2());
+    }
+
+    @Test
+    public void getValue2_whenConstructedWith0_returns0() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 50, 0);
+        assertEquals(50, msg.getValue2());
+    }
+
+    @Test
+    public void getValue2_whenConstructedWith255_returns255() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 255, 1);
+        assertEquals(255, msg.getValue2());
+    }
+
+    @Test
+    public void getValue2AsACH_whenConstructedWith255_returns91() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 145, 0);
+        assertEquals("91", msg.getValue2AsACH());
+    }
+
+
+    // getValue3:
+
+    @Test
+    public void getValue3_whenConstructedWith50_returns50() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 50, 0, 0);
+        assertEquals(50, msg.getValue3());
+    }
+
+    @Test
+    public void getValue3_whenConstructedWith100_returns100() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 100, 0, 0);
+        assertEquals(100, msg.getValue3());
+    }
+
+    @Test
+    public void getValue3_whenConstructedWith255_returns255() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 255, 0, 0);
+        assertEquals(255, msg.getValue3());
+    }
+
+    @Test
+    public void getValue3AsACH_whenConstructedWith255_returns91() {
+        DataMemoryMessage msg = new DataMemoryMessage(1, 145, 0, 0);
+        assertEquals("91", msg.getValue3AsACH());
+    }
+
+
+    // toString:
 
     @Test
     public void toString_returnsObjectInfo() {
