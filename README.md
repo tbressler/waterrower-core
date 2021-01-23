@@ -47,7 +47,7 @@ If the connection to the WaterRower gets lost, the auto-discovery tries to recon
 
 ### Subscribe to values
 
-The core of the WaterRower library are the subscription. You can subscribe to the different values of the WaterRower Performance Monitor. There is a subscription for every signal available.
+You can subscribe to the different values of the WaterRower Performance Monitor. There is a subscription for every signal available.
 
 A simple example:
 
