@@ -5,6 +5,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.TOTAL_KCAL_LOW;
+import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 import static de.tbressler.waterrower.subscriptions.Priority.MEDIUM;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromUpHighAndLow;
 
@@ -24,7 +25,7 @@ public abstract class TotalCaloriesSubscription extends AbstractMemorySubscripti
      * Subscription for the value of the total calories.
      */
     public TotalCaloriesSubscription() {
-        super(MEDIUM, TRIPLE_MEMORY, TOTAL_KCAL_LOW);
+        super(HIGH, TRIPLE_MEMORY, TOTAL_KCAL_LOW);
     }
 
 

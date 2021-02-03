@@ -4,6 +4,14 @@ import static de.tbressler.waterrower.utils.MessageUtils.getBooleanFromByte;
 
 /**
  * Working and workout control flags.
+ * 0 = fzone_hr: working in heartrate zone
+ * 1 = fzone_int: working in intensity zone
+ * 2 = fzone_sr: working in strokerate zone
+ * 3 = fprognostics: prognostics active.
+ * 4 = fworkout_dis: workout distance mode
+ * 5 = fworkout_dur: workout duration mode
+ * 6 = fworkout_dis_i: workout distance interval mode
+ * 7 = fworkout_dur_i: workout duration interval mode
  *
  * @author Tobias Bressler
  * @version 1.0

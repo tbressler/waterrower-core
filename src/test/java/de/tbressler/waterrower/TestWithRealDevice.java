@@ -5,6 +5,8 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.WorkoutFlags;
+import de.tbressler.waterrower.model.MiscFlags;
+import de.tbressler.waterrower.subscriptions.flags.MiscFlagsSubscription;
 import de.tbressler.waterrower.subscriptions.values.*;
 import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutDistanceSubscription;
 import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutStrokesSubscription;
@@ -33,7 +35,7 @@ public class TestWithRealDevice {
     public static void main(String...args) throws IOException {
 
         // Custom setting for the connection to the WaterRower.
-        WaterRowerInitializer initializer = new WaterRowerInitializer(ofMillis(100), ofSeconds(5), 5);
+        WaterRowerInitializer initializer = new WaterRowerInitializer(ofMillis(50), ofSeconds(5), 5);
 
         WaterRower waterRower = new WaterRower(initializer);
 
@@ -51,7 +53,7 @@ public class TestWithRealDevice {
 
                 try {
 
-                    Workout workout = new Workout(2000, WorkoutUnit.METERS);
+                    Workout workout = new Workout(1000, WorkoutUnit.METERS);
                     workout.addInterval(60, 2000);
                     workout.addInterval(60, 2000);
                     workout.addInterval(60, 2000);
@@ -135,6 +137,21 @@ public class TestWithRealDevice {
                 Log.info("Workout distance interval mode = " + flags.isWorkoutDistanceIntervalMode());
                 Log.info("Workout duration mode = " + flags.isWorkoutDurationMode());
                 Log.info("Workout duration interval mode = " + flags.isWorkoutDurationIntervalMode());
+            }
+        });
+
+        waterRower.subscribe(new MiscFlagsSubscription() {
+            @Override
+            protected void onMiscFlagsUpdated(MiscFlags flags) {
+                Log.info("Zone WORK = " + flags.isZoneWork());
+                Log.info("Zone REST = " + flags.isZoneRest());
+                Log.info("Misc LOWBAT = " + flags.isMiscLowBat());
+                Log.info("Misc PC = " + flags.isMiscPC());
+                Log.info("Misc LINE = " + flags.isMiscLine());
+                Log.info("Misc CD = " + flags.isMiscMmcCd());
+                Log.info("Misc UP = " + flags.isMiscMmcUp());
+                Log.info("Misc DN = " + flags.isMiscMmcDn());
+
             }
         });
 

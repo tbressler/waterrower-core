@@ -27,6 +27,16 @@ public enum MemoryLocation {
                                 //   6 = fworkout_dis_i fextended; workout distance interval mode
                                 //   7 = fworkout_dur_i fextended; workout duration interval mode
 
+    FMISC_FLAGS(0x049),         // zone words and misc windows flags
+                                //   0 = fzone_fg_work fmisc_flags; set when to turn on or if flashed is clear and flash is set
+                                //   1 = fzone_fg_rest fmisc_flags; set when to turn on or if flashed is clear and flash is set
+                                //   2 = fmisc_fg_lowbat fmisc_flags; set when to turn on or if flashed is clear and flash is set
+                                //   3 = fmisc_fg_pc fmisc_flags; set when to turn on or if flashed is clear and flash is set
+                                //   4 = fmisc_fg_line fmisc_flags; set when to turn on or if flashed is clear and flash is set
+                                //   5 = fmisc_fg_mmc_cd fmisc_flags; set when to turn on or if flashed is clear and flash is set
+                                //   6 = fmisc_fg_mmc_up fmisc_flags; set when to turn on or if flashed is clear and flash is set
+                                //   7 = fmisc_fg_mmc_dn fmisc_flags; set when to turn on or if flashed is clear and flash is set
+
     /*
      * Variables:
      *
