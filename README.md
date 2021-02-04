@@ -157,7 +157,7 @@ for (SerialPort port : commPorts) {
 
 The following devices were tested:
 
-- WaterRower S4 Performance Monitor (Firmware 2.1)
+- WaterRower S4 Performance Monitor (Firmware 2.10)
 
 If you have successfully tested more devices please feel free to add them to issue [#8](https://github.com/tbressler/waterrower-core/issues/8).
 
