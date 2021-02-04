@@ -6,8 +6,7 @@ import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.FEXTENDED;
-import static de.tbressler.waterrower.subscriptions.Priority.LOW;
-import static de.tbressler.waterrower.subscriptions.Priority.MEDIUM;
+import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 
 /**
  * Subscription for working and workout control flags (FEXTENDED).
@@ -16,7 +15,7 @@ import static de.tbressler.waterrower.subscriptions.Priority.MEDIUM;
  * 0 = fzone_hr: working in heartrate zone
  * 1 = fzone_int: working in intensity zone
  * 2 = fzone_sr: working in strokerate zone
- * 3 = fprognostics: prognostics active.
+ * 3 = fprognostics: prognostics active
  * 4 = fworkout_dis: workout distance mode
  * 5 = fworkout_dur: workout duration mode
  * 6 = fworkout_dis_i: workout distance interval mode
@@ -35,7 +34,7 @@ public abstract class WorkoutFlagsSubscription extends AbstractMemorySubscriptio
      * Subscription for working and workout control flags (FEXTENDED).
      */
     public WorkoutFlagsSubscription() {
-        super(MEDIUM, SINGLE_MEMORY, FEXTENDED);
+        super(HIGH, SINGLE_MEMORY, FEXTENDED);
     }
 
 

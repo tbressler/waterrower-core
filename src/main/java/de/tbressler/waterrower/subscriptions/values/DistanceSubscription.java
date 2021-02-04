@@ -5,29 +5,26 @@ import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
-import static de.tbressler.waterrower.model.MemoryLocation.TOTAL_DIS_DEC;
+import static de.tbressler.waterrower.model.MemoryLocation.MS_DISTANCE_DEC;
 import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 
 /**
- * Subscription for the total distance values of the Performance Monitor.
- *
- * The value represents the total distance meter counter - this value will be reset to zero when the Performance
- * Monitor is switched off.
+ * Subscription for the distance.
  *
  * @author Tobias Bressler
  * @version 1.0
  */
-public abstract class TotalDistanceSubscription extends AbstractMemorySubscription {
+public abstract class DistanceSubscription extends AbstractMemorySubscription {
 
         /* The last distance received. */
         private int lastDistance = -1;
 
         /**
-         * Subscription to the displayed distance values.
+         * Subscription to the distance values.
          */
-        public TotalDistanceSubscription() {
-            super(HIGH, TRIPLE_MEMORY, TOTAL_DIS_DEC);
+        public DistanceSubscription() {
+            super(HIGH, TRIPLE_MEMORY, MS_DISTANCE_DEC);
         }
 
         @Override
@@ -37,7 +34,7 @@ public abstract class TotalDistanceSubscription extends AbstractMemorySubscripti
             int decimal = msg.getValue1();
 
             // TODO Debug-only:
-            Log.info("---------------------------------> Total distance: " + distance + "." + decimal + "m [" + distance + "." + msg.getValue1AsACH() + "m]");
+            Log.info("---------------------------------> Distance: " + distance + "." + decimal + "m [" + distance + "." + msg.getValue1AsACH() + "m]");
 
             // If the received distance is the same as before,
             // don't send an update.
@@ -50,7 +47,7 @@ public abstract class TotalDistanceSubscription extends AbstractMemorySubscripti
         }
 
         /**
-         * Is called if the value for the displayed distance was updated.
+         * Is called if the value for the distance was updated.
          *
          * @param distance The new distance (in meter).
          */

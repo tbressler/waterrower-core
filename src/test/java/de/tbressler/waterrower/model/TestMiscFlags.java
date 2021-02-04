@@ -50,24 +50,24 @@ public class TestMiscFlags {
 
 
     @Test
-    public void isMiscLowBat_with0x04_returnsTrue() {
-        assertTrue(new MiscFlags(0x04).isMiscLowBat());
+    public void isBatteryLow_with0x04_returnsTrue() {
+        assertTrue(new MiscFlags(0x04).isBatteryLow());
     }
 
     @Test
-    public void isMiscLowBat_with0x00_returnsFalse() {
-        assertFalse(new MiscFlags(0x00).isMiscLowBat());
+    public void isBatteryLow_with0x00_returnsFalse() {
+        assertFalse(new MiscFlags(0x00).isBatteryLow());
     }
 
 
     @Test
-    public void isMiscPC_with0x08_returnsTrue() {
-        assertTrue(new MiscFlags(0x08).isMiscPC());
+    public void isPCConnected_with0x08_returnsTrue() {
+        assertTrue(new MiscFlags(0x08).isPCConnected());
     }
 
     @Test
-    public void isMiscPC_with0x00_returnsFalse() {
-        assertFalse(new MiscFlags(0x00).isMiscPC());
+    public void isPCConnected_with0x00_returnsFalse() {
+        assertFalse(new MiscFlags(0x00).isPCConnected());
     }
 
 

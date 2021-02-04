@@ -3,7 +3,7 @@ package de.tbressler.waterrower.subscriptions.values;
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import org.junit.Test;
 
-import static de.tbressler.waterrower.model.MemoryLocation.TOTAL_DIS_LOW;
+import static de.tbressler.waterrower.model.MemoryLocation.TOTAL_DIS_DEC;
 import static org.mockito.Mockito.*;
 
 /**
@@ -24,32 +24,32 @@ public class TestTotalDistanceSubscription {
     // Handle:
 
     @Test
-    public void handle_withMessage0x0DF0_notifiesOnDistanceUpdatedUpdate() {
+    public void handle_withMessage0x0DF000_notifiesOnDistanceUpdatedUpdate() {
         subscription = newTotalDistanceSubscription();
-        subscription.handle(new DataMemoryMessage(TOTAL_DIS_LOW.getLocation(), 0x0D, 0xF0));
+        subscription.handle(new DataMemoryMessage(TOTAL_DIS_DEC.getLocation(), 0x0D, 0xF0, 0x00)); // TODO Test decimals as well.
         verify(internalSubscription, times(1)).onDistanceUpdated(3568);
     }
 
     @Test
     public void handle_withMessage0x312D_notifiesOnDistanceUpdatedUpdate() {
         subscription = newTotalDistanceSubscription();
-        subscription.handle(new DataMemoryMessage(TOTAL_DIS_LOW.getLocation(), 0x31, 0x2D));
+        subscription.handle(new DataMemoryMessage(TOTAL_DIS_DEC.getLocation(), 0x31, 0x2D, 0x00)); // TODO Test decimals as well.
         verify(internalSubscription, times(1)).onDistanceUpdated(12589);
     }
 
     @Test
     public void handle_withMessage0x0DF0and0x0DF0_notifiesOnDistanceUpdatedOnlyOnce() {
         subscription = newTotalDistanceSubscription();
-        subscription.handle(new DataMemoryMessage(TOTAL_DIS_LOW.getLocation(), 0x0D, 0xF0));
-        subscription.handle(new DataMemoryMessage(TOTAL_DIS_LOW.getLocation(), 0x0D, 0xF0));
+        subscription.handle(new DataMemoryMessage(TOTAL_DIS_DEC.getLocation(), 0x0D, 0xF0, 0x00)); // TODO Test decimals as well.
+        subscription.handle(new DataMemoryMessage(TOTAL_DIS_DEC.getLocation(), 0x0D, 0xF0, 0x00)); // TODO Test decimals as well.
         verify(internalSubscription, times(1)).onDistanceUpdated(3568);
     }
 
     @Test
     public void handle_withMessage0x0DF0and0x312D_notifiesOnDistanceUpdatedUpdateTwoTimes() {
         subscription = newTotalDistanceSubscription();
-        subscription.handle(new DataMemoryMessage(TOTAL_DIS_LOW.getLocation(), 0x0D, 0xF0));
-        subscription.handle(new DataMemoryMessage(TOTAL_DIS_LOW.getLocation(), 0x31, 0x2D));
+        subscription.handle(new DataMemoryMessage(TOTAL_DIS_DEC.getLocation(), 0x0D, 0xF0, 0x00)); // TODO Test decimals as well.
+        subscription.handle(new DataMemoryMessage(TOTAL_DIS_DEC.getLocation(), 0x31, 0x2D, 0x00)); // TODO Test decimals as well.
         verify(internalSubscription, times(1)).onDistanceUpdated(3568);
         verify(internalSubscription, times(1)).onDistanceUpdated(12589);
     }

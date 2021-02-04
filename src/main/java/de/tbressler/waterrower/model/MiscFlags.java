@@ -4,10 +4,10 @@ import static de.tbressler.waterrower.utils.MessageUtils.getBooleanFromByte;
 
 /**
  * Zone words and misc windows flags.
- *  0 = fzone_fg_work
- *  1 = fzone_fg_rest
- *  2 = fmisc_fg_lowbat
- *  3 = fmisc_fg_pc
+ *  0 = fzone_fg_work: a workout row interval is active
+ *  1 = fzone_fg_rest: a workout rest interval is active
+ *  2 = fmisc_fg_lowbat: set if battery of the Performance Monitor is low
+ *  3 = fmisc_fg_pc: a PC is connected (this is of course always the case)
  *  4 = fmisc_fg_line
  *  5 = fmisc_fg_mmc_cd
  *  6 = fmisc_fg_mmc_up
@@ -35,31 +35,41 @@ public class MiscFlags {
 
 
     /**
+     * True if a workout row interval or no workout is active.
      *
-     *
-     * @return
+     * @return True if a workout row interval or no workout is active.
      */
     public boolean isZoneWork() {
         return getBooleanFromByte(value, 0);
     }
 
     /**
+     * True if a workout rest interval is active.
      *
-     *
-     * @return
+     * @return True if a workout rest interval is active.
      */
     public boolean isZoneRest() {
         return getBooleanFromByte(value, 1);
     }
 
-
-    public boolean isMiscLowBat() {
+    /**
+     * True if the battery of the Performance Monitor is low.
+     *
+     * @return True if the battery is low.
+     */
+    public boolean isBatteryLow() {
         return getBooleanFromByte(value, 2);
     }
 
-    public boolean isMiscPC() {
+    /**
+     * True if a PC is connected.
+     *
+     * @return True if a PC is connected.
+     */
+    public boolean isPCConnected() {
         return getBooleanFromByte(value, 3);
     }
+
 
     public boolean isMiscLine() {
         return getBooleanFromByte(value, 4);

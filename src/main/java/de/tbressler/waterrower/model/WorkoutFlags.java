@@ -7,7 +7,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.getBooleanFromByte;
  * 0 = fzone_hr: working in heartrate zone
  * 1 = fzone_int: working in intensity zone
  * 2 = fzone_sr: working in strokerate zone
- * 3 = fprognostics: prognostics active.
+ * 3 = fprognostics: prognostics active
  * 4 = fworkout_dis: workout distance mode
  * 5 = fworkout_dur: workout duration mode
  * 6 = fworkout_dis_i: workout distance interval mode

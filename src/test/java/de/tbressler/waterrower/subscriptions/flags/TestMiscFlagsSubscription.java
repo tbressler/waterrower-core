@@ -111,8 +111,8 @@ public class TestMiscFlagsSubscription {
                 MiscFlags flags = (MiscFlags) argument;
                 return (flags.isZoneWork() == zoneWork)
                         && (flags.isZoneRest() == zoneRest)
-                        && (flags.isMiscLowBat() == isLowBat)
-                        && (flags.isMiscPC() == isPC)
+                        && (flags.isBatteryLow() == isLowBat)
+                        && (flags.isPCConnected() == isPC)
                         && (flags.isMiscLine() == isLine)
                         && (flags.isMiscMmcCd() == isMmcCd)
                         && (flags.isMiscMmcUp() == isMmcUp)

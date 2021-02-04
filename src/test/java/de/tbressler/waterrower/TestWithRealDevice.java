@@ -3,9 +3,9 @@ package de.tbressler.waterrower;
 import de.tbressler.waterrower.discovery.WaterRowerAutoDiscovery;
 import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.model.ErrorCode;
+import de.tbressler.waterrower.model.MiscFlags;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.WorkoutFlags;
-import de.tbressler.waterrower.model.MiscFlags;
 import de.tbressler.waterrower.subscriptions.flags.MiscFlagsSubscription;
 import de.tbressler.waterrower.subscriptions.values.*;
 import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutDistanceSubscription;
@@ -53,12 +53,7 @@ public class TestWithRealDevice {
 
                 try {
 
-                    Workout workout = new Workout(1000, WorkoutUnit.METERS);
-                    workout.addInterval(60, 2000);
-                    workout.addInterval(60, 2000);
-                    workout.addInterval(60, 2000);
-                    workout.addInterval(60, 1000);
-
+                    Workout workout = new Workout(500, WorkoutUnit.METERS);
                     waterRower.startWorkout(workout);
 
                 } catch (IOException e) {
@@ -96,7 +91,7 @@ public class TestWithRealDevice {
             }
         });
 
-        waterRower.subscribe(new DisplayedDistanceSubscription() {
+        waterRower.subscribe(new DistanceSubscription() {
             @Override
             protected void onDistanceUpdated(int distance) {
                 Log.info("Distance = " + distance + " m");
@@ -145,8 +140,8 @@ public class TestWithRealDevice {
             protected void onMiscFlagsUpdated(MiscFlags flags) {
                 Log.info("Zone WORK = " + flags.isZoneWork());
                 Log.info("Zone REST = " + flags.isZoneRest());
-                Log.info("Misc LOWBAT = " + flags.isMiscLowBat());
-                Log.info("Misc PC = " + flags.isMiscPC());
+                Log.info("Misc LOWBAT = " + flags.isBatteryLow());
+                Log.info("Misc PC = " + flags.isPCConnected());
                 Log.info("Misc LINE = " + flags.isMiscLine());
                 Log.info("Misc CD = " + flags.isMiscMmcCd());
                 Log.info("Misc UP = " + flags.isMiscMmcUp());

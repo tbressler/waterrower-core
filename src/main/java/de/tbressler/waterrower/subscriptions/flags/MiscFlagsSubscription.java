@@ -12,10 +12,10 @@ import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
  * Subscription for zone words and misc windows flags (FMISC_FLAGS).
  *
  * The received message contains the following flags:
- *  0 = fzone_fg_work
- *  1 = fzone_fg_rest
- *  2 = fmisc_fg_lowbat
- *  3 = fmisc_fg_pc
+ *  0 = fzone_fg_work: a workout row interval is active
+ *  1 = fzone_fg_rest: a workout rest interval is active
+ *  2 = fmisc_fg_lowbat: set if battery of the Performance Monitor is low
+ *  3 = fmisc_fg_pc: a PC is connected (this is of course always the case)
  *  4 = fmisc_fg_line
  *  5 = fmisc_fg_mmc_cd
  *  6 = fmisc_fg_mmc_up
@@ -54,9 +54,9 @@ public abstract class MiscFlagsSubscription extends AbstractMemorySubscription {
 
 
     /**
-     * Is called, when an update of the zone flags was received.
+     * Is called, when an update of the misc flags was received.
      *
-     * @param flags The flags of the zones, never null.
+     * @param flags The flags, never null.
      */
     abstract protected void onMiscFlagsUpdated(MiscFlags flags);
 
