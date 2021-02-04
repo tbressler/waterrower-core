@@ -6,18 +6,17 @@ import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.MiscFlags;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.WorkoutFlags;
-import de.tbressler.waterrower.subscriptions.Priority;
 import de.tbressler.waterrower.subscriptions.flags.MiscFlagsSubscription;
-import de.tbressler.waterrower.subscriptions.values.*;
+import de.tbressler.waterrower.subscriptions.values.DistanceSubscription;
+import de.tbressler.waterrower.subscriptions.values.StrokeCountSubscription;
+import de.tbressler.waterrower.subscriptions.values.TotalCaloriesSubscription;
 import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutDistanceSubscription;
 import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutStrokesSubscription;
-import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutTimeSubscription;
 import de.tbressler.waterrower.subscriptions.workouts.WorkoutFlagsSubscription;
 import de.tbressler.waterrower.workout.Workout;
 import de.tbressler.waterrower.workout.WorkoutUnit;
 
 import java.io.IOException;
-import java.time.Duration;
 
 import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofSeconds;
@@ -89,7 +88,7 @@ public class TestWithRealDevice {
 
         waterRower.subscribe(new DistanceSubscription() {
             @Override
-            protected void onDistanceUpdated(int distance) {
+            protected void onDistanceUpdated(double distance) {
                 Log.info("Distance = " + distance + " m");
             }
         });

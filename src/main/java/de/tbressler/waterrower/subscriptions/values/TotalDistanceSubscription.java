@@ -1,7 +1,6 @@
 package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
-import de.tbressler.waterrower.log.Log;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
 
 import static de.tbressler.waterrower.io.msg.Memory.TRIPLE_MEMORY;
@@ -21,7 +20,7 @@ import static de.tbressler.waterrower.utils.MessageUtils.intFromHighAndLow;
 public abstract class TotalDistanceSubscription extends AbstractMemorySubscription {
 
         /* The last distance received. */
-        private int lastDistance = -1;
+        private double lastDistance = -1D;
 
         /**
          * Subscription to the displayed distance values.
@@ -33,11 +32,7 @@ public abstract class TotalDistanceSubscription extends AbstractMemorySubscripti
         @Override
         protected final void handle(DataMemoryMessage msg) {
 
-            int distance = intFromHighAndLow(msg.getValue3(), msg.getValue2());
-            int decimal = msg.getValue1();
-
-            // TODO Debug-only:
-            Log.info("---------------------------------> Total distance: " + distance + "." + decimal + "m [" + distance + "." + msg.getValue1AsACH() + "m]");
+            double distance = intFromHighAndLow(msg.getValue3(), msg.getValue2()) + (((double) msg.getValue1()) / 100D);
 
             // If the received distance is the same as before,
             // don't send an update.
@@ -50,10 +45,10 @@ public abstract class TotalDistanceSubscription extends AbstractMemorySubscripti
         }
 
         /**
-         * Is called if the value for the displayed distance was updated.
+         * Is called if the value for the total distance was updated.
          *
          * @param distance The new distance (in meter).
          */
-        abstract protected void onDistanceUpdated(int distance);
+        abstract protected void onDistanceUpdated(double distance);
 
 }
