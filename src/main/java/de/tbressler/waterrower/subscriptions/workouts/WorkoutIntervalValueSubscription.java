@@ -3,6 +3,7 @@ package de.tbressler.waterrower.subscriptions.workouts;
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.model.MemoryLocation;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.*;
@@ -51,7 +52,20 @@ public abstract class WorkoutIntervalValueSubscription extends AbstractMemorySub
      *                      ROW_INTERVAL.
      */
     public WorkoutIntervalValueSubscription(IntervalType intervalType, int intervalIndex) {
-        super(LOW, DOUBLE_MEMORY, getMemoryLocation(intervalType, intervalIndex));
+        this(LOW, intervalType, intervalIndex);
+    }
+
+    /**
+     * Subscription for the workout interval values.
+     *
+     * @param priority The priority (recommended LOW).
+     * @param intervalType The interval type (e.g. row or rest), must not be null.
+     * @param intervalIndex The index of the workout interval. Must be between 1 and 9 for
+     *                      interval type REST_INTERVAL and between 1 and 8 for interval type
+     *                      ROW_INTERVAL.
+     */
+    public WorkoutIntervalValueSubscription(Priority priority, IntervalType intervalType, int intervalIndex) {
+        super(priority, DOUBLE_MEMORY, getMemoryLocation(intervalType, intervalIndex));
         this.intervalType = intervalType;
         this.intervalIndex = intervalIndex;
     }

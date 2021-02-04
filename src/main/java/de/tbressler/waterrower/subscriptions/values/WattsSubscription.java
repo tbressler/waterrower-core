@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.KCAL_WATTS_LOW;
@@ -27,7 +28,16 @@ public abstract class WattsSubscription extends AbstractMemorySubscription {
      * Subscription for the watt value.
      */
     public WattsSubscription() {
-        super(HIGH, DOUBLE_MEMORY, KCAL_WATTS_LOW);
+        this(HIGH);
+    }
+
+    /**
+     * Subscription for the watt value.
+     *
+     * @param priority The priority (recommended HIGH).
+     */
+    public WattsSubscription(Priority priority) {
+        super(priority, DOUBLE_MEMORY, KCAL_WATTS_LOW);
     }
 
 

@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.workouts;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import java.time.Duration;
 
@@ -28,7 +29,17 @@ public abstract class TotalWorkoutTimeSubscription extends AbstractMemorySubscri
      * The time is updated by the WaterRower after each workout interval.
      */
     public TotalWorkoutTimeSubscription() {
-        super(LOW, DOUBLE_MEMORY, WORKOUT_TIMEL);
+        this(LOW);
+    }
+
+    /**
+     * Subscription for values of the total workout times.
+     * The time is updated by the WaterRower after each workout interval.
+     *
+     * @param priority The priority (recommended LOW).
+     */
+    public TotalWorkoutTimeSubscription(Priority priority) {
+        super(priority, DOUBLE_MEMORY, WORKOUT_TIMEL);
     }
 
 

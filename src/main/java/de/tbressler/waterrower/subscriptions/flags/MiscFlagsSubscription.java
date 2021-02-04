@@ -3,10 +3,11 @@ package de.tbressler.waterrower.subscriptions.flags;
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.model.MiscFlags;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.FMISC_FLAGS;
-import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
+import static de.tbressler.waterrower.subscriptions.Priority.MEDIUM;
 
 /**
  * Subscription for zone words and misc windows flags (FMISC_FLAGS).
@@ -27,14 +28,23 @@ import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
 public abstract class MiscFlagsSubscription extends AbstractMemorySubscription {
 
     /* The last received zone flags. */
-    private MiscFlags lastZoneFlags;
+    private MiscFlags lastFlags;
 
 
     /**
      * Subscription for zone words and misc windows flags (FMISC_FLAGS).
      */
     public MiscFlagsSubscription() {
-        super(HIGH, SINGLE_MEMORY, FMISC_FLAGS);
+        this(MEDIUM);
+    }
+
+    /**
+     * Supscription for zone words and misc windows flags (FMISC_FLAGS).
+     *
+     * @param priority The priority (recommended MEDIUM).
+     */
+    public MiscFlagsSubscription(Priority priority) {
+        super(priority, SINGLE_MEMORY, FMISC_FLAGS);
     }
 
 
@@ -43,11 +53,11 @@ public abstract class MiscFlagsSubscription extends AbstractMemorySubscription {
 
         MiscFlags flags = new MiscFlags(msg.getValue1());
 
-        // If the received zone flags are the same as before,
+        // If the received flags are the same as before,
         // don't send an update.
-        if (flags.equals(lastZoneFlags))
+        if (flags.equals(lastFlags))
             return;
-        lastZoneFlags = flags;
+        lastFlags = flags;
 
         onMiscFlagsUpdated(flags);
     }

@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import java.time.Duration;
 
@@ -30,7 +31,16 @@ public abstract class DisplayedDurationSubscription extends AbstractMemorySubscr
      * Subscription to the displayed duration value.
      */
     public DisplayedDurationSubscription() {
-        super(HIGH, TRIPLE_MEMORY, DISPLAY_SEC);
+        this(HIGH);
+    }
+
+    /**
+     * Subscription to the displayed duration value.
+     *
+     * @param priority The priority (recommended HIGH).
+     */
+    public DisplayedDurationSubscription(Priority priority) {
+        super(priority, TRIPLE_MEMORY, DISPLAY_SEC);
     }
 
 

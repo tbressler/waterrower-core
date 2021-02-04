@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 import de.tbressler.waterrower.utils.MessageUtils;
 
 import java.time.Duration;
@@ -30,7 +31,16 @@ public abstract class ClockCountDownSubscription extends AbstractMemorySubscript
      * Subscription to the distance value.
      */
     public ClockCountDownSubscription() {
-        super(HIGH, TRIPLE_MEMORY, CLOCK_DOWN_DEC);
+        this(HIGH);
+    }
+
+    /**
+     * Subscription to the distance value.
+     *
+     * @param priority The priority (recommended HIGH).
+     */
+    public ClockCountDownSubscription(Priority priority) {
+        super(priority, TRIPLE_MEMORY, CLOCK_DOWN_DEC);
     }
 
 

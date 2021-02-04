@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.STROKE_AVERAGE;
@@ -25,7 +26,17 @@ public abstract class AverageStrokeRateSubscription extends AbstractMemorySubscr
      * the stroke rate window of the Performance Monitor.
      */
     public AverageStrokeRateSubscription() {
-        super(HIGH, SINGLE_MEMORY, STROKE_AVERAGE);
+        this(HIGH);
+    }
+
+    /**
+     * Subscription for the average stroke rate (strokes/min) of a whole stroke which is displayed in
+     * the stroke rate window of the Performance Monitor.
+     *
+     * @param priority The priority (recommended HIGH).
+     */
+    public AverageStrokeRateSubscription(Priority priority) {
+        super(priority, SINGLE_MEMORY, STROKE_AVERAGE);
     }
 
 

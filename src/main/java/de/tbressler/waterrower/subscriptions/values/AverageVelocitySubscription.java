@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.M_S_LOW_AVERAGE;
@@ -26,7 +27,17 @@ public abstract class AverageVelocitySubscription extends AbstractMemorySubscrip
      * of the Performance Monitor.
      */
     public AverageVelocitySubscription() {
-        super(HIGH, DOUBLE_MEMORY, M_S_LOW_AVERAGE);
+        this(HIGH);
+    }
+
+    /**
+     * Subscription for the displayed average velocity on the intensity window
+     * of the Performance Monitor.
+     *
+     * @param priority The priority (recommended HIGH).
+     */
+    public AverageVelocitySubscription(Priority priority) {
+        super(priority, DOUBLE_MEMORY, M_S_LOW_AVERAGE);
     }
 
 

@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.ZONE_HR_VAL;
@@ -25,7 +26,16 @@ public abstract class HeartRateSubscription extends AbstractMemorySubscription {
      * Subscription for the heart rate value (in beats per minute).
      */
     public HeartRateSubscription() {
-        super(MEDIUM, SINGLE_MEMORY, ZONE_HR_VAL);
+        this(MEDIUM);
+    }
+
+    /**
+     * Subscription for the heart rate value (in beats per minute).
+     *
+     * @param priority The priority (recommended MEDIUM).
+     */
+    public HeartRateSubscription(Priority priority) {
+        super(priority, SINGLE_MEMORY, ZONE_HR_VAL);
     }
 
 

@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.workouts;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.WORKOUT_MS_L;
@@ -26,7 +27,17 @@ public abstract class TotalWorkoutDistanceSubscription extends AbstractMemorySub
      * The distance is updated by the WaterRower after each workout interval.
      */
     public TotalWorkoutDistanceSubscription() {
-        super(LOW, DOUBLE_MEMORY, WORKOUT_MS_L);
+        this(LOW);
+    }
+
+    /**
+     * Subscription for values of the total workout distance.
+     * The distance is updated by the WaterRower after each workout interval.
+     *
+     * @param priority The priority (recommended LOW).
+     */
+    public TotalWorkoutDistanceSubscription(Priority priority) {
+        super(priority, DOUBLE_MEMORY, WORKOUT_MS_L);
     }
 
 

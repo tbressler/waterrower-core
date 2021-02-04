@@ -2,6 +2,7 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.subscriptions.AbstractMemorySubscription;
+import de.tbressler.waterrower.subscriptions.Priority;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.STROKES_CNT_LOW;
@@ -24,7 +25,16 @@ public abstract class StrokeCountSubscription extends AbstractMemorySubscription
      * Subscription for the stroke count value.
      */
     public StrokeCountSubscription() {
-        super(MEDIUM, DOUBLE_MEMORY, STROKES_CNT_LOW);
+        this(MEDIUM);
+    }
+
+    /**
+     * Subscription for the stroke count value.
+     *
+     * @param priority The priority (recommended MEDIUM).
+     */
+    public StrokeCountSubscription(Priority priority) {
+        super(priority, DOUBLE_MEMORY, STROKES_CNT_LOW);
     }
 
 

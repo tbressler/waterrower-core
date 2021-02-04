@@ -21,7 +21,7 @@ import de.tbressler.waterrower.subscriptions.Priority;
 public abstract class StrokeSubscription implements ISubscription {
 
     @Override
-    public Priority getPriority() {
+    public final Priority getPriority() {
         return Priority.NO_POLLING;
     }
 
