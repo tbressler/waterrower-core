@@ -6,6 +6,7 @@ import de.tbressler.waterrower.model.ErrorCode;
 import de.tbressler.waterrower.model.MiscFlags;
 import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.WorkoutFlags;
+import de.tbressler.waterrower.subscriptions.Priority;
 import de.tbressler.waterrower.subscriptions.flags.MiscFlagsSubscription;
 import de.tbressler.waterrower.subscriptions.values.*;
 import de.tbressler.waterrower.subscriptions.workouts.TotalWorkoutDistanceSubscription;
@@ -79,13 +80,6 @@ public class TestWithRealDevice {
         // Subscribe to the different values and output
         // the updates to the log:
 
-        waterRower.subscribe(new WattsSubscription() {
-            @Override
-            protected void onWattsUpdated(int watt) {
-                Log.info("Watts = " + watt + " W");
-            }
-        });
-
         waterRower.subscribe(new TotalCaloriesSubscription() {
             @Override
             protected void onCaloriesUpdated(int cal) {
@@ -100,30 +94,10 @@ public class TestWithRealDevice {
             }
         });
 
-        waterRower.subscribe(new DisplayedDurationSubscription() {
+        waterRower.subscribe(new StrokeCountSubscription() {
             @Override
-            protected void onDurationUpdated(Duration duration) {
-                Log.info("Duration = " + duration.toMinutesPart() + ":" + duration.toSecondsPart());
-            }
-        });
-
-        waterRower.subscribe(new AverageStrokeRateSubscription() {
-            @Override
-            protected void onStrokeRateUpdated(double strokeRate) {
-                Log.info("Stroke rate = " + strokeRate + " strokes/min");
-            }
-        });
-
-        waterRower.subscribe(new AverageVelocitySubscription() {
-            @Override
-            protected void onVelocityUpdated(double velocity) {
-
-                Log.info("Velocity = " + velocity + " m/sec");
-
-                Duration split = Duration.ZERO;
-                if (velocity > 0)
-                    split = ofSeconds((long) (500D / velocity));
-                Log.info("Split (500m) = " + split.toMinutesPart() + ":" + split.toSecondsPart());
+            protected void onStrokeCountUpdated(int strokes) {
+                Log.info("Stroke count = " + strokes + " strokes");
             }
         });
 
@@ -143,21 +117,9 @@ public class TestWithRealDevice {
                 Log.info("Zone WORK = " + flags.isZoneWork());
                 Log.info("Zone REST = " + flags.isZoneRest());
                 Log.info("Misc LOWBAT = " + flags.isBatteryLow());
-                Log.info("Misc PC = " + flags.isPCConnected());
-                Log.info("Misc LINE = " + flags.isMiscLine());
-                Log.info("Misc CD = " + flags.isMiscMmcCd());
-                Log.info("Misc UP = " + flags.isMiscMmcUp());
-                Log.info("Misc DN = " + flags.isMiscMmcDn());
-
             }
         });
 
-        waterRower.subscribe(new TotalWorkoutTimeSubscription() {
-            @Override
-            protected void onTimeUpdated(Duration time) {
-                Log.info("Total workout time = "+time.toMinutesPart()+":"+time.toSecondsPart());
-            }
-        });
         waterRower.subscribe(new TotalWorkoutStrokesSubscription() {
             @Override
             protected void onStrokesUpdated(int strokes) {
@@ -171,7 +133,6 @@ public class TestWithRealDevice {
                 Log.info("Total workout distance = " + distance + " m");
             }
         });
-
 
         // Initialize and start the auto-discovery:
         WaterRowerAutoDiscovery discovery = new WaterRowerAutoDiscovery(waterRower);
