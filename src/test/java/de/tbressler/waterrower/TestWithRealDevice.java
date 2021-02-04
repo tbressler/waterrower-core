@@ -54,6 +54,8 @@ public class TestWithRealDevice {
                 try {
 
                     Workout workout = new Workout(500, WorkoutUnit.METERS);
+                    workout.addInterval(10, 500);
+
                     waterRower.startWorkout(workout);
 
                 } catch (IOException e) {
