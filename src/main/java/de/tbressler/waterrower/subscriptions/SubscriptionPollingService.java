@@ -8,10 +8,10 @@ import de.tbressler.waterrower.log.Log;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,7 +36,7 @@ public class SubscriptionPollingService implements ISubscriptionPollingService {
     private final long interval;
 
     /* List of subscriptions. */
-    private final List<ISubscription> subscriptions = new ArrayList<>();
+    private final List<ISubscription> subscriptions = new CopyOnWriteArrayList<>();
 
     /* The connector to the WaterRower. */
     private final WaterRowerConnector connector;
