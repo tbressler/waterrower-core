@@ -74,7 +74,7 @@ The following subscriptions are available:
 | displayed duration | ```DisplayedDurationSubscription``` | Subscribes to the *displayed duration*, which is the time covered (or the time to be covered in a duration workout) and shown in the duration window of the Performance Monitor. The values can count down or up depending on the workout. |
 | velocity | ```AverageVelocitySubscription``` | Subscribes to the displayed *average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
 | stroke event | ```StrokeSubscription```* |  Subscribes to the *stroke events* (start of stroke or end of stroke). The values will be send immediately by the Performance Monitor and will not be polled by the library. |
-| stroke count | ```StrokeCountSubscription``` | Subscribes to the *stroke count* value (the number of strokes). |
+| stroke count | ```StrokeCountSubscription``` | Subscribes to the *stroke count* value (the number of strokes). This value will be reset to zero when a new row interval begins or the Performance Monitor was reset. |
 | stroke rate | ```AverageStrokeRateSubscription``` | Subscribes to the displayed *stroke rate* (strokes/min) of a whole stroke which is displayed in the stroke rate window of the Performance Monitor. |
 | tank volume | ```TankVolumeSubscription``` | Subscribes to the *tank volume* (in liters). This is the value the user has set in the Performance Monitor (see manual). |
 | clock count down | ```ClockCountDownSubscription``` | Subscribes to the *clock count down*. This value is transmitted if a count down is programmed in the Performance Monitor. |
