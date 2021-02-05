@@ -54,8 +54,8 @@ A simple example:
 ```Java
 
 // Subscribe to events:
-waterRower.subscribe(new DisplayedDistanceSubscription() {
-    public void onDistanceUpdated(int distance) {
+waterRower.subscribe(new DistanceSubscription() {
+    public void onDistanceUpdated(double distance) {
         // ... do your stuff here!
     }
 }
@@ -69,7 +69,7 @@ The following subscriptions are available:
 | Value | Subscription | Description |
 |---|---|---|
 | distance | ```DistanceSubscription``` | Subscribes to the current *distance* (in meter). This value will be reset to zero when a new row interval begins or the Performance Monitor was reset. |
-| total distance | ```TotalDistanceSubscription``` | Subscribes to the *total distance*. The value represents the total distance meter counter - this value will be reset to zero when the Performance Monitor is switched off. |
+| total distance | ```TotalDistanceSubscription``` | Subscribes to the *total distance* (in meter). The value represents the total distance meter counter - this value will be reset to zero when the Performance Monitor is switched off. |
 | displayed distance | ```DisplayedDistanceSubscription``` | Subscribes to the *displayed distance* (in meters), which is displayed in the distance window of the Performance Monitor. The value is set to zero when the Performance Monitor was reset. The values can count down or up depending on the workout. |
 | displayed duration | ```DisplayedDurationSubscription``` | Subscribes to the *displayed duration*, which is the time covered (or the time to be covered in a duration workout) and shown in the duration window of the Performance Monitor. The values can count down or up depending on the workout. |
 | velocity | ```AverageVelocitySubscription``` | Subscribes to the displayed *average velocity* (in meters per second) on the intensity window of the Performance Monitor. |
@@ -88,7 +88,7 @@ Advanced subscriptions:
 |---|---|---|
 | pulse count | ```PulseCountSubscription```* | A subscription for *pulse count* events. Will be called, when pulse count was updated. The value is representing the number of pulse’s counted during the last 25mS period; this value can range from 1 to 50 typically. (Zero values will not be transmitted). |
 | total velocity | ```TotalVelocitySubscription``` | A subscription for the *total velocity* (in meters per second). |
-| misc flags | ```MiscFlagsSubscription``` | A subscription for different flags like *battery low* or *row/rest interval active*. |
+| misc flags | ```MiscFlagsSubscription``` | A subscription for different flags like *battery low*, *PC connected* or *row/rest interval active*. |
 
 Don't forget to unsubscribe, if you are no longer interested in a value. For example it makes sense to get the tank volume after the WaterRower was connected. But because it is very unlikely that the value will change during a session, you can unsubscribe this subscription after you got the value once.
 
