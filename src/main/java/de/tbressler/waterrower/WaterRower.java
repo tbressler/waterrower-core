@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
 import static de.tbressler.waterrower.model.ErrorCode.*;
@@ -57,7 +58,7 @@ public class WaterRower {
     private final DeviceVerificationWatchdog deviceVerificationWatchdog;
 
     /* All listeners. */
-    private List<IWaterRowerConnectionListener> listeners = new ArrayList<>();
+    private List<IWaterRowerConnectionListener> listeners = new CopyOnWriteArrayList<>();
 
 
     /* The listener for the WaterRower connector. */
