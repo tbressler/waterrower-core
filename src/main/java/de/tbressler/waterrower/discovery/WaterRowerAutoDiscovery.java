@@ -168,21 +168,14 @@ public class WaterRowerAutoDiscovery {
 
         Log.debug("Updating list of available serial ports.");
 
-        // Get all available serial ports. Additionally filter out every useless port and
-        // sort promising ports to the top of the list. Thus the performance of the
-        // auto-discovery is increased.
+        // Get all available serial ports. Additionally filter out every useless port in
+        // order to boost the performance of the auto-discovery.
         List<AvailablePort> availablePorts = serialPortWrapper.getAvailablePorts().stream().filter((port) -> {
             String portName = port.getSystemPortName();
             return (!portName.startsWith("/dev/cu.") && !portName.startsWith("cu.")
                     && !portName.contains("Bluetooth") && !portName.contains("BT")
+                    && (port.getDescription().contains("WR-S") || port.getDescription().contains("Microchip Technology"))
                     && !port.isOpen());
-        }).sorted((port1, port2) -> {
-            boolean description1 = port1.getDescription().contains("WR-S") || port1.getDescription().contains("Microchip Technology");
-            boolean description2 = port2.getDescription().contains("WR-S") || port2.getDescription().contains("Microchip Technology");
-            if (description1 && description2) return 0;
-            if (description1) return 1;
-            if (description2) return -1;
-            return 0;
         }).collect(toList());
 
         // Add the new ports to the top of the available port stack (only these ports

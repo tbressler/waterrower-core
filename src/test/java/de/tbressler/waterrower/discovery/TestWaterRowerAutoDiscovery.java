@@ -43,6 +43,7 @@ public class TestWaterRowerAutoDiscovery {
     private SerialPortWrapper serialPortWrapper = mock(SerialPortWrapper.class, "serialPortWrapper");
     private AvailablePort serialPort1 = mockAvailablePort("/serial/port1", "description", false);
     private AvailablePort serialPort2 = mockAvailablePort("/serial/port2", "description", false);
+    private AvailablePort waterRowerPort = mockAvailablePort("/serial/waterrower", "WR-S", false);
 
     // Capture:
     private ArgumentCaptor<IWaterRowerConnectionListener> connectionListener = forClass(IWaterRowerConnectionListener.class);
@@ -119,13 +120,13 @@ public class TestWaterRowerAutoDiscovery {
     public void start_withAvailableSerialPort1_connectToSerialPort1() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1));
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(waterRowerPort));
 
         task.getValue().run();
 
         connectionListener.getValue().onConnected(new ModelInformation(MonitorType.WATER_ROWER_S4, "2.1"));
 
-        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/port1")));
+        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/waterrower")));
     }
 
 
@@ -133,18 +134,18 @@ public class TestWaterRowerAutoDiscovery {
     public void start_withAvailableSerialPort1And2_connectToLastSuccessfulSerialPortFirst() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1, serialPort2));
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1, waterRowerPort));
 
         task.getValue().run();
 
 
-        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/port2")));
+        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/waterrower")));
     }
 
     @Test
     public void start_withAvailableSerialPorts_connectOnlyClosed() throws IOException {
-        AvailablePort serialPortOpened = mockAvailablePort("/serial/portOpened", "description", true);
-        AvailablePort serialPortClosed = mockAvailablePort("/serial/portClosed", "description", false);
+        AvailablePort serialPortOpened = mockAvailablePort("/serial/portOpened", "WR-S", true);
+        AvailablePort serialPortClosed = mockAvailablePort("/serial/portClosed", "WR-S", false);
 
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
@@ -161,22 +162,21 @@ public class TestWaterRowerAutoDiscovery {
         AvailablePort serialPort1 = mockAvailablePort("/serial/port1", "SOME-DEVICE", false);
         AvailablePort serialPort2 = mockAvailablePort("/serial/port2", "OTHER-DEVICE", false);
         AvailablePort serialPort3 = mockAvailablePort("/serial/port3", "CDC RS-232: WR-S4.2", false);
-        AvailablePort serialPort4 = mockAvailablePort("/serial/port4", "OTHER-DEVICE", false);
+        AvailablePort serialPort4 = mockAvailablePort("/serial/port4", "CDC RS-232: WR-S4.2", false);
+        AvailablePort serialPort5 = mockAvailablePort("/serial/port5", "OTHER-DEVICE", false);
 
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1, serialPort2, serialPort3, serialPort4));
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1, serialPort2, serialPort3, serialPort4, serialPort5));
 
         task.getValue().run();
         task.getValue().run();
-        task.getValue().run();
-        task.getValue().run();
 
-        InOrder inOrder = inOrder(waterRower);
-        inOrder.verify(waterRower).connect(argThat(eqAddress("/serial/port3")));
-        inOrder.verify(waterRower).connect(argThat(eqAddress("/serial/port4")));
-        inOrder.verify(waterRower).connect(argThat(eqAddress("/serial/port2")));
-        inOrder.verify(waterRower).connect(argThat(eqAddress("/serial/port1")));
+        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/port3")));
+        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/port4")));
+        verify(waterRower, never()).connect(argThat(eqAddress("/serial/port2")));
+        verify(waterRower, never()).connect(argThat(eqAddress("/serial/port1")));
+        verify(waterRower, never()).connect(argThat(eqAddress("/serial/port5")));
     }
 
 
@@ -192,15 +192,11 @@ public class TestWaterRowerAutoDiscovery {
         when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1, serialPort2, serialPort3, serialPort4));
 
         task.getValue().run();
-        task.getValue().run();
-        task.getValue().run();
-        task.getValue().run();
 
-        InOrder inOrder = inOrder(waterRower);
-        inOrder.verify(waterRower).connect(argThat(eqAddress("/serial/port2")));
-        inOrder.verify(waterRower).connect(argThat(eqAddress("/serial/port4")));
-        inOrder.verify(waterRower).connect(argThat(eqAddress("/serial/port3")));
-        inOrder.verify(waterRower).connect(argThat(eqAddress("/serial/port1")));
+        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/port2")));
+        verify(waterRower, never()).connect(argThat(eqAddress("/serial/port4")));
+        verify(waterRower, never()).connect(argThat(eqAddress("/serial/port3")));
+        verify(waterRower, never()).connect(argThat(eqAddress("/serial/port1")));
     }
 
 
@@ -235,7 +231,7 @@ public class TestWaterRowerAutoDiscovery {
     public void start_whenDisconnected_scheduleNewConnectionAttempts() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1));
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(waterRowerPort));
 
         task.getValue().run();
 
@@ -243,14 +239,14 @@ public class TestWaterRowerAutoDiscovery {
         connectionListener.getValue().onDisconnected();
 
         verify(executor, times(2)).submit(task.capture());
-        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/port1")));
+        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/waterrower")));
     }
 
     @Test
     public void start_onIOException_scheduleNewConnectionAttempts() throws IOException {
         discovery.start();
         verify(executor, times(1)).submit(task.capture());
-        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(serialPort1));
+        when(serialPortWrapper.getAvailablePorts()).thenReturn(newArrayList(waterRowerPort));
 
         doThrow(new IOException("exception")).when(waterRower).connect(any());
 
@@ -260,7 +256,7 @@ public class TestWaterRowerAutoDiscovery {
         connectionListener.getValue().onDisconnected();
 
         verify(executor, times(2)).submit(task.capture());
-        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/port1")));
+        verify(waterRower, times(1)).connect(argThat(eqAddress("/serial/waterrower")));
     }
 
 
