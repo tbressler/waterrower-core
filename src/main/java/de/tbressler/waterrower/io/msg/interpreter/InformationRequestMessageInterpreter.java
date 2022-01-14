@@ -90,49 +90,28 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
     public InformationRequestMessage decode(String msg) {
 
         if (msg.startsWith("IV")) {
-
-            // Parse current model information:
-
-            MonitorType monitorType = parseMonitorType(msg);
-            String firmwareVersion = msg.substring(3, 5) + "." + msg.substring(5, 7);
-
-            return new ModelInformationMessage(new ModelInformation(monitorType, firmwareVersion));
-
+            return decodeModelInformationMessage(msg);
         } else if (msg.startsWith("IDS")) {
-
-            // Parse value from single memory location:
-
-            int location = achToInt(msg.substring(3, 6));
-            int value1 = achToInt(msg.substring(6, 8));
-
-            return new DataMemoryMessage(location, value1);
-
+            return decodeSingleMemoryLocation(msg);
         } else if (msg.startsWith("IDD")) {
-
-            // Parse values from double memory locations:
-
-            int location = achToInt(msg.substring(3, 6));
-            int value2 = achToInt(msg.substring(6, 8));
-            int value1 = achToInt(msg.substring(8, 10));
-
-            return new DataMemoryMessage(location, value2, value1);
-
+            return decodeDoubleMemoryLocation(msg);
         } else if (msg.startsWith("IDT")) {
-
-            // Parse values from triple memory locations:
-
-            int location = achToInt(msg.substring(3, 6));
-            int value3 = achToInt(msg.substring(6, 8));
-            int value2 = achToInt(msg.substring(8, 10));
-            int value1 = achToInt(msg.substring(10, 12));
-
-            return new DataMemoryMessage(location, value3, value2, value1);
+            return decodeTripleMemoryLocation(msg);
         }
 
         Log.warn("Message couldn't be decoded!\n" +
                 " Message was: >" + msg + "<");
 
         return null;
+    }
+
+    /* Parse current model information. */
+    private ModelInformationMessage decodeModelInformationMessage(String msg) {
+
+        MonitorType monitorType = parseMonitorType(msg);
+        String firmwareVersion = msg.substring(3, 5) + "." + msg.substring(5, 7);
+
+        return new ModelInformationMessage(new ModelInformation(monitorType, firmwareVersion));
     }
 
     /* Parses and returns the monitor type from the given message. */
@@ -145,6 +124,37 @@ public class InformationRequestMessageInterpreter extends AbstractMessageInterpr
         }
         return UNKNOWN_MONITOR_TYPE;
     }
+
+    /* Parse value from single memory location. */
+    private DataMemoryMessage decodeSingleMemoryLocation(String msg) {
+
+        int location = achToInt(msg.substring(3, 6));
+        int value1 = achToInt(msg.substring(6, 8));
+
+        return new DataMemoryMessage(location, value1);
+    }
+
+    /* Parse values from double memory locations. */
+    private DataMemoryMessage decodeDoubleMemoryLocation(String msg) {
+
+        int location = achToInt(msg.substring(3, 6));
+        int value2 = achToInt(msg.substring(6, 8));
+        int value1 = achToInt(msg.substring(8, 10));
+
+        return new DataMemoryMessage(location, value2, value1);
+    }
+
+    /* Parse values from triple memory locations. */
+    private DataMemoryMessage decodeTripleMemoryLocation(String msg) {
+
+        int location = achToInt(msg.substring(3, 6));
+        int value3 = achToInt(msg.substring(6, 8));
+        int value2 = achToInt(msg.substring(8, 10));
+        int value1 = achToInt(msg.substring(10, 12));
+
+        return new DataMemoryMessage(location, value3, value2, value1);
+    }
+
 
     @Override
     public String encode(InformationRequestMessage msg) {

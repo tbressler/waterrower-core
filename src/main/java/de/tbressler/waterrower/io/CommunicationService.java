@@ -179,8 +179,6 @@ public class CommunicationService {
      */
     public void close() throws IOException {
 
-        // lock.lock();
-
         try {
 
             checkIfChannelIsOpen();
@@ -197,7 +195,6 @@ public class CommunicationService {
             throw new IOException("Can not disconnect!", e);
         } finally {
             currentChannel = null;
-            // lock.unlock();
         }
     }
 
