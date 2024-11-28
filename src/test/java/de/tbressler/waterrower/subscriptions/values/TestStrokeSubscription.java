@@ -3,14 +3,14 @@ package de.tbressler.waterrower.subscriptions.values;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.StrokeMessage;
 import de.tbressler.waterrower.model.StrokeType;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
 import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
 import static de.tbressler.waterrower.subscriptions.Priority.NO_POLLING;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -28,7 +28,7 @@ public class TestStrokeSubscription {
     private StrokeSubscription internalSubscription = mock(StrokeSubscription.class, "internalSubscription");
     private StrokeMessage strokeMessage = mock(StrokeMessage.class, "strokeMessage");
 
-    @Before
+    @BeforeEach
     public void setUp() {
         subscription = new StrokeSubscription() {
             @Override

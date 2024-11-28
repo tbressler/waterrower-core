@@ -1,8 +1,8 @@
 package de.tbressler.waterrower.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for class WorkoutFlags.
@@ -14,14 +14,14 @@ public class TestWorkoutFlags {
 
     // Constructor:
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withTooLowValue_throwsIAE() {
-        new WorkoutFlags(-1);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutFlags(-1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withTooHighValue_throwsIAE() {
-        new WorkoutFlags(0x100);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutFlags(0x100));
     }
 
 

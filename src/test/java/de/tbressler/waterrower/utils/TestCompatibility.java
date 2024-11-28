@@ -1,12 +1,11 @@
 package de.tbressler.waterrower.utils;
 
 import de.tbressler.waterrower.model.ModelInformation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.model.MonitorType.*;
 import static de.tbressler.waterrower.utils.Compatibility.isSupportedWaterRower;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for class Compatibility.
@@ -16,9 +15,9 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestCompatibility {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void isSupportedWaterRower_withNullModelInformation_throwsException() {
-        isSupportedWaterRower(null);
+        assertThrows(NullPointerException.class, () -> isSupportedWaterRower(null));
     }
 
     @Test

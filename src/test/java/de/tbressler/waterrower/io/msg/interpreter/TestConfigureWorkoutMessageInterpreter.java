@@ -2,12 +2,13 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
 import static de.tbressler.waterrower.workout.WorkoutUnit.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -22,7 +23,7 @@ public class TestConfigureWorkoutMessageInterpreter {
     private ConfigureWorkoutMessageInterpreter interpreter;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreter = new ConfigureWorkoutMessageInterpreter();
     }
@@ -47,9 +48,9 @@ public class TestConfigureWorkoutMessageInterpreter {
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void decode_throwsIllegalStateException() {
-        interpreter.decode("WSI4020");
+        Assertions.assertThrows(IllegalStateException.class, () -> interpreter.decode("WSI4020"));
     }
 
     // Encode single workout with distance:

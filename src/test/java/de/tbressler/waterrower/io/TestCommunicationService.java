@@ -5,13 +5,13 @@ import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
@@ -41,7 +41,7 @@ public class TestCommunicationService {
     private ArgumentCaptor<SerialHandler> callback = forClass(SerialHandler.class);
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         communicationService = new CommunicationService(bootstrap, channelInitializer);
         communicationService.addConnectionListener(connectionListener);
@@ -52,14 +52,14 @@ public class TestCommunicationService {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
-    public void new_withNullBootstrap_throwsException() {
-        new CommunicationService(null, channelInitializer);
+    @Test
+    public void new_withNullBootstrap_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new CommunicationService(null, channelInitializer));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void new_withNullChannelInitializer_throwsException() {
-        new CommunicationService(bootstrap, null);
+    @Test
+    public void new_withNullChannelInitializer_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new CommunicationService(bootstrap, null));
     }
 
     @Test
@@ -70,18 +70,18 @@ public class TestCommunicationService {
 
     // Open / close:
 
-    @Test(expected = NullPointerException.class)
-    public void open_withNullAddress_throwsException() throws IOException {
-        communicationService.open(null);
-    }
-
-    @Test(expected = IOException.class)
-    public void open_withValidAddress_opensChannelWithoutSuccess_throwsExceptionAndNotifiesListener() throws IOException {
-        mockUnsuccessfulConnect();
+    @Test
+    public void open_withNullAddress_throwsException() {
+        assertThrows(NullPointerException.class, () -> communicationService.open(null));
     }
 
     @Test
-    public void isConnected_afterUnsuccessfulConnect_returnsFalse() throws IOException {
+    public void open_withValidAddress_opensChannelWithoutSuccess_throwsExceptionAndNotifiesListener() {
+        assertThrows(IOException.class, () -> mockUnsuccessfulConnect());
+    }
+
+    @Test
+    public void isConnected_afterUnsuccessfulConnect_returnsFalse() {
         try {
             mockUnsuccessfulConnect();
         } catch (IOException e) {
@@ -103,9 +103,9 @@ public class TestCommunicationService {
         assertTrue(communicationService.isConnected());
     }
 
-    @Test(expected = IOException.class)
-    public void close_whenNotConnected_throwsException() throws IOException {
-        communicationService.close();
+    @Test
+    public void close_whenNotConnected_throwsException() {
+        assertThrows(IOException.class, () -> communicationService.close());
     }
 
     @Test
@@ -125,7 +125,7 @@ public class TestCommunicationService {
         verify(connectionListener, times(1)).onDisconnected();
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void close_whenConnectedAndClosingIsUnsuccessful_throwsException() throws IOException {
 
         mockSuccessfulConnect();
@@ -135,7 +135,7 @@ public class TestCommunicationService {
         when(channel.disconnect()).thenReturn(channelFuture);
         when(channelFuture.isSuccess()).thenReturn(false);
 
-        communicationService.close();
+        assertThrows(IOException.class, () -> communicationService.close());
     }
 
     // Send:
@@ -151,9 +151,9 @@ public class TestCommunicationService {
         verify(channel, times(1)).writeAndFlush(message);
     }
 
-    @Test(expected = IOException.class)
-    public void send_whenNotConnected_doesntSendMessage() throws IOException {
-        communicationService.send(message);
+    @Test
+    public void send_whenNotConnected_doesntSendMessage() {
+        assertThrows(IOException.class, () -> communicationService.send(message));
     }
 
     // Message received:
@@ -170,14 +170,14 @@ public class TestCommunicationService {
 
     // Listeners:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void addConnectionListener_withNull_throwsException() {
-        communicationService.addConnectionListener(null);
+        assertThrows(NullPointerException.class, () -> communicationService.addConnectionListener(null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void removeConnectionListener_withNull_throwsException() {
-        communicationService.removeConnectionListener(null);
+        assertThrows(NullPointerException.class, () -> communicationService.removeConnectionListener(null));
     }
 
     @Test

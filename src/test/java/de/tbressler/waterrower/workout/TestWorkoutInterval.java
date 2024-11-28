@@ -1,11 +1,10 @@
 package de.tbressler.waterrower.workout;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.workout.WorkoutUnit.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for class WorkoutInterval.
@@ -19,7 +18,7 @@ public class TestWorkoutInterval {
     private WorkoutInterval interval;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interval = new WorkoutInterval(1, 1, METERS);
     }
@@ -27,19 +26,19 @@ public class TestWorkoutInterval {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new1_withNullUnit_throwsNPE() {
-        new WorkoutInterval(1, null);
+        assertThrows(NullPointerException.class, () -> new WorkoutInterval(1, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new1_withDistance0_throwsException() {
-        new WorkoutInterval(0, METERS);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutInterval(0, METERS));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new1_withDistance0xFA01andUnitMeters_throwsException() {
-        new WorkoutInterval(0xFA01, METERS);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutInterval(0xFA01, METERS));
     }
 
     @Test
@@ -47,9 +46,9 @@ public class TestWorkoutInterval {
         new WorkoutInterval(0xFA00, METERS);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new1_withDistance0xFA01andUnitMiles_throwsException() {
-        new WorkoutInterval(0xFA01, MILES);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutInterval(0xFA01, MILES));
     }
 
     @Test
@@ -57,9 +56,9 @@ public class TestWorkoutInterval {
         new WorkoutInterval(0xFA00, MILES);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new1_withDistance0xFA01andUnitKms_throwsException() {
-        new WorkoutInterval(0xFA01, KMS);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutInterval(0xFA01, KMS));
     }
 
     @Test
@@ -67,9 +66,9 @@ public class TestWorkoutInterval {
         new WorkoutInterval(0xFA00, KMS);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new1_withDistance0x1389andUnitStrokes_throwsException() {
-        new WorkoutInterval(0x1389, STROKES);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutInterval(0x1389, STROKES));
     }
 
     @Test
@@ -77,9 +76,9 @@ public class TestWorkoutInterval {
         new WorkoutInterval(0x1388, STROKES);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new1_withDistance0x4651andUnitSeconds_throwsException() {
-        new WorkoutInterval(0x4651, SECONDS);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutInterval(0x4651, SECONDS));
     }
 
     @Test
@@ -87,9 +86,9 @@ public class TestWorkoutInterval {
         new WorkoutInterval(0x4650, SECONDS);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new2_withNullUnit_throwsNPE() {
-        new WorkoutInterval(1, 1, null);
+        assertThrows(NullPointerException.class, () -> new WorkoutInterval(1, 1, null));
     }
 
     @Test
@@ -102,9 +101,9 @@ public class TestWorkoutInterval {
         new WorkoutInterval(0x0E10, 1234, METERS);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new2_withRestInterval0x0E11_throwsNoException() {
-        new WorkoutInterval(0x0E11, 4321, MILES);
+        assertThrows(IllegalArgumentException.class, () -> new WorkoutInterval(0x0E11, 4321, MILES));
     }
 
 

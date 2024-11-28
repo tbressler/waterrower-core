@@ -2,10 +2,10 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -23,7 +23,7 @@ public class TestErrorMessageInterpreter {
     private ErrorMessage errorMessage = mock(ErrorMessage.class, "errorMessage");
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreter = new ErrorMessageInterpreter();
     }
@@ -54,9 +54,9 @@ public class TestErrorMessageInterpreter {
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void encode_throwsIllegalStateException() {
-        interpreter.encode(errorMessage);
+        assertThrows(IllegalStateException.class, () -> interpreter.encode(errorMessage));
     }
 
 }

@@ -1,6 +1,6 @@
 package de.tbressler.waterrower.watchdog;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Duration;
@@ -8,9 +8,8 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import static java.time.Duration.ofSeconds;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -35,20 +34,20 @@ public class TestWatchdog {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullInterval_throwsNPE() {
-        new Watchdog(null, false, executor) {
+        assertThrows(NullPointerException.class, () -> new Watchdog(null, false, executor) {
             @Override
             protected void wakeUpAndCheck() {}
-        };
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullExecutor_throwsNPE() {
-        new Watchdog(interval, false, null) {
+        assertThrows(NullPointerException.class, () -> new Watchdog(interval, false, null) {
             @Override
             protected void wakeUpAndCheck() {}
-        };
+        });
     }
 
     // Start:

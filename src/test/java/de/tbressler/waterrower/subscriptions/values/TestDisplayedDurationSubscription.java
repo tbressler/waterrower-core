@@ -2,15 +2,13 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
 
 import java.time.Duration;
 
 import static de.tbressler.waterrower.model.MemoryLocation.DISPLAY_SEC;
 import static java.time.Duration.ofHours;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -77,7 +75,7 @@ public class TestDisplayedDurationSubscription {
         return new DurationMatcher(ofHours(hour).plusMinutes(min).plusSeconds(sec));
     }
 
-    private class DurationMatcher extends ArgumentMatcher<Duration> {
+    private class DurationMatcher implements ArgumentMatcher<Duration> {
 
         private Duration expectedDuration;
 
@@ -86,8 +84,7 @@ public class TestDisplayedDurationSubscription {
         }
 
         @Override
-        public boolean matches(Object argument) {
-            Duration duration = (Duration) argument;
+        public boolean matches(Duration duration) {
             return (duration.equals(expectedDuration));
         }
     }

@@ -3,8 +3,8 @@ package de.tbressler.waterrower.subscriptions;
 import de.tbressler.waterrower.io.IConnectionListener;
 import de.tbressler.waterrower.io.WaterRowerConnector;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
@@ -13,9 +13,8 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import static java.time.Duration.ofSeconds;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -48,7 +47,7 @@ public class TestSubscriptionPollingService {
     private ArgumentCaptor<IConnectionListener> listener = forClass(IConnectionListener.class);
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         pollingService = new SubscriptionPollingService(connector, executorService, Duration.ofMillis(200));
         verify(connector).addConnectionListener(listener.capture());
@@ -56,19 +55,19 @@ public class TestSubscriptionPollingService {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullConnector_throwsNPE() {
-        new SubscriptionPollingService(null, executorService, Duration.ofMillis(200));
+        assertThrows(NullPointerException.class, () -> new SubscriptionPollingService(null, executorService, Duration.ofMillis(200)));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullExecutorService_throwsNPE() {
-        new SubscriptionPollingService(connector, null, Duration.ofMillis(200));
+        assertThrows(NullPointerException.class, () -> new SubscriptionPollingService(connector, null, Duration.ofMillis(200)));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullInterval_throwsNPE() {
-        new SubscriptionPollingService(connector, executorService, null);
+        assertThrows(NullPointerException.class, () -> new SubscriptionPollingService(connector, executorService, null));
     }
 
     // Start:
@@ -170,14 +169,14 @@ public class TestSubscriptionPollingService {
 
     // Subscriptions:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void subscribe_withNull_throwsNPE() throws IOException {
-        pollingService.subscribe(null);
+        assertThrows(NullPointerException.class, () -> pollingService.subscribe(null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void unsubscribe_withNull_throwsNPE() throws IOException {
-        pollingService.unsubscribe(null);
+        assertThrows(NullPointerException.class, () -> pollingService.unsubscribe(null));
     }
 
     @Test

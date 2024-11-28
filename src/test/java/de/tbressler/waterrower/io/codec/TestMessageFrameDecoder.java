@@ -3,15 +3,16 @@ package de.tbressler.waterrower.io.codec;
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static io.netty.buffer.Unpooled.wrappedBuffer;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Mockito.*;
 
@@ -36,7 +37,7 @@ public class TestMessageFrameDecoder {
     private AbstractMessage message2 = mock(AbstractMessage.class, "message2");
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         messageFrameDecoder = new MessageFrameDecoder(parser);
     }
@@ -44,9 +45,9 @@ public class TestMessageFrameDecoder {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullParser_throwsException() {
-        new MessageFrameEncoder(null);
+        Assertions.assertThrows(NullPointerException.class, () -> new MessageFrameEncoder(null));
     }
 
     // Decode:

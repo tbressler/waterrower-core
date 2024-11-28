@@ -4,14 +4,14 @@ import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.IMessageInterpreter;
 import de.tbressler.waterrower.io.msg.in.AcknowledgeMessage;
 import de.tbressler.waterrower.io.msg.in.DecodeErrorMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Charsets.UTF_8;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,7 +35,7 @@ public class TestMessageParser {
     private AbstractMessage message = mock(AcknowledgeMessage.class, "message");
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreters.add(interpreter1);
         interpreters.add(interpreter2);
@@ -44,9 +44,9 @@ public class TestMessageParser {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNull_throwsNPE() {
-        new MessageParser(null);
+        assertThrows(NullPointerException.class, () -> new MessageParser(null));
     }
 
     // Check interpreters:

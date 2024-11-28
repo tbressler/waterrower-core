@@ -6,11 +6,12 @@ import de.tbressler.waterrower.io.transport.SerialChannel;
 import de.tbressler.waterrower.io.transport.SerialChannelConfig;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.io.transport.SerialChannelConfig.Paritybit.NONE;
 import static de.tbressler.waterrower.io.transport.SerialChannelConfig.Stopbits.STOPBITS_1;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 /**
@@ -31,20 +32,20 @@ public class TestChannelInitializer {
     private ChannelPipeline pipeline = mock(ChannelPipeline.class, "pipeline");
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         initializer = new ChannelInitializer();
     }
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void setSerialHandler_withNull_throwsNPE() throws Exception {
-        initializer.setSerialHandler(null);
+        assertThrows(NullPointerException.class, () -> initializer.setSerialHandler(null));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void initChannel_whenNoSerialHandlerWasSet_throwsException() throws Exception {
-        initializer.initChannel(channel);
+        assertThrows(IllegalStateException.class, () -> initializer.initChannel(channel));
     }
 
     @Test

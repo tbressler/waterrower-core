@@ -8,12 +8,12 @@ import de.tbressler.waterrower.io.msg.in.ModelInformationMessage;
 import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.RequestModelInformationMessage;
 import de.tbressler.waterrower.model.MonitorType;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.io.msg.Memory.*;
 import static de.tbressler.waterrower.model.MonitorType.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -28,7 +28,7 @@ public class TestInformationRequestMessageInterpreter {
     private InformationRequestMessageInterpreter interpreter;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreter = new InformationRequestMessageInterpreter();
     }

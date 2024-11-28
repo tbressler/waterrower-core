@@ -2,10 +2,10 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.PingMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -23,7 +23,7 @@ public class TestPingMessageInterpreter {
     private PingMessage pingMessage = mock(PingMessage.class, "pingMessage");
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreter = new PingMessageInterpreter();
     }
@@ -54,9 +54,9 @@ public class TestPingMessageInterpreter {
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void encode_throwsIllegalStateException() {
-        interpreter.encode(pingMessage);
+        assertThrows(IllegalStateException.class, () -> interpreter.encode(pingMessage));
     }
 
 }

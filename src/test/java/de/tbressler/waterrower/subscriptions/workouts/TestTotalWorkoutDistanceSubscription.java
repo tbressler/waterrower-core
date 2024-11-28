@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.subscriptions.workouts;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.model.MemoryLocation.WORKOUT_MS_L;
 import static org.mockito.Mockito.*;

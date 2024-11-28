@@ -2,10 +2,10 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -20,7 +20,7 @@ public class TestStartCommunicationMessageInterpreter {
     private StartCommunicationMessageInterpreter interpreter;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreter = new StartCommunicationMessageInterpreter();
     }
@@ -45,9 +45,9 @@ public class TestStartCommunicationMessageInterpreter {
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void decode_throwsIllegalStateException() {
-        interpreter.decode("Something");
+        assertThrows(IllegalStateException.class, () -> interpreter.decode("Something"));
     }
 
 

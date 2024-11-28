@@ -4,12 +4,11 @@ import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,7 +28,7 @@ public class TestMessageFrameEncoder {
     private ChannelHandlerContext ctx = mock(ChannelHandlerContext.class, "ctx");
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         messageFrameEncoder = new MessageFrameEncoder(parser);
     }
@@ -38,19 +37,19 @@ public class TestMessageFrameEncoder {
     /**
      * Checks if a NPE is thrown, when null is given to the constructor.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullParser_throwsException() {
-        new MessageFrameEncoder(null);
+        assertThrows(NullPointerException.class, () -> new MessageFrameEncoder(null));
     }
 
 
     /**
      * Checks if an IllegalArgumentException is thrown, if an invalid message type is given.
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void encode_withInvalidMessage_throwsException() throws Exception {
+    @Test
+    public void encode_withInvalidMessage_throwsException() {
         ByteBuf out = Unpooled.directBuffer();
-        messageFrameEncoder.encode(ctx, "invalid-message-type", out);
+        assertThrows(IllegalArgumentException.class, () -> messageFrameEncoder.encode(ctx, "invalid-message-type", out));
     }
 
     /**

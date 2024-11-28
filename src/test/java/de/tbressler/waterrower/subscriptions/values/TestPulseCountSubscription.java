@@ -2,12 +2,12 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.subscriptions.Priority.NO_POLLING;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -25,7 +25,7 @@ public class TestPulseCountSubscription {
     private PulseCountSubscription internalSubscription = mock(PulseCountSubscription.class, "internalSubscription");
     private PulseCountMessage pulseCountMessage = mock(PulseCountMessage.class, "pulseCountMessage");
 
-    @Before
+    @BeforeEach
     public void setUp() {
         subscription = new PulseCountSubscription() {
             @Override

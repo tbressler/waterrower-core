@@ -5,13 +5,12 @@ import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import de.tbressler.waterrower.model.MiscFlags;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.FMISC_FLAGS;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
@@ -103,22 +102,14 @@ public class TestMiscFlagsSubscription {
 
 
     private ArgumentMatcher<MiscFlags> matchesFlags(boolean zoneWork, boolean zoneRest, boolean isLowBat, boolean isPC, boolean isLine, boolean isMmcCd, boolean isMmcUp, boolean isMmcDn) {
-        return new ArgumentMatcher<>() {
-            @Override
-            public boolean matches(Object argument) {
-                if (!(argument instanceof MiscFlags))
-                    return false;
-                MiscFlags flags = (MiscFlags) argument;
-                return (flags.isZoneWork() == zoneWork)
-                        && (flags.isZoneRest() == zoneRest)
-                        && (flags.isBatteryLow() == isLowBat)
-                        && (flags.isPCConnected() == isPC)
-                        && (flags.isMiscLine() == isLine)
-                        && (flags.isMiscMmcCd() == isMmcCd)
-                        && (flags.isMiscMmcUp() == isMmcUp)
-                        && (flags.isMiscMmcDn() == isMmcDn);
-            }
-        };
+        return flags -> (flags.isZoneWork() == zoneWork)
+                && (flags.isZoneRest() == zoneRest)
+                && (flags.isBatteryLow() == isLowBat)
+                && (flags.isPCConnected() == isPC)
+                && (flags.isMiscLine() == isLine)
+                && (flags.isMiscMmcCd() == isMmcCd)
+                && (flags.isMiscMmcUp() == isMmcUp)
+                && (flags.isMiscMmcDn() == isMmcDn);
     }
 
 }

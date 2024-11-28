@@ -1,9 +1,9 @@
 package de.tbressler.waterrower.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.utils.MessageUtils.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for class MessageUtils.
@@ -15,14 +15,14 @@ public class TestMessageUtils {
 
     // ACD to int:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void acdToInt_withNull_throwsNPE() {
-        acdToInt(null);
+        assertThrows(NullPointerException.class, () -> acdToInt(null));
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void acdToInt_withText_throwsNumberFormatException() {
-        acdToInt("Text");
+        assertThrows(NumberFormatException.class, () -> acdToInt("Text"));
     }
 
     @Test
@@ -63,14 +63,14 @@ public class TestMessageUtils {
         assertEquals("123", intToAcd(123, 3));
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void intToAcd_with123ValueAnd2Chars_throwsNumberFormatException() {
-        intToAcd(123, 2);
+        assertThrows(NumberFormatException.class, () -> intToAcd(123, 2));
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void intToAcd_withSomeValueAnd0Chars_throwsNumberFormatException() {
-        intToAcd(123, 0);
+        assertThrows(NumberFormatException.class, () -> intToAcd(123, 0));
     }
 
     @Test
@@ -91,14 +91,14 @@ public class TestMessageUtils {
 
     // ACH to int:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void achToInt_withNull_throwsNPE() {
-        achToInt(null);
+        assertThrows(NullPointerException.class, () -> achToInt(null));
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void achToInt_withInvalidHexValues_throwsNumberFormatException() {
-        achToInt("YZ");
+        assertThrows(NumberFormatException.class, () -> achToInt("YZ"));
     }
 
     @Test
@@ -159,9 +159,9 @@ public class TestMessageUtils {
         assertEquals("D00", intToAch(3328, 3));
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void intToAch_with3328ValueAnd2Chars_throwsNumberFormatException() {
-        intToAch(3328, 2);
+        assertThrows(NumberFormatException.class, () -> intToAch(3328, 2));
     }
 
     @Test
@@ -177,25 +177,25 @@ public class TestMessageUtils {
 
     // Boolean from Byte:
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getBooleanFromByte_withValueGreaterThan0xFF_throwsIAE() {
-        getBooleanFromByte(0x100, 0);
+        assertThrows(IllegalArgumentException.class, () -> getBooleanFromByte(0x100, 0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getBooleanFromByte_withValueLowerThan0x00_throwsIAE() {
-        getBooleanFromByte(-1, 0);
+        assertThrows(IllegalArgumentException.class, () -> getBooleanFromByte(-1, 0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getBooleanFromByte_withIndexLowerThan0_throwsIAE() {
-        getBooleanFromByte(0x00, -1);
+        assertThrows(IllegalArgumentException.class, () -> getBooleanFromByte(0x00, -1));
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getBooleanFromByte_withIndexGreaterThan7_throwsIAE() {
-        getBooleanFromByte(0x00, 8);
+        assertThrows(IllegalArgumentException.class, () -> getBooleanFromByte(0x00, 8));
     }
 
     @Test
@@ -258,24 +258,24 @@ public class TestMessageUtils {
 
     // Int from LOW and HIGH:
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromHighAndLow_withTooLowHighValue_throwsIAE() {
-        intFromHighAndLow(-1, 0x00);
+        assertThrows(IllegalArgumentException.class, () -> intFromHighAndLow(-1, 0x00));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromHighAndLow_withTooHighHighValue_throwsIAE() {
-        intFromHighAndLow(0x100, 0x00);
+        assertThrows(IllegalArgumentException.class, () -> intFromHighAndLow(0x100, 0x00));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromHighAndLow_withTooLowLowValue_throwsIAE() {
-        intFromHighAndLow(0x00, -1);
+        assertThrows(IllegalArgumentException.class, () -> intFromHighAndLow(0x00, -1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromHighAndLow_withTooHighLowValue_throwsIAE() {
-        intFromHighAndLow(0x00, 0x100);
+        assertThrows(IllegalArgumentException.class, () -> intFromHighAndLow(0x00, 0x100));
     }
 
 
@@ -307,34 +307,34 @@ public class TestMessageUtils {
 
     // Int from LOW, HIGH and UP:
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromUpHighAndLow_withTooLowUpValue_throwsIAE() {
-        intFromUpHighAndLow(-1, 0x00, 0x00);
+        assertThrows(IllegalArgumentException.class, () -> intFromUpHighAndLow(-1, 0x00, 0x00));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromUpHighAndLow_withTooHighUpValue_throwsIAE() {
-        intFromUpHighAndLow(0x100, 0x00, 0x00);
+        assertThrows(IllegalArgumentException.class, () -> intFromUpHighAndLow(0x100, 0x00, 0x00));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromUpHighAndLow_withTooLowHighValue_throwsIAE() {
-        intFromUpHighAndLow(0x00, -1, 0x00);
+        assertThrows(IllegalArgumentException.class, () -> intFromUpHighAndLow(0x00, -1, 0x00));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromUpHighAndLow_withTooHighHighValue_throwsIAE() {
-        intFromUpHighAndLow(0x00, 0x100, 0x00);
+        assertThrows(IllegalArgumentException.class, () -> intFromUpHighAndLow(0x00, 0x100, 0x00));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromUpHighAndLow_withTooLowLowValue_throwsIAE() {
-        intFromUpHighAndLow(0x00, 0x00, -1);
+        assertThrows(IllegalArgumentException.class, () -> intFromUpHighAndLow(0x00, 0x00, -1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getIntFromUpHighAndLow_withTooHighLowValue_throwsIAE() {
-        intFromUpHighAndLow(0x00, 0x00, 0x100);
+        assertThrows(IllegalArgumentException.class, () -> intFromUpHighAndLow(0x00, 0x00, 0x100));
     }
 
     @Test

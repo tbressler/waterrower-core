@@ -2,13 +2,14 @@ package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.transport.SerialDeviceAddress;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 /**
@@ -30,7 +31,7 @@ public class TestWaterRowerConnector {
     private AbstractMessage message2 = mock(AbstractMessage.class, "message-2");
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         connector = new WaterRowerConnector(communicationService);
         connector.addConnectionListener(connectionListener);
@@ -38,22 +39,22 @@ public class TestWaterRowerConnector {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullCommunicationService_throwsNPE() {
-        new WaterRowerConnector(null);
+        assertThrows(NullPointerException.class, () -> new WaterRowerConnector(null));
     }
 
     // Connect:
 
-    @Test(expected = NullPointerException.class)
-    public void connect_withNullAddress_throwsNPE() throws Exception {
-        connector.connect(null);
+    @Test
+    public void connect_withNullAddress_throwsNPE() {
+        assertThrows(NullPointerException.class, () -> connector.connect(null));
     }
 
-    @Test(expected = IOException.class)
-    public void connect_whenConnected_throwsIOException() throws IOException {
+    @Test
+    public void connect_whenConnected_throwsIOException() {
         when(communicationService.isConnected()).thenReturn(true);
-        connector.connect(address);
+        assertThrows(IOException.class, () -> connector.connect(address));
     }
 
     @Test
@@ -68,15 +69,15 @@ public class TestWaterRowerConnector {
 
     // Send:
 
-    @Test(expected = NullPointerException.class)
-    public void send_withNullMessage_throwsException() throws Exception {
-        connector.send((AbstractMessage) null);
+    @Test
+    public void send_withNullMessage_throwsException() {
+        assertThrows(NullPointerException.class, () -> connector.send((AbstractMessage) null));
     }
 
-    @Test(expected = IOException.class)
-    public void send_whenNotConnected_throwsException() throws Exception {
+    @Test
+    public void send_whenNotConnected_throwsException() {
         when(communicationService.isConnected()).thenReturn(false);
-        connector.send(message1);
+        assertThrows(IOException.class, () -> connector.send(message1));
     }
 
     @Test
@@ -88,15 +89,15 @@ public class TestWaterRowerConnector {
         verify(communicationService, times(1)).send(message1);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void send2_withNullMessage_throwsException() throws Exception {
-        connector.send((List<AbstractMessage>) null);
+    @Test
+    public void send2_withNullMessage_throwsException() {
+        assertThrows(NullPointerException.class, () -> connector.send((List<AbstractMessage>) null));
     }
 
-    @Test(expected = IOException.class)
-    public void send2_whenNotConnected_throwsException() throws Exception {
+    @Test
+    public void send2_whenNotConnected_throwsException() {
         when(communicationService.isConnected()).thenReturn(false);
-        connector.send(Arrays.asList(message1));
+        assertThrows(IOException.class, () -> connector.send(Arrays.asList(message1)));
     }
 
     @Test
@@ -111,10 +112,10 @@ public class TestWaterRowerConnector {
 
     // Disconnect:
 
-    @Test(expected = IOException.class)
-    public void disconnect_whenNotConnected_throwsIOException() throws IOException {
+    @Test
+    public void disconnect_whenNotConnected_throwsIOException() {
         when(communicationService.isConnected()).thenReturn(false);
-        connector.disconnect();
+        assertThrows(IOException.class, () -> connector.disconnect());
     }
 
     @Test
@@ -128,20 +129,20 @@ public class TestWaterRowerConnector {
 
     // Listener:
 
-    @Test(expected = NullPointerException.class)
-    public void addConnectionListener_withNull() throws IOException {
-        connector.addConnectionListener(null);
+    @Test
+    public void addConnectionListener_withNull() {
+        assertThrows(NullPointerException.class, () -> connector.addConnectionListener(null));
     }
 
     @Test
-    public void addConnectionListener_addsListenerToCommunicationService() throws IOException {
+    public void addConnectionListener_addsListenerToCommunicationService() {
         connector.addConnectionListener(connectionListener);
         verify(communicationService, times(2)).addConnectionListener(connectionListener);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void removeConnectionListener_withNull() throws IOException {
-        connector.removeConnectionListener(null);
+    @Test
+    public void removeConnectionListener_withNull() {
+        assertThrows(NullPointerException.class, () -> connector.removeConnectionListener(null));
     }
 
     @Test

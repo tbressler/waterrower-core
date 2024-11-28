@@ -17,8 +17,8 @@ import de.tbressler.waterrower.watchdog.ITimeoutListener;
 import de.tbressler.waterrower.watchdog.PingWatchdog;
 import de.tbressler.waterrower.workout.Workout;
 import de.tbressler.waterrower.workout.WorkoutUnit;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 
@@ -32,8 +32,7 @@ import static de.tbressler.waterrower.watchdog.TimeoutReason.DEVICE_NOT_CONFIRME
 import static de.tbressler.waterrower.watchdog.TimeoutReason.PING_TIMEOUT;
 import static de.tbressler.waterrower.workout.WorkoutUnit.METERS;
 import static de.tbressler.waterrower.workout.WorkoutUnit.STROKES;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
@@ -65,7 +64,7 @@ public class TestWaterRower {
     private ArgumentCaptor<ITimeoutListener> deviceVerificationListener = forClass(ITimeoutListener.class);
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         waterRower = new WaterRower(connector, pingWatchdog, deviceVerificationWatchdog, subscriptionPollingService);
         waterRower.addConnectionListener(waterRowerConnectionListener);
@@ -78,49 +77,49 @@ public class TestWaterRower {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new1_withNullInitializer_throwsNPE() {
-        new WaterRower(null);
+        assertThrows(NullPointerException.class, () -> new WaterRower(null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new1_withInitializerWhichReturnsNullConnector_throwsNPE() {
         when(initializer.getDeviceVerificationWatchdog()).thenReturn(deviceVerificationWatchdog);
         when(initializer.getPingWatchdog()).thenReturn(pingWatchdog);
         when(initializer.getSubscriptionPollingService()).thenReturn(subscriptionPollingService);
         when(initializer.getWaterRowerConnector()).thenReturn(null);
 
-        new WaterRower(initializer);
+        assertThrows(NullPointerException.class, () -> new WaterRower(initializer));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new1_withInitializerWhichReturnsNullSubscriptionPollingService_throwsNPE() {
         when(initializer.getDeviceVerificationWatchdog()).thenReturn(deviceVerificationWatchdog);
         when(initializer.getPingWatchdog()).thenReturn(pingWatchdog);
         when(initializer.getSubscriptionPollingService()).thenReturn(null);
         when(initializer.getWaterRowerConnector()).thenReturn(connector);
 
-        new WaterRower(initializer);
+        assertThrows(NullPointerException.class, () -> new WaterRower(initializer));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new1_withInitializerWhichReturnsNullPingWatchdog_throwsNPE() {
         when(initializer.getDeviceVerificationWatchdog()).thenReturn(deviceVerificationWatchdog);
         when(initializer.getPingWatchdog()).thenReturn(null);
         when(initializer.getSubscriptionPollingService()).thenReturn(subscriptionPollingService);
         when(initializer.getWaterRowerConnector()).thenReturn(connector);
 
-        new WaterRower(initializer);
+        assertThrows(NullPointerException.class, () -> new WaterRower(initializer));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new1_withInitializerWhichReturnsNullDeviceVerificationWatchdog_throwsNPE() {
         when(initializer.getDeviceVerificationWatchdog()).thenReturn(null);
         when(initializer.getPingWatchdog()).thenReturn(pingWatchdog);
         when(initializer.getSubscriptionPollingService()).thenReturn(subscriptionPollingService);
         when(initializer.getWaterRowerConnector()).thenReturn(connector);
 
-        new WaterRower(initializer);
+        assertThrows(NullPointerException.class, () -> new WaterRower(initializer));
     }
 
     @Test
@@ -133,24 +132,24 @@ public class TestWaterRower {
         new WaterRower(initializer);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new2_withNullConnector_throwsNPE() {
-        new WaterRower(null, pingWatchdog, deviceVerificationWatchdog, subscriptionPollingService);
+        assertThrows(NullPointerException.class, () -> new WaterRower(null, pingWatchdog, deviceVerificationWatchdog, subscriptionPollingService));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new2_withNullPingWatchdog_throwsNPE() {
-        new WaterRower(connector, null, deviceVerificationWatchdog, subscriptionPollingService);
+        assertThrows(NullPointerException.class, () -> new WaterRower(connector, null, deviceVerificationWatchdog, subscriptionPollingService));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new2_withNullDeviceVerificationWatchdog_throwsNPE() {
-        new WaterRower(connector, pingWatchdog, null, subscriptionPollingService);
+        assertThrows(NullPointerException.class, () -> new WaterRower(connector, pingWatchdog, null, subscriptionPollingService));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new2_withNullSubscriptionPollingService_throwsNPE() {
-        new WaterRower(connector, pingWatchdog, deviceVerificationWatchdog, null);
+        assertThrows(NullPointerException.class, () -> new WaterRower(connector, pingWatchdog, deviceVerificationWatchdog, null));
     }
 
 
@@ -163,10 +162,10 @@ public class TestWaterRower {
         verify(connector, times(1)).connect(address);
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void connect_whenAlreadyConnected_throwsIOException() throws Exception {
         when(connector.isConnected()).thenReturn(true);
-        waterRower.connect(address);
+        assertThrows(IOException.class, () -> waterRower.connect(address));
     }
 
 
@@ -311,38 +310,38 @@ public class TestWaterRower {
         verify(connector, times(1)).send(any(ResetMessage.class));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void performReset_whenNotConnected_throwsIOExcepton() throws Exception {
         when(connector.isConnected()).thenReturn(false);
-        waterRower.performReset();
+        assertThrows(IOException.class, () -> waterRower.performReset());
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void performReset_whenConnectedWithUnsupportedDevice_throwsIOExcepton() throws Exception {
         when(connector.isConnected()).thenReturn(true);
         when(deviceVerificationWatchdog.isDeviceConfirmed()).thenReturn(false);
-        waterRower.performReset();
+        assertThrows(IOException.class, () -> waterRower.performReset());
     }
 
 
     // Start workout:
 
-    @Test(expected = IOException.class)
+    @Test
     public void startWorkout_whenNotConnected_throwsIOExcepton() throws Exception {
         when(connector.isConnected()).thenReturn(false);
-        waterRower.startWorkout(new Workout(1000, METERS));
+        assertThrows(IOException.class, () -> waterRower.startWorkout(new Workout(1000, METERS)));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void startWorkout_whenConnectedWithUnsupportedDevice_throwsIOExcepton() throws Exception {
         when(connector.isConnected()).thenReturn(true);
         when(deviceVerificationWatchdog.isDeviceConfirmed()).thenReturn(false);
-        waterRower.startWorkout(new Workout(1000, METERS));
+        assertThrows(IOException.class, () -> waterRower.startWorkout(new Workout(1000, METERS)));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void startWorkout_withNull_throwsNPE() throws Exception {
-        waterRower.startWorkout(null);
+        assertThrows(NullPointerException.class, () -> waterRower.startWorkout(null));
     }
 
     @Test
@@ -410,14 +409,14 @@ public class TestWaterRower {
 
     // Listeners:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void addConnectionListener_withNull_throwsNPE() throws Exception {
-        waterRower.addConnectionListener(null);
+        assertThrows(NullPointerException.class, () -> waterRower.addConnectionListener(null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void removeConnectionListener_withNull_throwsNPE() throws Exception {
-        waterRower.removeConnectionListener(null);
+        assertThrows(NullPointerException.class, () -> waterRower.removeConnectionListener(null));
     }
 
     @Test
@@ -437,27 +436,22 @@ public class TestWaterRower {
     }
 
     private ArgumentMatcher<List<AbstractMessage>> eqMessages(MessageMatcher...matchers) {
-        return new ArgumentMatcher<List<AbstractMessage>>() {
-            @Override
-            public boolean matches(Object argument) {
-                List<AbstractMessage> messages = (List<AbstractMessage>) argument;
+        return messages -> {
+            if (messages.size() != matchers.length)
+                return false;
 
-                if (messages.size() != matchers.length)
+            for(int i=0; i<messages.size(); i++) {
+                ConfigureWorkoutMessage msg = (ConfigureWorkoutMessage) messages.get(i);
+                MessageMatcher matcher = matchers[i];
+                if (!matcher.matches(msg))
                     return false;
-
-                for(int i=0; i<messages.size(); i++) {
-                    AbstractMessage msg = messages.get(i);
-                    MessageMatcher matcher = matchers[i];
-                    if (!matcher.matches(msg))
-                        return false;
-                }
-                return true;
             }
+            return true;
         };
     }
 
 
-    public class MessageMatcher extends ArgumentMatcher<AbstractMessage> {
+    public class MessageMatcher implements ArgumentMatcher<AbstractMessage> {
 
         private MessageType type;
         private int distance;
@@ -472,7 +466,7 @@ public class TestWaterRower {
         }
 
         @Override
-        public boolean matches(Object argument) {
+        public boolean matches(AbstractMessage argument) {
             if (!(argument instanceof ConfigureWorkoutMessage))
                 return false;
 

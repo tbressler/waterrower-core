@@ -2,10 +2,10 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.PulseCountMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -20,7 +20,7 @@ public class TestPulseCountMessageInterpreter {
     private PulseCountMessageInterpreter interpreter;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreter = new PulseCountMessageInterpreter();
     }
@@ -107,9 +107,9 @@ public class TestPulseCountMessageInterpreter {
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void encode_throwsIllegalStateException() {
-        interpreter.encode(new PulseCountMessage(12));
+        assertThrows(IllegalStateException.class, () -> interpreter.encode(new PulseCountMessage(12)));
     }
 
 }

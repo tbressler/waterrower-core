@@ -1,9 +1,8 @@
 package de.tbressler.waterrower.io.msg.in;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for class DataSingleMemoryMessage.
@@ -16,44 +15,44 @@ public class TestDataMemoryMessage {
 
     // Constructors:
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withLocationLowerThan0_throwsIAE() {
-        new DataMemoryMessage(-1, 1);
+        assertThrows(IllegalArgumentException.class, () -> new DataMemoryMessage(-1, 1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withLocationGreaterThan4095_throwsIAE() {
-        new DataMemoryMessage(4096, 1);
+        assertThrows(IllegalArgumentException.class, () -> new DataMemoryMessage(4096, 1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withValue1LowerThan0_throwsIAE() {
-        new DataMemoryMessage(1, -1);
+        assertThrows(IllegalArgumentException.class, () -> new DataMemoryMessage(1, -1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withValue1GreaterThan255_throwsIAE() {
-        new DataMemoryMessage(1, 256);
+        assertThrows(IllegalArgumentException.class, () -> new DataMemoryMessage(1, 256));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withValue2LowerThan0_throwsIAE() {
-        new DataMemoryMessage(1, -1, 0);
+        assertThrows(IllegalArgumentException.class, () -> new DataMemoryMessage(1, -1, 0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withValue2GreaterThan255_throwsIAE() {
-        new DataMemoryMessage(1, 256, 0);
+        assertThrows(IllegalArgumentException.class, () -> new DataMemoryMessage(1, 256, 0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withValue3LowerThan0_throwsIAE() {
-        new DataMemoryMessage(1, -1, 0, 0);
+        assertThrows(IllegalArgumentException.class, () -> new DataMemoryMessage(1, -1, 0, 0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withValue3GreaterThan255_throwsIAE() {
-        new DataMemoryMessage(1, 256, 0, 0);
+        assertThrows(IllegalArgumentException.class, () -> new DataMemoryMessage(1, 256, 0, 0));
     }
 
 

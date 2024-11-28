@@ -1,10 +1,11 @@
 package de.tbressler.waterrower;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static java.time.Duration.ofSeconds;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for class WaterRowerInitializer.
@@ -18,21 +19,21 @@ public class TestWaterRowerInitializer {
     private WaterRowerInitializer initializer;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         initializer = new WaterRowerInitializer(ofSeconds(2), 5);
     }
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullTimeoutInterval_throwsNPE() {
-        new WaterRowerInitializer(null, 5);
+        assertThrows(NullPointerException.class, () -> new WaterRowerInitializer(null, 5));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withNullThreadPool0_throwsNPE() {
-        new WaterRowerInitializer(ofSeconds(1), 0);
+        assertThrows(IllegalArgumentException.class, () -> new WaterRowerInitializer(ofSeconds(1), 0));
     }
 
     // Methods:

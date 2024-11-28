@@ -1,10 +1,9 @@
 package de.tbressler.waterrower.io.msg.out;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.io.msg.Memory.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for class ReadSingleMemoryMessage.
@@ -14,19 +13,19 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestReadMemoryMessage {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullMemory_throwsNPE() {
-        new ReadMemoryMessage(null, 1);
+        assertThrows(NullPointerException.class, () -> new ReadMemoryMessage(null, 1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withLocationLowerThan0_throwsIAE() {
-        new ReadMemoryMessage(SINGLE_MEMORY, -1);
+        assertThrows(IllegalArgumentException.class, () -> new ReadMemoryMessage(SINGLE_MEMORY, -1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withLocationGreaterThan4095_throwsIAE() {
-        new ReadMemoryMessage(SINGLE_MEMORY, 4096);
+        assertThrows(IllegalArgumentException.class, () -> new ReadMemoryMessage(SINGLE_MEMORY, 4096));
     }
 
 

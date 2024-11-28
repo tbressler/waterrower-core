@@ -1,10 +1,10 @@
 package de.tbressler.waterrower.workout;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.workout.WorkoutUnit.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for class Workout.
@@ -18,7 +18,7 @@ public class TestWorkout {
     private Workout workout;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         workout = new Workout(1, METERS);
     }
@@ -26,63 +26,63 @@ public class TestWorkout {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullUnit_throwsNPE() {
-        new Workout(1, null);
+        assertThrows(NullPointerException.class, () -> new Workout(1, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitMeters_throwsIAE() {
-        new Workout(0, METERS);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0, METERS));
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0xFA01AndUnitMeters_throwsIAE() {
-        new Workout(0xFA01, METERS);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0xFA01, METERS));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitMiles_throwsIAE() {
-        new Workout(0, MILES);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0, MILES));
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0xFA01AndUnitMiles_throwsIAE() {
-        new Workout(0xFA01, MILES);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0xFA01, MILES));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitKms_throwsIAE() {
-        new Workout(0, KMS);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0, KMS));
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0xFA01AndUnitKms_throwsIAE() {
-        new Workout(0xFA01, KMS);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0xFA01, KMS));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitStrokes_throwsIAE() {
-        new Workout(0, STROKES);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0, STROKES));
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0x1389AndUnitStrokes_throwsIAE() {
-        new Workout(0x1389, STROKES);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0x1389, STROKES));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitSeconds_throwsIAE() {
-        new Workout(0, SECONDS);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0, SECONDS));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0x4651AndUnitSeconds_throwsIAE() {
-        new Workout(0x4651, SECONDS);
+        assertThrows(IllegalArgumentException.class, () -> new Workout(0x4651, SECONDS));
     }
 
     // Units:
@@ -177,36 +177,38 @@ public class TestWorkout {
         assertWorkoutInterval(2, 60, 3000, MILES);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void addInterval_withRestInterval0_throwsIAE() {
         workout = new Workout(1000, MILES);
-        workout.addInterval(0, 2000);
+        assertThrows(IllegalArgumentException.class, () -> workout.addInterval(0, 2000));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void addInterval_withRestInterval0x0E11_throwsIAE() {
         workout = new Workout(1000, MILES);
-        workout.addInterval(0x0E11, 2000);
+        assertThrows(IllegalArgumentException.class, () -> workout.addInterval(0x0E11, 2000));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void addInterval_withDistance0_throwsIAE() {
         workout = new Workout(1000, METERS);
-        workout.addInterval(60, 0);
+        assertThrows(IllegalArgumentException.class, () -> workout.addInterval(60, 0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void addInterval_withDistance0xFA00_throwsIAE() {
         workout = new Workout(1000, METERS);
-        workout.addInterval(60, 0xFA01);
+        assertThrows(IllegalArgumentException.class, () -> workout.addInterval(60, 0xFA01));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void addInterval_addTwoManyIntervals_throwsIllegalStateException() {
+    @Test
+    public void addInterval_addTooManyIntervals_throwsIllegalStateException() {
         workout = new Workout(1000, METERS);
 
-        for(int i=0; i<9; i++)
+        for(int i=0; i<8; i++)
             workout.addInterval(5, 2000);
+
+        assertThrows(IllegalStateException.class, () -> workout.addInterval(5, 2000));
     }
 
 

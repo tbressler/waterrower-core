@@ -4,14 +4,13 @@ import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.model.MemoryLocation;
 import de.tbressler.waterrower.subscriptions.workouts.WorkoutIntervalValueSubscription.IntervalType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.*;
 import static de.tbressler.waterrower.subscriptions.workouts.WorkoutIntervalValueSubscription.IntervalType.REST_INTERVAL;
 import static de.tbressler.waterrower.subscriptions.workouts.WorkoutIntervalValueSubscription.IntervalType.ROW_INTERVAL;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -31,29 +30,29 @@ public class TestWorkoutIntervalValueSubscription {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullIntervalType_throwsNPE() {
-        newWorkoutIntervalSubscription(null, 1);
+        assertThrows(NullPointerException.class, () -> newWorkoutIntervalSubscription(null, 1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void new_withROW_INTERVALAndTooLowIntervalIndex_throwsNPE() {
-        newWorkoutIntervalSubscription(ROW_INTERVAL, 0);
+    @Test
+    public void new_withROW_INTERVALAndTooLowIntervalIndex_throwsIAE() {
+        assertThrows(IllegalArgumentException.class, () -> newWorkoutIntervalSubscription(ROW_INTERVAL, 0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void new_withROW_INTERVALAndTooHighIntervalIndex_throwsNPE() {
-        newWorkoutIntervalSubscription(ROW_INTERVAL, 10);
+    @Test
+    public void new_withROW_INTERVALAndTooHighIntervalIndex_throwsIAE() {
+        assertThrows(IllegalArgumentException.class, () -> newWorkoutIntervalSubscription(ROW_INTERVAL, 10));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void new_withREST_INTERVALAndTooLowIntervalIndex_throwsNPE() {
-        newWorkoutIntervalSubscription(REST_INTERVAL, 0);
+    @Test
+    public void new_withREST_INTERVALAndTooLowIntervalIndex_throwsIAE() {
+        assertThrows(IllegalArgumentException.class, () -> newWorkoutIntervalSubscription(REST_INTERVAL, 0));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void new_withREST_INTERVALAndTooHighIntervalIndex_throwsNPE() {
-        newWorkoutIntervalSubscription(REST_INTERVAL, 9);
+    @Test
+    public void new_withREST_INTERVALAndTooHighIntervalIndex_throwsIAE() {
+        assertThrows(IllegalArgumentException.class, () -> newWorkoutIntervalSubscription(REST_INTERVAL, 9));
     }
 
     // Poll:

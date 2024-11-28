@@ -6,14 +6,15 @@ import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.model.MemoryLocation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static de.tbressler.waterrower.io.msg.Memory.DOUBLE_MEMORY;
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.*;
 import static de.tbressler.waterrower.subscriptions.Priority.HIGH;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 /**
@@ -34,19 +35,19 @@ public class TestAbstractMemorySubscription {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullPriority_throwsNPE() {
-        newAbstractMemorySubscription(null, DOUBLE_MEMORY, M_S_PROJH_AVG);
+        assertThrows(NullPointerException.class, () -> newAbstractMemorySubscription(null, DOUBLE_MEMORY, M_S_PROJH_AVG));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullMemory_throwsNPE() {
-        newAbstractMemorySubscription(HIGH, null, M_S_PROJH_AVG);
+        assertThrows(NullPointerException.class, () -> newAbstractMemorySubscription(HIGH, null, M_S_PROJH_AVG));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullMemoryLocation_throwsNPE() {
-        newAbstractMemorySubscription(HIGH, SINGLE_MEMORY, null);
+        assertThrows(NullPointerException.class, () -> newAbstractMemorySubscription(HIGH, SINGLE_MEMORY, null));
     }
 
 

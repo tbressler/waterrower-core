@@ -2,7 +2,7 @@ package de.tbressler.waterrower.subscriptions.values;
 
 import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.model.MemoryLocation.ZONE_HR_VAL;
 import static org.mockito.Mockito.*;

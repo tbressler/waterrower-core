@@ -1,10 +1,10 @@
 package de.tbressler.waterrower.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.model.MemoryLocation.*;
 import static de.tbressler.waterrower.utils.MessageUtils.intToAch;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for enum MemoryLocation.

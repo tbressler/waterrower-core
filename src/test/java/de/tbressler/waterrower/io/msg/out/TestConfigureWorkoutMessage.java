@@ -2,12 +2,11 @@ package de.tbressler.waterrower.io.msg.out;
 
 import de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType;
 import de.tbressler.waterrower.workout.WorkoutUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.io.msg.out.ConfigureWorkoutMessage.MessageType.*;
 import static de.tbressler.waterrower.workout.WorkoutUnit.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for class ConfigureWorkoutMessage.
@@ -17,26 +16,26 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestConfigureWorkoutMessage {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullWorkoutUnit_throwsNPE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 1, null);
+        assertThrows(NullPointerException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 1, null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullMessageType_throwsNPE() {
-        new ConfigureWorkoutMessage(null, 1, METERS);
+        assertThrows(NullPointerException.class, () -> new ConfigureWorkoutMessage(null, 1, METERS));
     }
 
     // Single distance workouts (in Meters):
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitMeters_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, METERS);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, METERS));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance64001AndUnitMeters_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 64001, METERS);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 64001, METERS));
     }
 
     @Test
@@ -45,9 +44,9 @@ public class TestConfigureWorkoutMessage {
         assertMessage(msg, SINGLE_WORKOUT, -1, 1, METERS);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0xFFFF_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0xFFFF, METERS);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0xFFFF, METERS));
     }
 
     @Test
@@ -64,14 +63,14 @@ public class TestConfigureWorkoutMessage {
 
     // Single distance workouts (in Miles):
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitMiles_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, MILES);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, MILES));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance64001AndUnitMiles_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 64001, MILES);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 64001, MILES));
     }
 
     @Test
@@ -94,14 +93,14 @@ public class TestConfigureWorkoutMessage {
 
     // Single distance workouts (in Km's):
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitKms_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, KMS);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, KMS));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance64001AndUnitKms_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 64001, KMS);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 64001, KMS));
     }
 
     @Test
@@ -124,14 +123,14 @@ public class TestConfigureWorkoutMessage {
 
     // Single distance workouts (in Strokes):
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitStrokes_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, STROKES);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, STROKES));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance5001AndUnitStrokes_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 5001, STROKES);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 5001, STROKES));
     }
 
     @Test
@@ -154,14 +153,14 @@ public class TestConfigureWorkoutMessage {
 
     // Single duration workouts (in Seconds):
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance0AndUnitSeconds_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, SECONDS);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 0, SECONDS));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_withDistance18001AndUnitSeconds_throwsIAE() {
-        new ConfigureWorkoutMessage(SINGLE_WORKOUT, 18001, SECONDS);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(SINGLE_WORKOUT, 18001, SECONDS));
     }
 
     @Test
@@ -190,19 +189,19 @@ public class TestConfigureWorkoutMessage {
         assertMessage(msg, START_INTERVAL_WORKOUT, -1, 123, METERS);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_addIntervalWorkout_withRestInterval0x4651_throwsIAE() {
-        new ConfigureWorkoutMessage(ADD_INTERVAL_WORKOUT, 123, METERS, 0x4651);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(ADD_INTERVAL_WORKOUT, 123, METERS, 0x4651));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_addIntervalWorkout_withRestInterval0x0000_throwsIAE() {
-        new ConfigureWorkoutMessage(ADD_INTERVAL_WORKOUT, 123, METERS, 0x0000);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(ADD_INTERVAL_WORKOUT, 123, METERS, 0x0000));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_addIntervalWorkout_withRestInterval0xFFFF_throwsIAE() {
-        new ConfigureWorkoutMessage(ADD_INTERVAL_WORKOUT, 123, METERS, 0xFFFF);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(ADD_INTERVAL_WORKOUT, 123, METERS, 0xFFFF));
     }
 
     @Test
@@ -217,9 +216,9 @@ public class TestConfigureWorkoutMessage {
         assertMessage(msg, END_INTERVAL_WORKOUT, 0xFFFF, 123, METERS);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void new_endIntervalWorkout_withRestInterval0x0001_throwsIAE() {
-        new ConfigureWorkoutMessage(END_INTERVAL_WORKOUT, 123, METERS, 0x0001);
+        assertThrows(IllegalArgumentException.class, () -> new ConfigureWorkoutMessage(END_INTERVAL_WORKOUT, 123, METERS, 0x0001));
     }
 
     @Test

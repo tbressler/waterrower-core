@@ -1,8 +1,8 @@
 package de.tbressler.waterrower.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests for class SerialPortWrapper.

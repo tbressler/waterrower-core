@@ -7,11 +7,10 @@ import de.tbressler.waterrower.model.ModelInformation;
 import de.tbressler.waterrower.model.MonitorType;
 import de.tbressler.waterrower.utils.AvailablePort;
 import de.tbressler.waterrower.utils.SerialPortWrapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
-import org.mockito.InOrder;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,10 +19,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import static de.tbressler.waterrower.discovery.WaterRowerAutoDiscovery.TRY_AGAIN_INTERVAL;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -50,7 +47,7 @@ public class TestWaterRowerAutoDiscovery {
     private ArgumentCaptor<Runnable> task = forClass(Runnable.class);
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         discovery = new WaterRowerAutoDiscovery(waterRower, executor, serialPortWrapper);
 
@@ -60,19 +57,19 @@ public class TestWaterRowerAutoDiscovery {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullWaterRower_throwsNPE() {
-        new WaterRowerAutoDiscovery(null, executor);
+        assertThrows(NullPointerException.class, () -> new WaterRowerAutoDiscovery(null, executor));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullExecutor_throwsNPE() {
-        new WaterRowerAutoDiscovery(waterRower, null);
+        assertThrows(NullPointerException.class, () -> new WaterRowerAutoDiscovery(waterRower, null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullSerialPortWrapper_throwsNPE() {
-        new WaterRowerAutoDiscovery(waterRower, executor, null);
+        assertThrows(NullPointerException.class, () -> new WaterRowerAutoDiscovery(waterRower, executor, null));
     }
 
 
@@ -273,15 +270,7 @@ public class TestWaterRowerAutoDiscovery {
     }
 
     private ArgumentMatcher<SerialDeviceAddress> eqAddress(String port) {
-        return new ArgumentMatcher<>() {
-            @Override
-            public boolean matches(Object argument) {
-                if (!(argument instanceof SerialDeviceAddress))
-                    return false;
-                SerialDeviceAddress address = (SerialDeviceAddress) argument;
-                return address.value().equals(port);
-            }
-        };
+        return address -> address.value().equals(port);
     }
 
 }

@@ -1,8 +1,8 @@
 package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
 
@@ -18,7 +18,7 @@ public class TestConnectionListener {
     ConnectionListener listener;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         listener = new ConnectionListener();
     }

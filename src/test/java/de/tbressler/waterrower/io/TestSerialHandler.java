@@ -2,8 +2,8 @@ package de.tbressler.waterrower.io;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 
@@ -24,7 +24,7 @@ public class TestSerialHandler {
     private AbstractMessage message = mock(AbstractMessage.class, "message");
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         handler = new SerialHandler() {
             @Override

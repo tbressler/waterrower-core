@@ -5,13 +5,12 @@ import de.tbressler.waterrower.io.msg.in.DataMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.ReadMemoryMessage;
 import de.tbressler.waterrower.io.msg.out.StartCommunicationMessage;
 import de.tbressler.waterrower.model.WorkoutFlags;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
 
 import static de.tbressler.waterrower.io.msg.Memory.SINGLE_MEMORY;
 import static de.tbressler.waterrower.model.MemoryLocation.FEXTENDED;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
@@ -103,22 +102,14 @@ public class TestWorkoutFlagsSubscription {
 
 
     private ArgumentMatcher<WorkoutFlags> matchesFlags(boolean heartRateZone, boolean intensityZone, boolean strokeRateZone, boolean prognosticsActive, boolean workoutDistanceMode, boolean workoutDurationMode, boolean workoutDistanceIntervalMode, boolean workoutDurationIntervalMode) {
-        return new ArgumentMatcher<>() {
-            @Override
-            public boolean matches(Object argument) {
-                if (!(argument instanceof WorkoutFlags))
-                    return false;
-                WorkoutFlags flags = (WorkoutFlags) argument;
-                return (flags.isWorkingInHeartRateZone() == heartRateZone)
-                        && (flags.isWorkingInIntensityZone() == intensityZone)
-                        && (flags.isWorkingInStrokeRateZone() == strokeRateZone)
-                        && (flags.isPrognosticsActive() == prognosticsActive)
-                        && (flags.isWorkoutDistanceMode() == workoutDistanceMode)
-                        && (flags.isWorkoutDurationMode() == workoutDurationMode)
-                        && (flags.isWorkoutDistanceIntervalMode() == workoutDistanceIntervalMode)
-                        && (flags.isWorkoutDurationIntervalMode() == workoutDurationIntervalMode);
-            }
-        };
+        return flags -> (flags.isWorkingInHeartRateZone() == heartRateZone)
+                && (flags.isWorkingInIntensityZone() == intensityZone)
+                && (flags.isWorkingInStrokeRateZone() == strokeRateZone)
+                && (flags.isPrognosticsActive() == prognosticsActive)
+                && (flags.isWorkoutDistanceMode() == workoutDistanceMode)
+                && (flags.isWorkoutDurationMode() == workoutDurationMode)
+                && (flags.isWorkoutDistanceIntervalMode() == workoutDistanceIntervalMode)
+                && (flags.isWorkoutDurationIntervalMode() == workoutDurationIntervalMode);
     }
 
 }

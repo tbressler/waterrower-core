@@ -1,7 +1,7 @@
 package de.tbressler.waterrower.watchdog;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Duration;
@@ -11,9 +11,8 @@ import static de.tbressler.waterrower.watchdog.TimeoutReason.DEVICE_NOT_CONFIRME
 import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofSeconds;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -36,7 +35,7 @@ public class TestDeviceVerificationWatchdog {
     private ArgumentCaptor<Runnable> task = forClass(Runnable.class);
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         watchdog = new DeviceVerificationWatchdog(ofMillis(1), executor);
         watchdog.setTimeoutListener(listener);
@@ -45,14 +44,14 @@ public class TestDeviceVerificationWatchdog {
 
     // Constructor:
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullInterval_throwsNPE() {
-        new DeviceVerificationWatchdog(null, executor);
+        assertThrows(NullPointerException.class, () -> new DeviceVerificationWatchdog(null, executor));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void new_withNullExecutor_throwsNPE() {
-        new DeviceVerificationWatchdog(interval, null);
+        assertThrows(NullPointerException.class, () -> new DeviceVerificationWatchdog(interval, null));
     }
 
     // Start:

@@ -2,10 +2,10 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.HardwareTypeMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -23,7 +23,7 @@ public class TestHardwareTypeMessageInterpreter {
     private HardwareTypeMessage hardwareTypeMessage = mock(HardwareTypeMessage.class, "hardwareTypeMessage");
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreter = new HardwareTypeMessageInterpreter();
     }
@@ -66,9 +66,9 @@ public class TestHardwareTypeMessageInterpreter {
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void encode_throwsIllegalStateException() {
-        interpreter.encode(hardwareTypeMessage);
+        assertThrows(IllegalStateException.class, () -> interpreter.encode(hardwareTypeMessage));
     }
 
 }

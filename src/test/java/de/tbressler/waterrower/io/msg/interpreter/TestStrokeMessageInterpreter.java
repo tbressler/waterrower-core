@@ -2,12 +2,12 @@ package de.tbressler.waterrower.io.msg.interpreter;
 
 import de.tbressler.waterrower.io.msg.AbstractMessage;
 import de.tbressler.waterrower.io.msg.in.StrokeMessage;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.tbressler.waterrower.model.StrokeType.END_OF_STROKE;
 import static de.tbressler.waterrower.model.StrokeType.START_OF_STROKE;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -22,7 +22,7 @@ public class TestStrokeMessageInterpreter {
     private StrokeMessageInterpreter interpreter;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         interpreter = new StrokeMessageInterpreter();
     }
@@ -78,9 +78,9 @@ public class TestStrokeMessageInterpreter {
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void encode_throwsIllegalStateException() {
-        interpreter.encode(new StrokeMessage(START_OF_STROKE));
+        assertThrows(IllegalStateException.class, () -> interpreter.encode(new StrokeMessage(START_OF_STROKE)));
     }
 
 }
