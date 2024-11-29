@@ -58,11 +58,11 @@ public class WaterRower {
     private final DeviceVerificationWatchdog deviceVerificationWatchdog;
 
     /* All listeners. */
-    private List<IWaterRowerConnectionListener> listeners = new CopyOnWriteArrayList<>();
+    private final List<IWaterRowerConnectionListener> listeners = new CopyOnWriteArrayList<>();
 
 
     /* The listener for the WaterRower connector. */
-    private IConnectionListener connectionListener = new ConnectionListener() {
+    private final IConnectionListener connectionListener = new ConnectionListener() {
 
         @Override
         public void onConnected() {
@@ -88,7 +88,7 @@ public class WaterRower {
 
 
     /* Listener for watchdog timeouts. */
-    private ITimeoutListener timeoutListener = reason -> {
+    private final ITimeoutListener timeoutListener = reason -> {
         try {
             disconnect();
         } catch (IOException e) {

@@ -9,7 +9,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  */
 public class DecodeErrorMessage extends AbstractMessage {
 
-    private String message;
+    private final String message;
 
     public DecodeErrorMessage(String message) {
         this.message = message;

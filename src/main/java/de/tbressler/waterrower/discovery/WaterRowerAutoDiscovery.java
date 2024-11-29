@@ -50,20 +50,20 @@ public class WaterRowerAutoDiscovery {
 
 
     /* The current stack of available ports. */
-    private Stack<SerialDeviceAddress> availablePorts = new Stack<>();
+    private final Stack<SerialDeviceAddress> availablePorts = new Stack<>();
 
     /* True if active. */
-    private AtomicBoolean isActive = new AtomicBoolean(false);
+    private final AtomicBoolean isActive = new AtomicBoolean(false);
 
     /* Lock, so that only one connection attempt can be done at the same time. */
-    private ReentrantLock lock = new ReentrantLock(true);
+    private final ReentrantLock lock = new ReentrantLock(true);
 
     /* The current serial port. */
     private String currentSerialPort = null;
 
 
     /* Listener for WaterRower connections. */
-    private IWaterRowerConnectionListener connectionListener = new IWaterRowerConnectionListener() {
+    private final IWaterRowerConnectionListener connectionListener = new IWaterRowerConnectionListener() {
 
         @Override
         public void onConnected(ModelInformation modelInformation) {
@@ -124,7 +124,7 @@ public class WaterRowerAutoDiscovery {
     public void start() {
         Log.debug("Starting discovery.");
         isActive.set(true);
-        executorService.submit(() -> tryNextConnectionAttempt());
+        executorService.submit(this::tryNextConnectionAttempt);
     }
 
 

@@ -32,14 +32,14 @@ public class CommunicationService {
     private Channel currentChannel;
 
     /* A lock for synchronized access to open/close/read/write on channel. */
-    private ReentrantLock lock = new ReentrantLock(true);
+    private final ReentrantLock lock = new ReentrantLock(true);
 
     /* Listeners for serial connections. */
     private final List<IConnectionListener> connectionListeners = new ArrayList<>();
 
 
     /* Handler for the communication channel. */
-    private SerialHandler serialHandler = new SerialHandler() {
+    private final SerialHandler serialHandler = new SerialHandler() {
 
         @Override
         protected void onConnected() {

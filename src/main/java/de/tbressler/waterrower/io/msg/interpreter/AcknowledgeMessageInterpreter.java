@@ -20,7 +20,7 @@ import de.tbressler.waterrower.io.msg.in.AcknowledgeMessage;
 public class AcknowledgeMessageInterpreter extends AbstractMessageInterpreter<AcknowledgeMessage> {
 
     /* Single instance of an acknowledge message. */
-    private AcknowledgeMessage ACKNOWLEDGE_MESSAGE = new AcknowledgeMessage();
+    private final static AcknowledgeMessage ACKNOWLEDGE_MESSAGE = new AcknowledgeMessage();
 
 
     @Override

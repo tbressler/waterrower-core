@@ -34,7 +34,7 @@ public class MessageFrameDecoder extends ByteToMessageDecoder {
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
 
         Log.debug("Decoder received new message buffer:\n" +
                 " Buffer: " + bufferToString(in));
@@ -61,8 +61,6 @@ public class MessageFrameDecoder extends ByteToMessageDecoder {
          }
 
          out.add(decodedMessage);
-
-         return;
-        }
+    }
 
 }

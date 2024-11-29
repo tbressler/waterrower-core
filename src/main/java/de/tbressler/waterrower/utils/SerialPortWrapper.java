@@ -2,9 +2,9 @@ package de.tbressler.waterrower.utils;
 
 import com.fazecast.jSerialComm.SerialPort;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
@@ -26,7 +26,7 @@ public class SerialPortWrapper {
         SerialPort[] serialPorts = SerialPort.getCommPorts();
         if (serialPorts.length == 0)
             return emptyList();
-        return asList(serialPorts).stream().map((port) -> new AvailablePort(port)).collect(toList());
+        return Arrays.stream(serialPorts).map((port) -> new AvailablePort(port)).collect(toList());
     }
 
 }

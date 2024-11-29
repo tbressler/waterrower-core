@@ -30,7 +30,7 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<Seri
     private SerialHandler serialHandler;
 
     /* The message parser. */
-    private MessageParser parser = new MessageParser();
+    private final MessageParser parser = new MessageParser();
 
 
     /**
@@ -50,7 +50,7 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<Seri
 
 
     @Override
-    protected void initChannel(SerialChannel channel) throws Exception {
+    protected void initChannel(SerialChannel channel) {
         Log.debug("Serial channel initialized. Configuring pipeline and channel...");
 
         checkIfSerialHandlerIsSet();

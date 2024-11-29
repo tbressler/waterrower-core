@@ -28,10 +28,10 @@ public class WaterRowerConnector {
     private final CommunicationService communicationService;
 
     /* The lock to synchronize connect and disconnect. */
-    private ReentrantLock lock = new ReentrantLock(true);
+    private final ReentrantLock lock = new ReentrantLock(true);
 
     /* Listeners for the serial communication. */
-    private List<IConnectionListener> listeners = new ArrayList<>();
+    private final List<IConnectionListener> listeners = new ArrayList<>();
 
 
     /**

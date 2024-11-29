@@ -140,7 +140,7 @@ public class SubscriptionPollingService implements ISubscriptionPollingService {
 
     /* Schedule the send task for execution. */
     private void scheduleSendMessageTask() {
-        executorService.schedule(() -> sendNextMessage(), interval, MILLISECONDS);
+        executorService.schedule(this::sendNextMessage, interval, MILLISECONDS);
     }
 
     /* Send the first message from the message queue to the WaterRower. */

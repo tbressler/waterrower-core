@@ -16,7 +16,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public abstract class Watchdog {
 
     /* The wakeup interval for the watchdog. */
-    private Duration interval;
+    private final Duration interval;
 
     /* Repeat the watchdog periodically. */
     private final boolean doRepeat;
@@ -25,7 +25,7 @@ public abstract class Watchdog {
     private final ScheduledExecutorService executorService;
 
     /* True if watchdog is stopped. */
-    private AtomicBoolean isStopped = new AtomicBoolean(true);
+    private final AtomicBoolean isStopped = new AtomicBoolean(true);
 
     /* The listener that should be notified on timeout. */
     private ITimeoutListener timeoutListener;

@@ -28,9 +28,7 @@ public class Compatibility {
 
         if (!isModelTypeSupported(modelInformation.getMonitorType()))
             return false;
-        if (!isFirmwareVersionSupported(modelInformation.getFirmwareVersion()))
-            return false;
-        return true;
+        return isFirmwareVersionSupported(modelInformation.getFirmwareVersion());
     }
 
     /* Returns true if monitor type is supported. */
@@ -46,9 +44,7 @@ public class Compatibility {
 
     /* Returns true if firmware version is supported. */
     private static boolean isFirmwareVersionSupported(String firmwareVersion) {
-        if (firmwareVersion.startsWith("02."))
-            return true;
-        return false;
+        return firmwareVersion.startsWith("02.");
     }
 
 }

@@ -20,7 +20,7 @@ import de.tbressler.waterrower.io.msg.in.ErrorMessage;
 public class ErrorMessageInterpreter extends AbstractMessageInterpreter<ErrorMessage> {
 
     /* Single instance of an error message. */
-    private ErrorMessage ERROR_MESSAGE = new ErrorMessage();
+    private final static ErrorMessage ERROR_MESSAGE = new ErrorMessage();
 
 
     @Override

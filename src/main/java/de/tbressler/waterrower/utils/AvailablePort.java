@@ -15,7 +15,7 @@ import static java.util.Objects.requireNonNull;
 public class AvailablePort {
 
     /* The underlying jSerialComm port. */
-    private SerialPort serialPort;
+    private final SerialPort serialPort;
 
 
     /**

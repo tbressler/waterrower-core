@@ -17,7 +17,7 @@ import static de.tbressler.waterrower.watchdog.TimeoutReason.DEVICE_NOT_CONFIRME
 public class DeviceVerificationWatchdog extends Watchdog {
 
     /* True if the device is confirmed. */
-    private AtomicBoolean deviceConfirmed = new AtomicBoolean(false);
+    private final AtomicBoolean deviceConfirmed = new AtomicBoolean(false);
 
 
     /**

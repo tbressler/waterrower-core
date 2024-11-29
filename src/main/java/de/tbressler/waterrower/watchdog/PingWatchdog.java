@@ -22,7 +22,7 @@ public class PingWatchdog extends Watchdog {
     private final long maxPingDuration;
 
     /* Last time a ping was received. */
-    private AtomicLong lastReceivedPing = new AtomicLong(0);
+    private final AtomicLong lastReceivedPing = new AtomicLong(0);
 
 
     /**

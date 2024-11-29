@@ -31,7 +31,7 @@ public abstract class AbstractMemorySubscription implements ISubscription {
 
     /* Because of missing incoming messages, count the outgoing messages
        until an incoming message was received. */
-    private AtomicInteger counterLatch = new AtomicInteger(0);
+    private final AtomicInteger counterLatch = new AtomicInteger(0);
 
 
     /**

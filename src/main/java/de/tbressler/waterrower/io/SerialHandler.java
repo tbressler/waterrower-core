@@ -17,7 +17,7 @@ import io.netty.util.ReferenceCountUtil;
 public abstract class SerialHandler extends ChannelInboundHandlerAdapter {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
 
             if (!(msg instanceof AbstractMessage)) {
@@ -68,7 +68,7 @@ public abstract class SerialHandler extends ChannelInboundHandlerAdapter {
 
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         Log.error("Unexpected exception caught in serial handler!", cause);
         ctx.close();
         Log.debug("Connection to serial port closed.");
