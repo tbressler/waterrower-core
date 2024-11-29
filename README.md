@@ -1,7 +1,6 @@
 # WaterRower Core Library
 
 [![License](https://img.shields.io/badge/License-APL%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Travis CI](https://travis-ci.org/tbressler/waterrower-core.svg?branch=master)](https://travis-ci.org/tbressler/waterrower-core)
 
 A Java library which connects the WaterRower S4/S5 Performance Monitor with Windows, Linux or macOS.
 
