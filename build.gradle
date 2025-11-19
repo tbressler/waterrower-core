@@ -4,8 +4,8 @@ plugins {
 }
 
 allprojects {
-    group = 'de.tbressler.waterrower'
-    version = '1.2.2'
+    group = libGroupId
+    version = libVersion
 }
 
 repositories {
@@ -16,23 +16,23 @@ repositories {
 dependencies {
 
     // Serial communication:
-    implementation 'io.netty:netty-all:4.1.115.Final'
+    implementation 'io.netty:netty-all:4.2.7.Final'
 
     // jSerialComm:
-    implementation 'com.fazecast:jSerialComm:2.11.0'
+    implementation 'com.fazecast:jSerialComm:2.11.4'
 
     // Utils:
-    implementation 'com.google.guava:guava:33.3.1-jre'
+    implementation 'com.google.guava:guava:33.5.0-jre'
 
     // Logging:
-    implementation 'org.slf4j:slf4j-api:2.0.16'
-    testImplementation 'org.slf4j:slf4j-simple:2.0.16'
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.17'
 
 
     // JUnit and tests:
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
-    testImplementation 'org.mockito:mockito-core:5.14.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.1'
+    testImplementation 'org.mockito:mockito-core:5.20.0'
 
 }
 
@@ -40,7 +40,7 @@ jar {
 
     manifest {
         attributes  'Implementation-Title': 'WaterRower Core Library',
-                    'Implementation-Version': archiveVersion,
+                    'Implementation-Version': libVersion,
                     'Implementation-Vendor': 'Tobias Breßler'
     }
 
@@ -54,9 +54,9 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = 'de.tbressler.waterrower'
-            artifactId = 'waterrower-core'
-            version = '1.2.2'
+            groupId = libGroupId
+            artifactId = libArtifactId
+            version = libVersion
         }
     }
 }
