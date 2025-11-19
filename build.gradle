@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group = 'de.tbressler.waterrower'
-    version = '1.2.1'
+    version = '1.2.2'
 }
 
 repositories {
@@ -30,6 +30,7 @@ dependencies {
 
 
     // JUnit and tests:
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
     testImplementation 'org.mockito:mockito-core:5.14.2'
 
@@ -47,4 +48,15 @@ jar {
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId = 'de.tbressler.waterrower'
+            artifactId = 'waterrower-core'
+            version = '1.2.2'
+        }
+    }
 }
