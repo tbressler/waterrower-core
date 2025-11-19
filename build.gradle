@@ -17,8 +17,6 @@ dependencies {
 
     // Serial communication:
     implementation 'io.netty:netty-all:4.2.7.Final'
-
-    // jSerialComm:
     implementation 'com.fazecast:jSerialComm:2.11.4'
 
     // Utils:
@@ -33,17 +31,14 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.1'
     testImplementation 'org.junit.jupiter:junit-jupiter:6.0.1'
     testImplementation 'org.mockito:mockito-core:5.20.0'
-
 }
 
 jar {
-
     manifest {
-        attributes  'Implementation-Title': 'WaterRower Core Library',
+        attributes  'Implementation-Title': libTitle,
                     'Implementation-Version': libVersion,
-                    'Implementation-Vendor': 'Tobias Breßler'
+                    'Implementation-Vendor': libAuthor
     }
-
 }
 
 test {
