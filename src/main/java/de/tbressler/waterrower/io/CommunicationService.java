@@ -114,7 +114,7 @@ public class CommunicationService {
             currentChannel = future.channel();
 
         } catch (Exception e) {
-            throw new IOException("Can not connect to '"+address.value()+"'!", e);
+            throw new IOException("Can't connect to '"+address.value()+"'!", e);
         } finally {
             lock.unlock();
         }

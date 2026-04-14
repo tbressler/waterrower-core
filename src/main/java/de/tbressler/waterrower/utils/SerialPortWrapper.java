@@ -26,7 +26,7 @@ public class SerialPortWrapper {
         SerialPort[] serialPorts = SerialPort.getCommPorts();
         if (serialPorts.length == 0)
             return emptyList();
-        return Arrays.stream(serialPorts).map((port) -> new AvailablePort(port)).collect(toList());
+        return Arrays.stream(serialPorts).map(AvailablePort::new).collect(toList());
     }
 
 }

@@ -122,7 +122,7 @@ public class WaterRowerAutoDiscovery {
      * Starts the auto-discovery.
      */
     public void start() {
-        Log.debug("Starting discovery.");
+        Log.info("Starting discovery.");
         isActive.set(true);
         executorService.submit(this::tryNextConnectionAttempt);
     }
@@ -155,7 +155,7 @@ public class WaterRowerAutoDiscovery {
 
             waterRower.connect(address);
 
-        } catch (IOException e) {
+        } catch (Throwable e) {
             Log.warn("Couldn't connect to serial port '"+currentSerialPort+"', due to error ("+e.getMessage()+")! Trying next port.");
             executorService.schedule(this::tryNextConnectionAttempt, TRY_AGAIN_INTERVAL.getSeconds(), SECONDS);
         } finally {
@@ -166,23 +166,28 @@ public class WaterRowerAutoDiscovery {
     /* Updates the available serial ports on the stack. */
     private void updateAvailablePorts() {
 
-        Log.debug("Updating list of available serial ports.");
+        Log.info("Updating list of available serial ports.");
+        try {
 
-        // Get all available serial ports. Additionally filter out every useless port in
-        // order to boost the performance of the auto-discovery.
-        List<AvailablePort> availablePorts = serialPortWrapper.getAvailablePorts().stream().filter((port) -> {
-            String portName = port.getSystemPortName();
-            return (!portName.startsWith("/dev/cu.") && !portName.startsWith("cu.")
-                    && !portName.contains("Bluetooth") && !portName.contains("BT")
-                    && (port.getDescription().contains("WR-S") || port.getDescription().contains("Microchip Technology"))
-                    && !port.isOpen());
-        }).collect(toList());
+            // Get all available serial ports. Additionally filter out every useless port in
+            // order to boost the performance of the auto-discovery.
+            List<AvailablePort> availablePorts = serialPortWrapper.getAvailablePorts().stream().filter((port) -> {
+                String portName = port.getSystemPortName();
+                return (!portName.startsWith("/dev/cu.") && !portName.startsWith("cu.")
+                        && !portName.contains("Bluetooth") && !portName.contains("BT")
+                        && (port.getDescription().contains("WR-S") || port.getDescription().contains("Microchip Technology"))
+                        && !port.isOpen());
+            }).toList();
 
-        // Add the new ports to the top of the available port stack (only these ports
-        // are used for auto-discovery).
-        this.availablePorts.addAll(availablePorts.stream()
-                .map((port) -> new SerialDeviceAddress(port.getSystemPortName()))
-                .collect(toList()));
+            // Add the new ports to the top of the available port stack (only these ports
+            // are used for auto-discovery).
+            this.availablePorts.addAll(availablePorts.stream()
+                    .map((port) -> new SerialDeviceAddress(port.getSystemPortName()))
+                    .toList());
+
+        } catch (Throwable e) {
+            Log.error("Error while loading available serial ports!", e);
+        }
     }
 
 

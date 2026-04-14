@@ -8,6 +8,12 @@ allprojects {
     version = libVersion
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -16,7 +22,7 @@ repositories {
 dependencies {
 
     // Serial communication:
-    implementation 'io.netty:netty-all:4.2.12.Final'
+    implementation 'io.netty:netty-all:5.0.0.Alpha2'
     implementation 'com.fazecast:jSerialComm:2.11.4'
 
     // Utils:
@@ -45,10 +51,11 @@ test {
     useJUnitPlatform()
 }
 
+
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            from components.java
+        mavenJava(MavenPublication.class) {
+            artifact jar
             groupId = libGroupId
             artifactId = libArtifactId
             version = libVersion

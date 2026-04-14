@@ -196,12 +196,6 @@ final class DefaultSerialChannelConfig extends DefaultChannelConfig implements S
     }
 
     @Override
-    public SerialChannelConfig setAutoClose(boolean autoClose) {
-        super.setAutoClose(autoClose);
-        return this;
-    }
-
-    @Override
     public SerialChannelConfig setWriteBufferHighWaterMark(int writeBufferHighWaterMark) {
         super.setWriteBufferHighWaterMark(writeBufferHighWaterMark);
         return this;

@@ -45,7 +45,6 @@ public class SerialChannel extends OioByteStreamChannel {
 
         config = new DefaultSerialChannelConfig(this);
         config.setReadTimeout(3000);
-        config.setAutoClose(true);
     }
 
     @Override
@@ -135,11 +134,6 @@ public class SerialChannel extends OioByteStreamChannel {
     @Override
     protected boolean isInputShutdown() {
         return !open;
-    }
-
-    @Override
-    protected ChannelFuture shutdownInput() {
-        return newFailedFuture(new UnsupportedOperationException("shutdownInput"));
     }
 
 
